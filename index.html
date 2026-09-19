@@ -250,6 +250,7 @@
     height:680px;
   }
   .arc-svg{position:absolute;top:0;left:0;width:260px;height:100%;overflow:visible;}
+  .arc-svg-mobile{display:none;}
   .arc-node{filter:drop-shadow(0 0 10px currentColor);transform-box:fill-box;transform-origin:center;}
 
   .c-item{
@@ -267,14 +268,15 @@
   .c-line{font-size:14.5px;color:var(--text-dim);margin:0;max-width:400px;}
   @media (max-width:700px){
     .career-arc-wrap{height:640px;}
-    .arc-svg{width:80px;}
-    .c-item{left:108px;}
+    .arc-svg-desktop{display:none;}
+    .arc-svg-mobile{display:block;width:34px;}
+    .c-item{left:66px;}
     .c-line{max-width:300px;}
   }
   @media (max-width:460px){
     .career-arc-wrap{height:760px;}
-    .arc-svg{width:56px;}
-    .c-item{left:78px;}
+    .arc-svg-mobile{width:26px;}
+    .c-item{left:52px;}
     .c-line{max-width:none;}
   }
 
@@ -479,7 +481,7 @@
     </div>
 
     <div class="career-arc-wrap">
-      <svg class="arc-svg" viewBox="0 0 280 700" preserveAspectRatio="none">
+      <svg class="arc-svg arc-svg-desktop" viewBox="0 0 280 700" preserveAspectRatio="none">
         <defs>
           <linearGradient id="arcGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#ff5f3a"/>
@@ -489,13 +491,32 @@
             <stop offset="100%" stop-color="#8b5cf6"/>
           </linearGradient>
         </defs>
-        <path id="arcPath" d="M242.9,60 A300,300 0 0,0 20,350 A300,300 0 0,0 242.9,640"
+        <path class="arc-path" d="M242.9,60 A300,300 0 0,0 20,350 A300,300 0 0,0 242.9,640"
               fill="none" stroke="url(#arcGrad)" stroke-width="4" stroke-linecap="round"/>
         <circle class="arc-node" data-i="0" cx="242.9" cy="60"  r="9" style="color:#ff5f3a" fill="#ff5f3a"/>
         <circle class="arc-node" data-i="1" cx="57.4"  cy="205" r="9" style="color:#ff4570" fill="#ff4570"/>
         <circle class="arc-node" data-i="2" cx="20"    cy="350" r="9" style="color:#ff2f8a" fill="#ff2f8a"/>
         <circle class="arc-node" data-i="3" cx="57.4"  cy="495" r="9" style="color:#d13bb8" fill="#d13bb8"/>
         <circle class="arc-node" data-i="4" cx="242.9" cy="640" r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
+      </svg>
+
+      <svg class="arc-svg arc-svg-mobile" viewBox="0 0 60 700" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="arcGradMobile" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff5f3a"/>
+            <stop offset="25%" stop-color="#ff4570"/>
+            <stop offset="50%" stop-color="#ff2f8a"/>
+            <stop offset="75%" stop-color="#d13bb8"/>
+            <stop offset="100%" stop-color="#8b5cf6"/>
+          </linearGradient>
+        </defs>
+        <path class="arc-path" d="M30,60 L30,640"
+              fill="none" stroke="url(#arcGradMobile)" stroke-width="4" stroke-linecap="round"/>
+        <circle class="arc-node" data-i="0" cx="30" cy="60"  r="8" style="color:#ff5f3a" fill="#ff5f3a"/>
+        <circle class="arc-node" data-i="1" cx="30" cy="205" r="8" style="color:#ff4570" fill="#ff4570"/>
+        <circle class="arc-node" data-i="2" cx="30" cy="350" r="8" style="color:#ff2f8a" fill="#ff2f8a"/>
+        <circle class="arc-node" data-i="3" cx="30" cy="495" r="8" style="color:#d13bb8" fill="#d13bb8"/>
+        <circle class="arc-node" data-i="4" cx="30" cy="640" r="8" style="color:#8b5cf6" fill="#8b5cf6"/>
       </svg>
 
       <div class="c-item" data-i="0" style="top:8.57%">
@@ -635,20 +656,27 @@
   // Career arc: draws in the moment the section arrives, reverses if you scroll
   // back above it. Uses the same visible-class + CSS-transition approach as
   // above, plus an inline stroke-dasharray/offset for the path draw effect.
-  const arcPath = document.getElementById('arcPath');
+  // Both the desktop (curved) and mobile (straight) arc paths are handled
+  // identically here - whichever is visible via CSS is the one you'll see animate.
+  const arcPaths = Array.from(document.querySelectorAll('.arc-path'));
   const arcWrap = document.querySelector('.career-arc-wrap');
-  if(arcPath && arcWrap){
-    const len = arcPath.getTotalLength();
-    arcPath.style.strokeDasharray = len;
-    arcPath.style.strokeDashoffset = len;
-    arcPath.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(0.16,1,0.3,1)';
+  if(arcPaths.length && arcWrap){
+    const lens = arcPaths.map(p=>{
+      const len = p.getTotalLength();
+      p.style.strokeDasharray = len;
+      p.style.strokeDashoffset = len;
+      p.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(0.16,1,0.3,1)';
+      return len;
+    });
 
-    const nodes = Array.from(document.querySelectorAll('.arc-node'));
+    const nodesByPath = arcPaths.map(p=> Array.from(p.parentElement.querySelectorAll('.arc-node')));
     const items = Array.from(document.querySelectorAll('.career-arc-wrap .c-item'));
-    nodes.forEach((n,i)=>{
-      n.style.transformOrigin = 'center';
-      n.style.transform = 'scale(0)';
-      n.style.transition = `transform 0.45s cubic-bezier(0.34,1.56,0.64,1) ${0.25 + i*0.22}s`;
+    nodesByPath.forEach(nodes=>{
+      nodes.forEach((n,i)=>{
+        n.style.transformOrigin = 'center';
+        n.style.transform = 'scale(0)';
+        n.style.transition = `transform 0.45s cubic-bezier(0.34,1.56,0.64,1) ${0.25 + i*0.22}s`;
+      });
     });
     items.forEach((el,i)=>{
       el.style.setProperty('--delay', `${0.35 + i*0.22}s`);
@@ -657,12 +685,12 @@
     const arcObserver = new IntersectionObserver((entries)=>{
       entries.forEach(entry=>{
         if(entry.isIntersecting){
-          arcPath.style.strokeDashoffset = '0';
-          nodes.forEach(n=> n.style.transform = 'scale(1)');
+          arcPaths.forEach(p=> p.style.strokeDashoffset = '0');
+          nodesByPath.forEach(nodes=> nodes.forEach(n=> n.style.transform = 'scale(1)'));
           items.forEach(el=> el.classList.add('visible'));
         } else {
-          arcPath.style.strokeDashoffset = len;
-          nodes.forEach(n=> n.style.transform = 'scale(0)');
+          arcPaths.forEach((p,i)=> p.style.strokeDashoffset = lens[i]);
+          nodesByPath.forEach(nodes=> nodes.forEach(n=> n.style.transform = 'scale(0)'));
           items.forEach(el=> el.classList.remove('visible'));
         }
       });
