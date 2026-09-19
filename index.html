@@ -141,7 +141,7 @@
   }
 
   /* ---------- Sections ---------- */
-  section{padding:110px 0;position:relative;}
+  section{padding:110px 0;position:relative;perspective:1000px;}
   .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
   .section-eyebrow{
     color:var(--text-dim);font-weight:700;font-size:12px;margin-bottom:14px;
@@ -150,7 +150,28 @@
   .section-head h2{font-size:clamp(30px,4.5vw,48px);letter-spacing:-1.5px;margin:0 0 14px;font-weight:800;text-transform:uppercase;}
   .section-head p{color:var(--text-dim);font-size:16px;margin:0;}
 
-  .reveal{opacity:0;will-change:transform, opacity, filter;}
+  .reveal{
+    opacity:0;
+    transform:translateY(56px) scale(0.88) rotateX(-24deg) rotateZ(var(--rot,0deg));
+    transform-origin:center bottom;
+    filter:blur(10px);
+    transition:
+      opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+      transform 0.85s cubic-bezier(0.16,1,0.3,1),
+      filter 0.85s cubic-bezier(0.16,1,0.3,1);
+    transition-delay:var(--delay,0s);
+    will-change:transform, opacity, filter;
+  }
+  .reveal.visible{opacity:1;transform:translateY(0) scale(1) rotateX(0) rotateZ(0);filter:blur(0);}
+
+  .stagger > *:nth-child(odd){--rot:-7deg;}
+  .stagger > *:nth-child(even){--rot:7deg;}
+  .stagger > *:nth-child(1){--delay:0s;}
+  .stagger > *:nth-child(2){--delay:0.1s;}
+  .stagger > *:nth-child(3){--delay:0.2s;}
+  .stagger > *:nth-child(4){--delay:0.3s;}
+  .stagger > *:nth-child(5){--delay:0.4s;}
+  .stagger > *:nth-child(6){--delay:0.5s;}
 
   /* ambient float for glow blobs */
   @keyframes floaty{
@@ -226,29 +247,34 @@
   /* ---------- Career (arc timeline) ---------- */
   .career-arc-wrap{
     max-width:820px;margin:0 auto;position:relative;z-index:1;
-    height:1000px;
+    height:680px;
   }
-  .arc-svg{position:absolute;top:0;left:0;width:280px;height:100%;overflow:visible;}
+  .arc-svg{position:absolute;top:0;left:0;width:260px;height:100%;overflow:visible;}
   .arc-node{filter:drop-shadow(0 0 10px currentColor);transform-box:fill-box;transform-origin:center;}
 
   .c-item{
-    position:absolute;left:320px;right:0;
-    transform:translateY(-50%);
+    position:absolute;left:300px;right:0;
+    transform:translateY(-50%) translateX(-46px);
+    opacity:0;
+    transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    transition-delay:var(--delay,0s);
   }
+  .c-item.visible{opacity:1;transform:translateY(-50%) translateX(0);}
   .c-date{color:var(--text-dim);font-size:12.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
   .c-role{font-size:18px;font-weight:700;margin:2px 0 3px;}
   .c-company{color:var(--text-dim);font-size:13.5px;margin-bottom:8px;}
   .c-company span{color:var(--a2);}
-  .c-line{font-size:14.5px;color:var(--text-dim);margin:0;max-width:420px;}
+  .c-line{font-size:14.5px;color:var(--text-dim);margin:0;max-width:400px;}
   @media (max-width:700px){
-    .career-arc-wrap{height:900px;}
-    .arc-svg{width:90px;}
-    .c-item{left:118px;}
+    .career-arc-wrap{height:640px;}
+    .arc-svg{width:80px;}
+    .c-item{left:108px;}
+    .c-line{max-width:300px;}
   }
   @media (max-width:460px){
-    .career-arc-wrap{height:1050px;}
-    .arc-svg{width:60px;}
-    .c-item{left:84px;}
+    .career-arc-wrap{height:760px;}
+    .arc-svg{width:56px;}
+    .c-item{left:78px;}
     .c-line{max-width:none;}
   }
 
@@ -278,7 +304,7 @@
   /* ---------- Footer ---------- */
   footer{
     text-align:center;padding:90px 24px;border-top:1px solid var(--border);
-    position:relative;overflow:hidden;
+    position:relative;overflow:hidden;perspective:1000px;
   }
   footer .blob-c{width:500px;height:500px;bottom:-260px;left:50%;transform:translateX(-50%);background:var(--a2);opacity:0.18;}
   footer h2{position:relative;z-index:1;font-size:clamp(30px,5vw,52px);letter-spacing:-1.5px;margin:0 0 24px;text-transform:uppercase;font-weight:800;}
@@ -453,7 +479,7 @@
     </div>
 
     <div class="career-arc-wrap">
-      <svg class="arc-svg" viewBox="0 0 300 620" preserveAspectRatio="none">
+      <svg class="arc-svg" viewBox="0 0 280 700" preserveAspectRatio="none">
         <defs>
           <linearGradient id="arcGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="#ff5f3a"/>
@@ -463,22 +489,22 @@
             <stop offset="100%" stop-color="#8b5cf6"/>
           </linearGradient>
         </defs>
-        <path id="arcPath" d="M246.4,40.2 A274,274 0 0,0 20,310 A274,274 0 0,0 246.4,579.8"
+        <path id="arcPath" d="M242.9,60 A300,300 0 0,0 20,350 A300,300 0 0,0 242.9,640"
               fill="none" stroke="url(#arcGrad)" stroke-width="4" stroke-linecap="round"/>
-        <circle class="arc-node" data-i="0" cx="246.4" cy="40.2"  r="9" style="color:#ff5f3a" fill="#ff5f3a"/>
-        <circle class="arc-node" data-i="1" cx="84.1"  cy="133.9" r="9" style="color:#ff4570" fill="#ff4570"/>
-        <circle class="arc-node" data-i="2" cx="20"    cy="310"   r="9" style="color:#ff2f8a" fill="#ff2f8a"/>
-        <circle class="arc-node" data-i="3" cx="84.1"  cy="486.1" r="9" style="color:#d13bb8" fill="#d13bb8"/>
-        <circle class="arc-node" data-i="4" cx="246.4" cy="579.8" r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
+        <circle class="arc-node" data-i="0" cx="242.9" cy="60"  r="9" style="color:#ff5f3a" fill="#ff5f3a"/>
+        <circle class="arc-node" data-i="1" cx="57.4"  cy="205" r="9" style="color:#ff4570" fill="#ff4570"/>
+        <circle class="arc-node" data-i="2" cx="20"    cy="350" r="9" style="color:#ff2f8a" fill="#ff2f8a"/>
+        <circle class="arc-node" data-i="3" cx="57.4"  cy="495" r="9" style="color:#d13bb8" fill="#d13bb8"/>
+        <circle class="arc-node" data-i="4" cx="242.9" cy="640" r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
       </svg>
 
-      <div class="c-item" data-i="0" style="top:6.5%">
+      <div class="c-item" data-i="0" style="top:8.57%">
         <div class="c-date">Jun 2024 - Present</div>
         <div class="c-role">Product Manager</div>
         <div class="c-company">AssetPlus · <span>Mutual fund distribution platform</span></div>
         <p class="c-line">Leading 0-to-1 PMS launches and onboarding growth for a 200K+ user fintech platform.</p>
       </div>
-      <div class="c-item" data-i="1" style="top:21.6%">
+      <div class="c-item" data-i="1" style="top:29.29%">
         <div class="c-date">Oct 2023 - Jun 2024</div>
         <div class="c-role">Associate Product Manager</div>
         <div class="c-company">Sprink.Online · <span>B2B Meals Supply</span></div>
@@ -490,13 +516,13 @@
         <div class="c-company">Upliance.ai · <span>Smart Kitchen Appliances</span></div>
         <p class="c-line">User research and problem framing for an MVP kitchen appliance product.</p>
       </div>
-      <div class="c-item" data-i="3" style="top:78.4%">
+      <div class="c-item" data-i="3" style="top:70.71%">
         <div class="c-date">Mar 2023 - Aug 2023</div>
         <div class="c-role">Product Intern</div>
         <div class="c-company">Accredian · <span>Upskilling Programs</span></div>
         <p class="c-line">Built and scaled a ~600-member product learning community.</p>
       </div>
-      <div class="c-item" data-i="4" style="top:93.5%">
+      <div class="c-item" data-i="4" style="top:91.43%">
         <div class="c-date">Feb 2022 - Aug 2022</div>
         <div class="c-role">BI Developer</div>
         <div class="c-company">Infometry Inc. · <span>BI Consultancy</span></div>
@@ -587,11 +613,7 @@
   </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
-  gsap.registerPlugin(ScrollTrigger);
-
   // nav shrink on scroll
   const nav = document.querySelector('nav');
   const onScroll = ()=>{
@@ -600,72 +622,52 @@
   document.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
 
-  // Card grids: obvious, time-based entrance with a rotate-in flip.
-  // toggleActions "play none none reverse" plays forward once entering, and reverses
-  // only when you scroll back up above the start point.
-  document.querySelectorAll('.stagger').forEach(group=>{
-    const items = Array.from(group.children);
-    gsap.from(items, {
-      opacity:0,
-      y:70,
-      scale:0.82,
-      rotateZ:(i)=> i%2===0 ? -9 : 9,
-      rotateX:-35,
-      transformPerspective:900,
-      transformOrigin:'center bottom',
-      filter:'blur(10px)',
-      duration:0.9,
-      ease:'back.out(1.6)',
-      stagger:0.14,
-      scrollTrigger:{
-        trigger:group,
-        start:'top 90%',
-        toggleActions:'play none none reverse'
-      }
+  // Generic reveal system: plain IntersectionObserver + CSS transitions.
+  // Toggles 'visible' on enter AND removes it on exit, so it plays forward
+  // scrolling down and reverses scrolling back up, in both directions, reliably.
+  const revealObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      entry.target.classList.toggle('visible', entry.isIntersecting);
     });
-  });
+  }, {threshold:0.15, rootMargin:'0px 0px -10% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
-  // Standalone elements (section heads, footer, etc.)
-  document.querySelectorAll('.reveal').forEach(el=>{
-    if(el.parentElement && el.parentElement.classList.contains('stagger')) return;
-    gsap.from(el, {
-      opacity:0, y:50, scale:0.95, filter:'blur(8px)',
-      duration:0.8, ease:'power3.out',
-      scrollTrigger:{
-        trigger:el,
-        start:'top 92%',
-        toggleActions:'play none none reverse'
-      }
-    });
-  });
-
-  // Career arc: a timed sequence (not scroll-scrubbed) that plays the moment the
-  // section arrives, and reverses cleanly if you scroll back up past it.
+  // Career arc: draws in the moment the section arrives, reverses if you scroll
+  // back above it. Uses the same visible-class + CSS-transition approach as
+  // above, plus an inline stroke-dasharray/offset for the path draw effect.
   const arcPath = document.getElementById('arcPath');
-  if(arcPath){
+  const arcWrap = document.querySelector('.career-arc-wrap');
+  if(arcPath && arcWrap){
     const len = arcPath.getTotalLength();
-    gsap.set(arcPath, {strokeDasharray:len, strokeDashoffset:len});
+    arcPath.style.strokeDasharray = len;
+    arcPath.style.strokeDashoffset = len;
+    arcPath.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(0.16,1,0.3,1)';
 
-    const nodes = gsap.utils.toArray('.arc-node');
-    const items = gsap.utils.toArray('.career-arc-wrap .c-item');
-    gsap.set(nodes, {scale:0, transformOrigin:'center'});
-    gsap.set(items, {opacity:0, x:-50});
-
-    const tl = gsap.timeline({
-      paused:true,
-      scrollTrigger:{
-        trigger:'.career-arc-wrap',
-        start:'top 85%',
-        toggleActions:'play none none reverse'
-      }
-    });
-    tl.to(arcPath, {strokeDashoffset:0, ease:'power1.inOut', duration:1.4}, 0);
+    const nodes = Array.from(document.querySelectorAll('.arc-node'));
+    const items = Array.from(document.querySelectorAll('.career-arc-wrap .c-item'));
     nodes.forEach((n,i)=>{
-      tl.to(n, {scale:1, duration:0.35, ease:'back.out(3)'}, i*0.26);
+      n.style.transformOrigin = 'center';
+      n.style.transform = 'scale(0)';
+      n.style.transition = `transform 0.45s cubic-bezier(0.34,1.56,0.64,1) ${0.25 + i*0.22}s`;
     });
     items.forEach((el,i)=>{
-      tl.to(el, {opacity:1, x:0, duration:0.45, ease:'power2.out'}, i*0.26+0.08);
+      el.style.setProperty('--delay', `${0.35 + i*0.22}s`);
     });
+
+    const arcObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          arcPath.style.strokeDashoffset = '0';
+          nodes.forEach(n=> n.style.transform = 'scale(1)');
+          items.forEach(el=> el.classList.add('visible'));
+        } else {
+          arcPath.style.strokeDashoffset = len;
+          nodes.forEach(n=> n.style.transform = 'scale(0)');
+          items.forEach(el=> el.classList.remove('visible'));
+        }
+      });
+    }, {threshold:0.1, rootMargin:'0px 0px -10% 0px'});
+    arcObserver.observe(arcWrap);
   }
 </script>
 
