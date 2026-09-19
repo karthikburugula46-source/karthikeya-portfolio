@@ -250,8 +250,8 @@
     height:680px;
   }
   .arc-svg{position:absolute;top:0;left:0;width:260px;height:100%;overflow:visible;}
-  .arc-svg-mobile{display:none;}
   .arc-node{filter:drop-shadow(0 0 10px currentColor);transform-box:fill-box;transform-origin:center;}
+  .arc-line-mobile{display:none;}
 
   .c-item{
     position:absolute;left:300px;right:0;
@@ -261,27 +261,39 @@
     transition-delay:var(--delay,0s);
   }
   .c-item.visible{opacity:1;transform:translateY(-50%) translateX(0);}
-  .c-date{color:var(--text-dim);font-size:12.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;}
-  .c-role{font-size:18px;font-weight:700;margin:2px 0 3px;}
-  .c-company{color:var(--text-dim);font-size:13.5px;margin-bottom:8px;}
+  .c-title-row{display:flex;align-items:center;gap:10px;}
+  .c-dot{display:none;width:14px;height:14px;border-radius:50%;background:var(--dot-color);flex-shrink:0;box-shadow:0 0 8px var(--dot-color);}
+  .c-role{font-size:18px;font-weight:700;margin:0;}
+  .c-company{color:var(--text-dim);font-size:13.5px;margin:3px 0 6px;}
   .c-company span{color:var(--a2);}
+  .c-date{color:var(--text-dim);font-size:12.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;}
   .c-line{font-size:14.5px;color:var(--text-dim);margin:0;max-width:400px;}
+
   @media (max-width:700px){
-    .career-arc-wrap{height:640px;}
+    .career-arc-wrap{
+      height:auto;max-width:520px;
+      display:flex;flex-direction:column;gap:32px;
+    }
     .arc-svg-desktop{display:none;}
-    .arc-svg-mobile{display:block;width:34px;}
-    .c-item{left:66px;}
-    .c-line{max-width:300px;}
-  }
-  @media (max-width:460px){
-    .career-arc-wrap{height:760px;}
-    .arc-svg-mobile{width:26px;}
-    .c-item{left:52px;}
+    .arc-line-mobile{
+      display:block;position:absolute;top:7px;bottom:7px;left:7px;width:2px;
+      background:linear-gradient(180deg,#ff5f3a,#ff4570,#ff2f8a,#d13bb8,#8b5cf6);
+      transform-origin:top;transform:scaleY(0);
+      transition:transform 1.2s cubic-bezier(0.16,1,0.3,1);
+    }
+    .arc-line-mobile.visible{transform:scaleY(1);}
+    .c-item{
+      position:relative;left:auto;right:auto;top:auto;
+      transform:translateX(-30px);
+    }
+    .c-item.visible{transform:translateX(0);}
+    .c-dot{display:block;}
+    .c-company,.c-date,.c-line{margin-left:24px;}
     .c-line{max-width:none;}
   }
 
   /* ---------- Skills ---------- */
-  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1;perspective:1200px;}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;position:relative;z-index:1;perspective:1200px;}
   .skill-card{
     background:var(--bg-2);border:1px solid var(--border);border-radius:20px;padding:28px;
     transition:border-color .4s ease, transform .5s cubic-bezier(0.16,1,0.3,1);
@@ -293,7 +305,6 @@
     background:var(--bg-3);border:1px solid var(--border);
     color:var(--text);font-size:12.5px;padding:7px 13px;border-radius:980px;
   }
-  @media (max-width:820px){.skills-grid{grid-template-columns:1fr;}}
 
   /* ---------- Education ---------- */
   .edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:820px;margin:0 auto;position:relative;z-index:1;perspective:1200px;}
@@ -475,9 +486,8 @@
 <section id="career">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="section-eyebrow">~4 Years</div>
       <h2>Career</h2>
-      <p>Fintech and B2B SaaS product management.</p>
+      <p>4 years across Fintech and B2B SaaS product management.</p>
     </div>
 
     <div class="career-arc-wrap">
@@ -500,53 +510,36 @@
         <circle class="arc-node" data-i="4" cx="242.9" cy="640" r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
       </svg>
 
-      <svg class="arc-svg arc-svg-mobile" viewBox="0 0 60 700" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="arcGradMobile" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ff5f3a"/>
-            <stop offset="25%" stop-color="#ff4570"/>
-            <stop offset="50%" stop-color="#ff2f8a"/>
-            <stop offset="75%" stop-color="#d13bb8"/>
-            <stop offset="100%" stop-color="#8b5cf6"/>
-          </linearGradient>
-        </defs>
-        <path class="arc-path" d="M30,60 L30,640"
-              fill="none" stroke="url(#arcGradMobile)" stroke-width="4" stroke-linecap="round"/>
-        <circle class="arc-node" data-i="0" cx="30" cy="60"  r="8" style="color:#ff5f3a" fill="#ff5f3a"/>
-        <circle class="arc-node" data-i="1" cx="30" cy="205" r="8" style="color:#ff4570" fill="#ff4570"/>
-        <circle class="arc-node" data-i="2" cx="30" cy="350" r="8" style="color:#ff2f8a" fill="#ff2f8a"/>
-        <circle class="arc-node" data-i="3" cx="30" cy="495" r="8" style="color:#d13bb8" fill="#d13bb8"/>
-        <circle class="arc-node" data-i="4" cx="30" cy="640" r="8" style="color:#8b5cf6" fill="#8b5cf6"/>
-      </svg>
+      <div class="arc-line-mobile"></div>
 
-      <div class="c-item" data-i="0" style="top:8.57%">
-        <div class="c-date">Jun 2024 - Present</div>
-        <div class="c-role">Product Manager</div>
+      <div class="c-item" data-i="0" style="top:8.57%; --dot-color:#ff5f3a">
+        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Manager</div></div>
         <div class="c-company">AssetPlus · <span>Mutual fund distribution platform</span></div>
+        <div class="c-date">Jun 2024 - Present</div>
         <p class="c-line">Leading 0-to-1 PMS launches and onboarding growth for a 200K+ user fintech platform.</p>
       </div>
-      <div class="c-item" data-i="1" style="top:29.29%">
-        <div class="c-date">Oct 2023 - Jun 2024</div>
-        <div class="c-role">Associate Product Manager</div>
+      <div class="c-item" data-i="1" style="top:29.29%; --dot-color:#ff4570">
+        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Associate Product Manager</div></div>
         <div class="c-company">Sprink.Online · <span>B2B Meals Supply</span></div>
+        <div class="c-date">Oct 2023 - Jun 2024</div>
         <p class="c-line">Launched a 0-to-1 B2B mobile ordering and collections platform.</p>
       </div>
-      <div class="c-item" data-i="2" style="top:50%">
-        <div class="c-date">Aug 2023 - Oct 2023</div>
-        <div class="c-role">Product Intern</div>
+      <div class="c-item" data-i="2" style="top:50%; --dot-color:#ff2f8a">
+        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Intern</div></div>
         <div class="c-company">Upliance.ai · <span>Smart Kitchen Appliances</span></div>
+        <div class="c-date">Aug 2023 - Oct 2023</div>
         <p class="c-line">User research and problem framing for an MVP kitchen appliance product.</p>
       </div>
-      <div class="c-item" data-i="3" style="top:70.71%">
-        <div class="c-date">Mar 2023 - Aug 2023</div>
-        <div class="c-role">Product Intern</div>
+      <div class="c-item" data-i="3" style="top:70.71%; --dot-color:#d13bb8">
+        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Intern</div></div>
         <div class="c-company">Accredian · <span>Upskilling Programs</span></div>
+        <div class="c-date">Mar 2023 - Aug 2023</div>
         <p class="c-line">Built and scaled a ~600-member product learning community.</p>
       </div>
-      <div class="c-item" data-i="4" style="top:91.43%">
-        <div class="c-date">Feb 2022 - Aug 2022</div>
-        <div class="c-role">BI Developer</div>
+      <div class="c-item" data-i="4" style="top:91.43%; --dot-color:#8b5cf6">
+        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">BI Developer</div></div>
         <div class="c-company">Infometry Inc. · <span>BI Consultancy</span></div>
+        <div class="c-date">Feb 2022 - Aug 2022</div>
         <p class="c-line">Optimized reporting dashboards and managed ETL pipelines.</p>
       </div>
     </div>
@@ -587,14 +580,28 @@
         </div>
       </div>
       <div class="skill-card reveal">
-        <h3>Prototyping &amp; Tools</h3>
+        <h3>Product Prototyping</h3>
         <div class="tag-row">
-          <span class="pill">AI Prototyping (Claude, OpenAI)</span>
+          <span class="pill">Claude</span>
+          <span class="pill">CoWork</span>
           <span class="pill">Figma</span>
           <span class="pill">Miro</span>
           <span class="pill">Whimsical</span>
           <span class="pill">JIRA</span>
           <span class="pill">Notion</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Research (Productivity)</h3>
+        <div class="tag-row">
+          <span class="pill">OpenAI</span>
+          <span class="pill">Gemini</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Building</h3>
+        <div class="tag-row">
+          <span class="pill">Claude Code</span>
         </div>
       </div>
     </div>
@@ -656,11 +663,12 @@
   // Career arc: draws in the moment the section arrives, reverses if you scroll
   // back above it. Uses the same visible-class + CSS-transition approach as
   // above, plus an inline stroke-dasharray/offset for the path draw effect.
-  // Both the desktop (curved) and mobile (straight) arc paths are handled
-  // identically here - whichever is visible via CSS is the one you'll see animate.
+  // The desktop curved arc animates its SVG path; the mobile fallback (plain
+  // HTML dots + a CSS line, no SVG) is toggled via the same observer below.
   const arcPaths = Array.from(document.querySelectorAll('.arc-path'));
   const arcWrap = document.querySelector('.career-arc-wrap');
-  if(arcPaths.length && arcWrap){
+  const arcLineMobile = document.querySelector('.arc-line-mobile');
+  if(arcWrap){
     const lens = arcPaths.map(p=>{
       const len = p.getTotalLength();
       p.style.strokeDasharray = len;
@@ -688,10 +696,12 @@
           arcPaths.forEach(p=> p.style.strokeDashoffset = '0');
           nodesByPath.forEach(nodes=> nodes.forEach(n=> n.style.transform = 'scale(1)'));
           items.forEach(el=> el.classList.add('visible'));
+          if(arcLineMobile) arcLineMobile.classList.add('visible');
         } else {
           arcPaths.forEach((p,i)=> p.style.strokeDashoffset = lens[i]);
           nodesByPath.forEach(nodes=> nodes.forEach(n=> n.style.transform = 'scale(0)'));
           items.forEach(el=> el.classList.remove('visible'));
+          if(arcLineMobile) arcLineMobile.classList.remove('visible');
         }
       });
     }, {threshold:0.1, rootMargin:'0px 0px -10% 0px'});
