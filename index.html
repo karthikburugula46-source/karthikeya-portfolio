@@ -217,8 +217,9 @@
   }
 
   /* ---------- Projects placeholder ---------- */
-  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;position:relative;z-index:1;perspective:1200px;}
+  .proj-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;position:relative;z-index:1;perspective:1200px;}
   .proj-card{
+    width:340px;max-width:100%;
     border:1.5px dashed var(--border-hi);
     border-radius:22px;
     padding:38px 28px;
@@ -241,8 +242,6 @@
     font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
     color:var(--text-dim);border:1px solid var(--border);padding:5px 10px;border-radius:980px;
   }
-  @media (max-width:820px){.proj-grid{grid-template-columns:1fr 1fr;}}
-  @media (max-width:560px){.proj-grid{grid-template-columns:1fr;}}
 
   /* ---------- Career (arc timeline) ---------- */
   .career-arc-wrap{
@@ -371,7 +370,7 @@
     <div class="brand"><img class="mark" src="assets/profile.png" alt="">Karthikeya Burugula</div>
     <div class="links">
       <a href="#highlights">Highlights</a>
-      <a href="#work">My Work</a>
+      <a href="#work">Weekend Overhaul</a>
       <a href="#career">Career</a>
       <a href="#skills">Skills</a>
     </div>
@@ -451,30 +450,14 @@
 <section id="work">
   <div class="wrap">
     <div class="section-head reveal">
-      <h2>My Work</h2>
+      <h2>Weekend Overhaul</h2>
     </div>
 
     <div class="proj-grid stagger">
       <div class="proj-card reveal">
         <div>
           <div class="plus">+</div>
-          <h3>Project One</h3>
-          <p>Details coming soon.</p>
-        </div>
-        <div class="status">Coming Soon</div>
-      </div>
-      <div class="proj-card reveal">
-        <div>
-          <div class="plus">+</div>
-          <h3>Project Two</h3>
-          <p>Details coming soon.</p>
-        </div>
-        <div class="status">Coming Soon</div>
-      </div>
-      <div class="proj-card reveal">
-        <div>
-          <div class="plus">+</div>
-          <h3>Project Three</h3>
+          <h3>Recon Lens</h3>
           <p>Details coming soon.</p>
         </div>
         <div class="status">Coming Soon</div>
