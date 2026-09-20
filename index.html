@@ -1144,17 +1144,19 @@
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const trailPoints = [];
   const sparks = [];
-  const TRAIL_LEN = 46;
-  const HEAD_W = 16;
-  // Tail -> head. More stops than a simple two-colour fade so the ribbon
-  // shifts through pink/violet/indigo/blue before hitting cyan at the tip.
+  const TRAIL_LEN = 40;
+  const HEAD_W = 15;
+  const SUB = 5;             // spline samples per source point
+  // Tail -> head. Opaque all the way: the ribbon thins out rather than
+  // fading out, which is what makes it read as solid/milky instead of a
+  // stack of translucent strokes.
   const TRAIL_STOPS = [
     [0.00, 'rgba(255,47,138,0)'],
-    [0.16, 'rgba(255,47,138,0.20)'],
-    [0.34, 'rgba(168,85,247,0.42)'],
-    [0.54, 'rgba(99,102,241,0.62)'],
-    [0.74, 'rgba(59,157,255,0.82)'],
-    [1.00, 'rgba(0,229,255,0.98)']
+    [0.10, 'rgba(255,47,138,1)'],
+    [0.32, 'rgba(168,85,247,1)'],
+    [0.54, 'rgba(99,102,241,1)'],
+    [0.76, 'rgba(59,157,255,1)'],
+    [1.00, 'rgba(120,240,255,1)']
   ];
   const SPARK_COLORS = ['0,229,255', '59,157,255', '139,92,246', '255,47,138'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
@@ -1174,6 +1176,16 @@
     if(!head) head = {x: e.clientX, y: e.clientY};
   }
 
+  // Catmull-Rom keeps the curve passing through every sampled point, so
+  // direction changes stay round instead of kinking.
+  function spline(p0, p1, p2, p3, t){
+    const t2 = t * t, t3 = t2 * t;
+    return {
+      x: 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
+      y: 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3)
+    };
+  }
+
   function drawTrail(ts){
     if(!trailCtx){ trailRAF = requestAnimationFrame(drawTrail); return; }
     if(trailLastTs === null) trailLastTs = ts;
@@ -1183,87 +1195,88 @@
     const W = window.innerWidth, H = window.innerHeight;
     trailCtx.clearRect(0, 0, W, H);
 
-    // Easing the head toward the pointer is what makes the ribbon flow
-    // smoothly instead of tracking raw, jittery mouse samples.
     if(pointer && head){
-      const ease = 1 - Math.pow(1 - 0.20, dt);
+      const ease = 1 - Math.pow(1 - 0.22, dt);
       const dx = pointer.x - head.x, dy = pointer.y - head.y;
       head.x += dx * ease;
       head.y += dy * ease;
       trailPoints.push({x: head.x, y: head.y});
       if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
 
-      // Sparks peel off while moving so the tail disperses. Each gets a
-      // depth: far ones are small, dim and slow, near ones big and bright,
-      // which reads as a cloud with volume rather than a flat sprinkle.
       const speed = Math.hypot(dx, dy);
-      if(speed > 4 && sparks.length < 130){
+      if(speed > 4 && sparks.length < 140){
         const n = speed > 34 ? 4 : (speed > 14 ? 3 : 2);
         for(let i = 0; i < n; i++){
           const ang = Math.random() * Math.PI * 2;
           const depth = Math.random();
-          const spd = (0.35 + Math.random() * 1.9) * (0.55 + depth);
+          const spd = (0.7 + Math.random() * 3.1) * (0.55 + depth);
           sparks.push({
-            x: head.x + (Math.random() - 0.5) * 6,
-            y: head.y + (Math.random() - 0.5) * 6,
-            vx: Math.cos(ang) * spd - dx * 0.035,
-            vy: Math.sin(ang) * spd - dy * 0.035 - 0.15,
+            x: head.x + (Math.random() - 0.5) * 14,
+            y: head.y + (Math.random() - 0.5) * 14,
+            vx: Math.cos(ang) * spd - dx * 0.05,
+            vy: Math.sin(ang) * spd - dy * 0.05 - 0.2,
             life: 1,
-            decay: 0.016 + Math.random() * 0.014,
-            size: (0.9 + Math.random() * 2.4) * (0.55 + depth * 1.1),
+            decay: 0.013 + Math.random() * 0.012,
+            size: (1.1 + Math.random() * 2.6) * (0.55 + depth * 1.1),
             depth: depth,
             color: SPARK_COLORS[(Math.random() * SPARK_COLORS.length) | 0]
           });
         }
-        // Far particles first so nearer, brighter ones sit on top.
         sparks.sort((a, b)=> a.depth - b.depth);
       }
     }
 
     const pts = trailPoints;
-    if(pts.length > 2){
-      const a = pts[0], b = pts[pts.length - 1];
+    if(pts.length > 3){
+      // 1) Resample the raw path into a dense smooth curve.
+      const samples = [];
+      for(let i = 0; i < pts.length - 1; i++){
+        const p0 = pts[i - 1] || pts[i];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[i + 2] || pts[i + 1];
+        for(let s = 0; s < SUB; s++) samples.push(spline(p0, p1, p2, p3, s / SUB));
+      }
+      samples.push(pts[pts.length - 1]);
+
+      // 2) Walk the curve building both edges of a tapered ribbon, then
+      //    fill it as ONE shape. A single fill means no overlapping alpha
+      //    and no per-segment caps, which is what removes the beading that
+      //    looked like a string of cursors.
+      const n = samples.length;
+      const leftEdge = [], rightEdge = [];
+      for(let i = 0; i < n; i++){
+        const t = i / (n - 1);
+        const halfW = (HEAD_W * Math.pow(t, 0.8)) * 0.5;
+        const prev = samples[Math.max(0, i - 1)];
+        const next = samples[Math.min(n - 1, i + 1)];
+        let tx = next.x - prev.x, ty = next.y - prev.y;
+        const len = Math.hypot(tx, ty) || 1;
+        tx /= len; ty /= len;
+        leftEdge.push({x: samples[i].x - ty * halfW, y: samples[i].y + tx * halfW});
+        rightEdge.push({x: samples[i].x + ty * halfW, y: samples[i].y - tx * halfW});
+      }
+
+      const a = samples[0], b = samples[n - 1];
       const grad = trailCtx.createLinearGradient(a.x, a.y, b.x, b.y);
       TRAIL_STOPS.forEach(s=> grad.addColorStop(s[0], s[1]));
 
-      trailCtx.lineCap = 'round';
-      trailCtx.lineJoin = 'round';
-      trailCtx.strokeStyle = grad;
-      trailCtx.shadowColor = 'rgba(0,229,255,0.55)';
-
-      // Curve through the midpoints so the ribbon has no visible corners,
-      // and taper the width from tail to head.
-      for(let i = 1; i < pts.length - 1; i++){
-        const t = i / (pts.length - 1);
-        const p = pts[i], nxt = pts[i + 1];
-        const mx0 = (pts[i - 1].x + p.x) / 2, my0 = (pts[i - 1].y + p.y) / 2;
-        const mx1 = (p.x + nxt.x) / 2, my1 = (p.y + nxt.y) / 2;
-        trailCtx.lineWidth = Math.max(0.6, HEAD_W * Math.pow(t, 1.25));
-        trailCtx.globalAlpha = Math.pow(t, 1.05);
-        trailCtx.shadowBlur = 20 * t;
-        trailCtx.beginPath();
-        trailCtx.moveTo(mx0, my0);
-        trailCtx.quadraticCurveTo(p.x, p.y, mx1, my1);
-        trailCtx.stroke();
-      }
-      trailCtx.globalAlpha = 1;
-
-      // Soft halo behind a bright core gives the head some glow depth.
-      const halo = trailCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, HEAD_W * 1.5);
-      halo.addColorStop(0, 'rgba(180,245,255,0.55)');
-      halo.addColorStop(0.5, 'rgba(59,157,255,0.22)');
-      halo.addColorStop(1, 'rgba(139,92,246,0)');
-      trailCtx.fillStyle = halo;
       trailCtx.beginPath();
-      trailCtx.arc(b.x, b.y, HEAD_W * 1.5, 0, Math.PI * 2);
-      trailCtx.fill();
-
-      trailCtx.shadowBlur = 22;
-      trailCtx.fillStyle = 'rgba(214,250,255,0.98)';
-      trailCtx.beginPath();
-      trailCtx.arc(b.x, b.y, HEAD_W * 0.34, 0, Math.PI * 2);
+      trailCtx.moveTo(leftEdge[0].x, leftEdge[0].y);
+      for(let i = 1; i < n; i++) trailCtx.lineTo(leftEdge[i].x, leftEdge[i].y);
+      for(let i = n - 1; i >= 0; i--) trailCtx.lineTo(rightEdge[i].x, rightEdge[i].y);
+      trailCtx.closePath();
+      trailCtx.fillStyle = grad;
+      trailCtx.shadowColor = 'rgba(0,229,255,0.4)';
+      trailCtx.shadowBlur = 9;
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
+
+      // Solid round tip so the head merges into the ribbon seamlessly.
+      trailCtx.fillStyle = 'rgba(150,245,255,1)';
+      trailCtx.beginPath();
+      trailCtx.arc(b.x, b.y, HEAD_W * 0.5, 0, Math.PI * 2);
+      trailCtx.fill();
     }
 
     for(let i = sparks.length - 1; i >= 0; i--){
@@ -1271,29 +1284,21 @@
       s.x += s.vx * dt;
       s.y += s.vy * dt;
       s.vy += (0.02 + s.depth * 0.03) * dt;
-      s.vx *= Math.pow(0.975, dt);
-      s.vy *= Math.pow(0.988, dt);
+      s.vx *= Math.pow(0.982, dt);
+      s.vy *= Math.pow(0.99, dt);
       s.life -= s.decay * dt;
       if(s.life <= 0){ sparks.splice(i, 1); continue; }
 
       const eased = s.life * s.life;
-      const r = Math.max(0.25, s.size * (0.35 + eased * 0.9));
-      trailCtx.globalAlpha = Math.max(0, eased) * (0.3 + s.depth * 0.7);
-
-      // Depth is sold with glow + soft falloff, but both are expensive, so
-      // only the near particles pay for them - far ones are flat dots.
+      const r = Math.max(0.3, s.size * (0.35 + eased * 0.95));
+      trailCtx.globalAlpha = Math.max(0, eased) * (0.55 + s.depth * 0.45);
       if(s.depth > 0.5){
         trailCtx.shadowBlur = 14 * s.depth;
         trailCtx.shadowColor = 'rgba(' + s.color + ',0.9)';
-        const g = trailCtx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r);
-        g.addColorStop(0, 'rgba(' + s.color + ',1)');
-        g.addColorStop(0.55, 'rgba(' + s.color + ',0.7)');
-        g.addColorStop(1, 'rgba(' + s.color + ',0)');
-        trailCtx.fillStyle = g;
       } else {
         trailCtx.shadowBlur = 0;
-        trailCtx.fillStyle = 'rgba(' + s.color + ',0.75)';
       }
+      trailCtx.fillStyle = 'rgba(' + s.color + ',1)';
       trailCtx.beginPath();
       trailCtx.arc(s.x, s.y, r, 0, Math.PI * 2);
       trailCtx.fill();
@@ -1301,10 +1306,10 @@
     trailCtx.globalAlpha = 1;
     trailCtx.shadowBlur = 0;
 
-    // When the pointer stops, the head catches up and the ribbon retracts
-    // into the cursor on its own.
-    if(pointer && head && Math.hypot(pointer.x - head.x, pointer.y - head.y) < 0.4 && trailPoints.length){
+    // Once the head has caught up, retract the ribbon into the cursor.
+    if(pointer && head && Math.hypot(pointer.x - head.x, pointer.y - head.y) < 0.5 && trailPoints.length){
       trailPoints.shift();
+      if(trailPoints.length) trailPoints.shift();
     }
 
     trailRAF = requestAnimationFrame(drawTrail);
