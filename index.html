@@ -203,8 +203,9 @@
     transition:transform .5s cubic-bezier(0.16,1,0.3,1), border-color .35s ease, background .35s ease, box-shadow .5s cubic-bezier(0.16,1,0.3,1);
   }
   .card-cta{
-    display:inline-flex;align-items:center;gap:6px;
-    margin-top:18px;font-size:13px;font-weight:700;color:var(--a2);
+    display:flex;align-items:center;gap:6px;
+    width:fit-content;margin:18px 0 0 auto;
+    font-size:13px;font-weight:700;color:var(--a2);
   }
   .card-cta .arrow{display:inline-block;transition:transform .3s cubic-bezier(0.16,1,0.3,1);}
   .p-card:hover .card-cta .arrow{transform:translateX(4px);}
