@@ -388,24 +388,34 @@
      Everything gamer-specific is scoped under body.gamer-mode, so PM mode
      renders exactly as it did before this block existed.
      ====================================================================== */
-  .nav-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+  /* Toggle lives in the hero next to the "Open to Product roles" pill, so
+     it's reachable on mobile where the nav links collapse. */
+  .hero-top-row{
+    position:relative;z-index:1;
+    display:flex;align-items:center;justify-content:center;
+    gap:12px;flex-wrap:wrap;margin-bottom:28px;
+  }
+  .hero-top-row .eyebrow-pill{margin-bottom:0;}
   .mode-toggle{
-    position:relative;display:flex;padding:3px;
+    position:relative;display:flex;padding:4px;
     border-radius:980px;background:rgba(255,255,255,0.06);
     border:1px solid var(--border);
   }
   .mode-slider{
-    position:absolute;top:3px;left:3px;z-index:0;
-    height:calc(100% - 6px);width:calc(50% - 3px);
+    position:absolute;top:4px;left:4px;z-index:0;
+    height:calc(100% - 8px);width:calc(50% - 4px);
     border-radius:980px;background:var(--grad);
     transition:transform .34s cubic-bezier(0.16,1,0.3,1), background .34s ease;
   }
+  /* A fixed min-width (not flex:1) is what makes the two halves identical,
+     so the 50%-wide slider lands exactly under each label - "PM" and
+     "GAMER" have very different text widths otherwise. */
   .mode-option{
-    position:relative;z-index:1;
-    border:0;background:none;font-family:inherit;
-    font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
-    color:var(--text-dim);padding:6px 14px;border-radius:980px;cursor:pointer;
-    transition:color .25s ease;
+    position:relative;z-index:1;min-width:84px;
+    border:0;background:none;font-family:inherit;white-space:nowrap;
+    font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    color:var(--text-dim);padding:7px 12px;border-radius:980px;cursor:pointer;
+    text-align:center;transition:color .25s ease;
   }
   .mode-option.active{color:#fff;}
   body.gamer-mode .mode-slider{transform:translateX(100%);}
@@ -481,22 +491,6 @@
     font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
   }
   .arcade-head .hint{font-size:11px;color:var(--text-dim);letter-spacing:0.5px;}
-  .doodle-canvas{
-    width:100%;height:300px;display:block;
-    border-radius:14px;border:1px solid var(--border);
-    background:#070a0f;
-    touch-action:none;
-    cursor:crosshair;
-  }
-  .doodle-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;}
-  .swatches{display:flex;gap:8px;margin-right:auto;}
-  .swatch{
-    width:24px;height:24px;border-radius:50%;padding:0;
-    border:2px solid rgba(255,255,255,0.18);cursor:pointer;
-    transition:transform .2s ease, border-color .2s ease;
-  }
-  .swatch:hover{transform:scale(1.12);}
-  .swatch.active{border-color:#fff;transform:scale(1.12);}
   .mini-btn{
     font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
     font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
@@ -516,13 +510,17 @@
       #070a0f;
     overflow:hidden;touch-action:manipulation;
   }
+  /* Sniper scope reticle, only over the shooting board */
+  #shootBoard, #shootBoard .game-target{
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='21' fill='none' stroke='%2300e5ff' stroke-width='1.5' opacity='.95'/%3E%3Ccircle cx='28' cy='28' r='13' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28' cy='28' r='2' fill='%2300e5ff'/%3E%3Cpath d='M28 2v13M28 41v13M2 28h13M41 28h13' stroke='%2300e5ff' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M22 28h3M31 28h3M28 22v3M28 31v3' stroke='%2300e5ff' stroke-width='1' opacity='.7'/%3E%3C/svg%3E") 28 28, crosshair;
+  }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
     background:var(--grad);
     box-shadow:0 0 18px rgba(0,229,255,0.5);
-    border:0;padding:0;cursor:pointer;
+    border:0;padding:0;
     transform:scale(0);
-    animation:targetPop .18s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:targetPop .16s cubic-bezier(0.16,1,0.3,1) forwards;
   }
   @keyframes targetPop{to{transform:scale(1);}}
   .game-overlay{
@@ -541,14 +539,29 @@
   }
   .game-bar b{color:var(--text);font-size:13px;}
 
+  /* ---------- Stack game ---------- */
+  .stack-canvas{
+    width:100%;height:300px;display:block;
+    border-radius:14px;border:1px solid var(--border);
+    background:linear-gradient(180deg,#070a0f 0%,#0a1018 100%);
+    touch-action:manipulation;
+  }
+
+  /* ---------- Cursor trail (gamer mode, fine pointers only) ---------- */
+  #trailCanvas{
+    position:fixed;inset:0;width:100%;height:100%;
+    pointer-events:none;z-index:9999;display:none;
+  }
+  body.gamer-mode #trailCanvas{display:block;}
+
   @media (max-width:640px){
-    .mode-option{padding:6px 11px;font-size:10px;}
-    .nav-right{gap:10px;}
-    .doodle-canvas,.game-board{height:240px;}
+    .mode-option{min-width:74px;padding:7px 10px;font-size:10.5px;}
+    .stack-canvas,.game-board{height:250px;}
     .arcade-card{padding:18px;}
   }
   @media (max-width:400px){
-    .mode-option{padding:5px 9px;letter-spacing:0.5px;}
+    .mode-option{min-width:66px;padding:7px 8px;letter-spacing:0.5px;}
+    .hero-top-row{gap:10px;}
   }
 </style>
 </head>
@@ -563,14 +576,7 @@
       <a href="#career">Career</a>
       <a class="arcade-link" href="#arcade">Arcade</a>
     </div>
-    <div class="nav-right">
-      <div class="mode-toggle" role="group" aria-label="Site mode">
-        <div class="mode-slider" aria-hidden="true"></div>
-        <button type="button" class="mode-option active" data-mode="pm" aria-pressed="true">PM</button>
-        <button type="button" class="mode-option" data-mode="gamer" aria-pressed="false">Gamer</button>
-      </div>
-      <a class="cta" href="#contact">Contact</a>
-    </div>
+    <a class="cta" href="#contact">Contact</a>
   </div>
 </nav>
 
@@ -578,7 +584,14 @@
   <div class="blob blob-a"></div>
   <div class="blob blob-b"></div>
 
-  <div class="eyebrow-pill"><span class="dot"></span>Open to Product roles</div>
+  <div class="hero-top-row">
+    <div class="eyebrow-pill"><span class="dot"></span>Open to Product roles</div>
+    <div class="mode-toggle" role="group" aria-label="Site mode">
+      <div class="mode-slider" aria-hidden="true"></div>
+      <button type="button" class="mode-option active" data-mode="pm" aria-pressed="true">PM</button>
+      <button type="button" class="mode-option" data-mode="gamer" aria-pressed="false">Gamer</button>
+    </div>
+  </div>
   <h1>Karthikeya<br><span class="grad-text">Burugula</span></h1>
   <p class="sub">
     Product Manager turning ambiguous problems into products worth shipping -
@@ -654,43 +667,38 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Arcade</h2>
-      <p>You switched to gamer mode. Draw something, or see how fast you can ship.</p>
+      <p>You switched to gamer mode. Two ways to waste a minute here.</p>
     </div>
 
     <div class="arcade-grid">
       <div class="arcade-card">
         <div class="arcade-head">
-          <h3>Doodle Pad</h3>
-          <span class="hint">Drag to draw</span>
+          <h3>Ship It</h3>
+          <span class="hint">Targets get faster</span>
         </div>
-        <canvas id="doodleCanvas" class="doodle-canvas"></canvas>
-        <div class="doodle-bar">
-          <div class="swatches" id="doodleSwatches">
-            <button type="button" class="swatch active" data-color="#00e5ff" style="background:#00e5ff" aria-label="Cyan"></button>
-            <button type="button" class="swatch" data-color="#8b5cf6" style="background:#8b5cf6" aria-label="Violet"></button>
-            <button type="button" class="swatch" data-color="#ff2f8a" style="background:#ff2f8a" aria-label="Pink"></button>
-            <button type="button" class="swatch" data-color="#f5f5f7" style="background:#f5f5f7" aria-label="White"></button>
+        <div class="game-board" id="shootBoard">
+          <div class="game-overlay" id="shootOverlay">
+            <p>20 seconds. How many can you ship?</p>
+            <button type="button" class="mini-btn primary" id="shootStart">Start</button>
           </div>
-          <button type="button" class="mini-btn" id="doodleUndo">Undo</button>
-          <button type="button" class="mini-btn" id="doodleClear">Clear</button>
+        </div>
+        <div class="game-bar">
+          <span>Score <b id="shootScore">0</b></span>
+          <span>Time <b id="shootTime">20</b>s</span>
+          <span>Best <b id="shootBest">0</b></span>
         </div>
       </div>
 
       <div class="arcade-card">
         <div class="arcade-head">
-          <h3>Ship It</h3>
-          <span class="hint">Hit the targets</span>
+          <h3>Stack</h3>
+          <span class="hint">Tap to drop</span>
         </div>
-        <div class="game-board" id="gameBoard">
-          <div class="game-overlay" id="gameOverlay">
-            <p>20 seconds. How many can you ship?</p>
-            <button type="button" class="mini-btn primary" id="gameStart">Start</button>
-          </div>
-        </div>
+        <canvas id="stackCanvas" class="stack-canvas"></canvas>
         <div class="game-bar">
-          <span>Score <b id="gameScore">0</b></span>
-          <span>Time <b id="gameTime">20</b>s</span>
-          <span>Best <b id="gameBest">0</b></span>
+          <span>Floors <b id="stackScore">0</b></span>
+          <span>Best <b id="stackBest">0</b></span>
+          <button type="button" class="mini-btn" id="stackReset" style="margin-left:auto">Reset</button>
         </div>
       </div>
     </div>
@@ -843,6 +851,8 @@
   </div>
 </footer>
 
+<canvas id="trailCanvas" aria-hidden="true"></canvas>
+
 <script>
   // nav shrink on scroll
   const nav = document.querySelector('nav');
@@ -928,141 +938,152 @@
   // the body class, so PM mode behaves exactly as it did before.
   // ---------------------------------------------------------------------
   const modeButtons = Array.from(document.querySelectorAll('.mode-option'));
+  let gamerOn = false;
   const setMode = (mode)=>{
-    const gamer = mode === 'gamer';
-    document.body.classList.toggle('gamer-mode', gamer);
+    gamerOn = mode === 'gamer';
+    document.body.classList.toggle('gamer-mode', gamerOn);
     modeButtons.forEach(btn=>{
       const on = btn.dataset.mode === mode;
       btn.classList.toggle('active', on);
       btn.setAttribute('aria-pressed', String(on));
     });
-    if(gamer) fitDoodle();
+    if(gamerOn){
+      fitStack();
+      startStack();
+      startTrail();
+    } else {
+      stopStack();
+      stopTrail();
+    }
   };
   modeButtons.forEach(btn=>{
     btn.addEventListener('click', ()=> setMode(btn.dataset.mode));
   });
 
   // ---------------------------------------------------------------------
-  // Doodle pad. Pointer events cover mouse, touch and pen in one path;
-  // strokes are kept as point lists so undo can just re-render.
+  // Cursor trail. A fixed canvas draws a fading, glowing ribbon through the
+  // last N pointer positions. Only runs in gamer mode, and only where there
+  // is a real hovering pointer - phones have no cursor to trail.
   // ---------------------------------------------------------------------
-  const doodle = document.getElementById('doodleCanvas');
-  const strokes = [];
-  let activeStroke = null;
-  let penColor = '#00e5ff';
+  const trail = document.getElementById('trailCanvas');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const trailPoints = [];
+  const TRAIL_LEN = 18;
+  let trailRAF = null, trailCtx = null, lastMove = 0;
 
-  function renderDoodle(){
-    if(!doodle) return;
-    const ctx = doodle.getContext('2d');
+  function sizeTrail(){
+    if(!trail) return;
     const dpr = window.devicePixelRatio || 1;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, doodle.width / dpr, doodle.height / dpr);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    strokes.forEach(stroke=>{
-      if(stroke.points.length < 2) return;
-      ctx.strokeStyle = stroke.color;
-      ctx.lineWidth = stroke.width;
-      ctx.beginPath();
-      ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-      for(let i = 1; i < stroke.points.length; i++){
-        ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+    trail.width = Math.round(window.innerWidth * dpr);
+    trail.height = Math.round(window.innerHeight * dpr);
+    trailCtx = trail.getContext('2d');
+    trailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function onTrailMove(e){
+    trailPoints.push({x: e.clientX, y: e.clientY});
+    if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
+    lastMove = performance.now();
+  }
+
+  function drawTrail(){
+    if(!trailCtx){ trailRAF = requestAnimationFrame(drawTrail); return; }
+    trailCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    // Drop the oldest point when idle so the ribbon retracts into the cursor
+    // instead of hanging in mid-air.
+    if(performance.now() - lastMove > 40 && trailPoints.length) trailPoints.shift();
+
+    if(trailPoints.length > 1){
+      trailCtx.lineCap = 'round';
+      trailCtx.lineJoin = 'round';
+      for(let i = 1; i < trailPoints.length; i++){
+        const t = i / trailPoints.length;
+        const a = trailPoints[i - 1], b = trailPoints[i];
+        trailCtx.strokeStyle = 'rgba(0,229,255,' + (t * 0.55).toFixed(3) + ')';
+        trailCtx.shadowColor = 'rgba(0,229,255,0.8)';
+        trailCtx.shadowBlur = 12 * t;
+        trailCtx.lineWidth = 1 + 5 * t;
+        trailCtx.beginPath();
+        trailCtx.moveTo(a.x, a.y);
+        trailCtx.lineTo(b.x, b.y);
+        trailCtx.stroke();
       }
-      ctx.stroke();
-    });
+      const head = trailPoints[trailPoints.length - 1];
+      trailCtx.shadowBlur = 16;
+      trailCtx.fillStyle = 'rgba(180,245,255,0.9)';
+      trailCtx.beginPath();
+      trailCtx.arc(head.x, head.y, 3, 0, Math.PI * 2);
+      trailCtx.fill();
+      trailCtx.shadowBlur = 0;
+    }
+    trailRAF = requestAnimationFrame(drawTrail);
   }
 
-  // Canvas is sized in CSS, so the bitmap has to be matched to its box (and
-  // to devicePixelRatio) or strokes land off-cursor and look blurry.
-  function fitDoodle(){
-    if(!doodle) return;
-    const rect = doodle.getBoundingClientRect();
-    if(!rect.width || !rect.height) return;
-    const dpr = window.devicePixelRatio || 1;
-    doodle.width = Math.round(rect.width * dpr);
-    doodle.height = Math.round(rect.height * dpr);
-    renderDoodle();
+  function startTrail(){
+    if(!trail || !finePointer || trailRAF) return;
+    sizeTrail();
+    window.addEventListener('pointermove', onTrailMove, {passive:true});
+    window.addEventListener('resize', sizeTrail);
+    trailRAF = requestAnimationFrame(drawTrail);
   }
 
-  if(doodle){
-    const pointAt = (e)=>{
-      const rect = doodle.getBoundingClientRect();
-      return {x: e.clientX - rect.left, y: e.clientY - rect.top};
-    };
-
-    doodle.addEventListener('pointerdown', (e)=>{
-      doodle.setPointerCapture(e.pointerId);
-      activeStroke = {color: penColor, width: 3, points: [pointAt(e)]};
-      strokes.push(activeStroke);
-    });
-    doodle.addEventListener('pointermove', (e)=>{
-      if(!activeStroke) return;
-      activeStroke.points.push(pointAt(e));
-      renderDoodle();
-    });
-    const endStroke = ()=>{ activeStroke = null; };
-    doodle.addEventListener('pointerup', endStroke);
-    doodle.addEventListener('pointercancel', endStroke);
-    doodle.addEventListener('pointerleave', endStroke);
-
-    document.getElementById('doodleSwatches').addEventListener('click', (e)=>{
-      const swatch = e.target.closest('.swatch');
-      if(!swatch) return;
-      penColor = swatch.dataset.color;
-      document.querySelectorAll('.swatch').forEach(s=> s.classList.toggle('active', s === swatch));
-    });
-    document.getElementById('doodleUndo').addEventListener('click', ()=>{
-      strokes.pop();
-      renderDoodle();
-    });
-    document.getElementById('doodleClear').addEventListener('click', ()=>{
-      strokes.length = 0;
-      renderDoodle();
-    });
-    window.addEventListener('resize', fitDoodle);
+  function stopTrail(){
+    if(trailRAF){ cancelAnimationFrame(trailRAF); trailRAF = null; }
+    window.removeEventListener('pointermove', onTrailMove);
+    window.removeEventListener('resize', sizeTrail);
+    trailPoints.length = 0;
+    if(trailCtx) trailCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   }
 
   // ---------------------------------------------------------------------
-  // "Ship It" - 20s target-tapping game. pointerdown (not click) so it
-  // responds on the first touch on mobile.
+  // "Ship It" - 20s target shooting. Each hit tightens the window: targets
+  // shrink and self-destruct sooner, so it speeds up the more you shoot.
   // ---------------------------------------------------------------------
-  const board = document.getElementById('gameBoard');
-  if(board){
-    const overlay = document.getElementById('gameOverlay');
-    const scoreEl = document.getElementById('gameScore');
-    const timeEl = document.getElementById('gameTime');
-    const bestEl = document.getElementById('gameBest');
-    const startBtn = document.getElementById('gameStart');
+  const shootBoard = document.getElementById('shootBoard');
+  if(shootBoard){
+    const overlay = document.getElementById('shootOverlay');
+    const scoreEl = document.getElementById('shootScore');
+    const timeEl = document.getElementById('shootTime');
+    const bestEl = document.getElementById('shootBest');
+    const startBtn = document.getElementById('shootStart');
     const ROUND = 20;
-    const TARGET = 46;
-    let score = 0, timeLeft = ROUND, timer = null, target = null, best = 0;
+    let score = 0, timeLeft = ROUND, timer = null, despawn = null, target = null, best = 0;
 
-    try{
-      best = parseInt(localStorage.getItem('shipItBest') || '0', 10) || 0;
-    }catch(err){ best = 0; }
+    try{ best = parseInt(localStorage.getItem('shipItBest') || '0', 10) || 0; }
+    catch(err){ best = 0; }
     bestEl.textContent = best;
+
+    // Size and lifetime both ramp with score, bottoming out so it stays fair.
+    const sizeFor  = (s)=> Math.max(24, 46 - s * 1.4);
+    const lifeFor  = (s)=> Math.max(420, 1400 - s * 70);
 
     function spawn(){
       if(target) target.remove();
+      clearTimeout(despawn);
+      const size = sizeFor(score);
       target = document.createElement('button');
       target.type = 'button';
       target.className = 'game-target';
       target.setAttribute('aria-label', 'Ship it');
-      const rect = board.getBoundingClientRect();
-      target.style.left = Math.random() * Math.max(0, rect.width - TARGET) + 'px';
-      target.style.top = Math.random() * Math.max(0, rect.height - TARGET) + 'px';
+      target.style.width = size + 'px';
+      target.style.height = size + 'px';
+      const rect = shootBoard.getBoundingClientRect();
+      target.style.left = Math.random() * Math.max(0, rect.width - size) + 'px';
+      target.style.top = Math.random() * Math.max(0, rect.height - size) + 'px';
       target.addEventListener('pointerdown', (e)=>{
         e.preventDefault();
         score++;
         scoreEl.textContent = score;
         spawn();
       });
-      board.appendChild(target);
+      shootBoard.appendChild(target);
+      // Missed it? It moves on by itself - that is what makes it get frantic.
+      despawn = setTimeout(()=>{ if(timer) spawn(); }, lifeFor(score));
     }
 
     function stop(){
-      clearInterval(timer);
-      timer = null;
+      clearInterval(timer); timer = null;
+      clearTimeout(despawn); despawn = null;
       if(target){ target.remove(); target = null; }
       if(score > best){
         best = score;
@@ -1075,8 +1096,7 @@
     }
 
     startBtn.addEventListener('click', ()=>{
-      score = 0;
-      timeLeft = ROUND;
+      score = 0; timeLeft = ROUND;
       scoreEl.textContent = '0';
       timeEl.textContent = ROUND;
       overlay.style.display = 'none';
@@ -1087,6 +1107,152 @@
         if(timeLeft <= 0) stop();
       }, 1000);
     });
+  }
+
+  // ---------------------------------------------------------------------
+  // "Stack" - tap to drop the sliding block. Overlap becomes the next
+  // block's width, so it narrows until you miss. One input, so mouse and
+  // touch play identically.
+  // ---------------------------------------------------------------------
+  const stack = document.getElementById('stackCanvas');
+  let fitStack = ()=>{}, startStack = ()=>{}, stopStack = ()=>{};
+
+  if(stack){
+    const scoreEl = document.getElementById('stackScore');
+    const bestEl = document.getElementById('stackBest');
+    const resetBtn = document.getElementById('stackReset');
+    const H = 18;                 // block height in css px
+    let W = 0, viewH = 0;
+    let blocks = [], current = null, score = 0, best = 0, over = false, raf = null, lastTs = null;
+
+    try{ best = parseInt(localStorage.getItem('stackBest') || '0', 10) || 0; }
+    catch(err){ best = 0; }
+    bestEl.textContent = best;
+
+    function reset(){
+      const baseW = Math.min(150, W * 0.45);
+      blocks = [{x: (W - baseW) / 2, w: baseW}];
+      score = 0; over = false;
+      scoreEl.textContent = '0';
+      newBlock();
+    }
+
+    function newBlock(){
+      const top = blocks[blocks.length - 1];
+      current = {
+        x: 0,
+        w: top.w,
+        // Speed climbs with height, capped so it stays playable.
+        speed: Math.min(4.6, 1.5 + score * 0.16),
+        dir: 1
+      };
+    }
+
+    function drop(){
+      if(over || !current) return;
+      const top = blocks[blocks.length - 1];
+      const left = Math.max(current.x, top.x);
+      const right = Math.min(current.x + current.w, top.x + top.w);
+      const overlap = right - left;
+
+      if(overlap <= 0){
+        over = true;
+        current = null;
+        if(score > best){
+          best = score;
+          bestEl.textContent = best;
+          try{ localStorage.setItem('stackBest', String(best)); }catch(err){}
+        }
+        return;
+      }
+      blocks.push({x: left, w: overlap});
+      score++;
+      scoreEl.textContent = score;
+      newBlock();
+    }
+
+    function render(){
+      const ctx = stack.getContext('2d');
+      ctx.clearRect(0, 0, W, viewH);
+
+      // Keep the top of the tower in frame once it grows past the canvas.
+      const stackH = blocks.length * H;
+      const camera = Math.max(0, stackH + H * 3 - viewH);
+
+      const grad = ctx.createLinearGradient(0, 0, W, 0);
+      grad.addColorStop(0, '#00e5ff');
+      grad.addColorStop(0.5, '#3b9dff');
+      grad.addColorStop(1, '#8b5cf6');
+
+      blocks.forEach((b, i)=>{
+        const y = viewH - (i + 1) * H + camera;
+        if(y < -H || y > viewH) return;
+        ctx.fillStyle = grad;
+        ctx.globalAlpha = blocks.length > 1 ? 0.6 + 0.4 * (i / (blocks.length - 1)) : 1;
+        ctx.fillRect(b.x, y, b.w, H - 2);
+      });
+      ctx.globalAlpha = 1;
+
+      if(current){
+        const y = viewH - (blocks.length + 1) * H + camera;
+        ctx.fillStyle = grad;
+        ctx.fillRect(current.x, y, current.w, H - 2);
+        ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(current.x + 0.5, y + 0.5, current.w - 1, H - 3);
+      }
+
+      if(over){
+        ctx.fillStyle = 'rgba(5,7,11,0.78)';
+        ctx.fillRect(0, 0, W, viewH);
+        ctx.fillStyle = '#e6f7ff';
+        ctx.textAlign = 'center';
+        ctx.font = '600 15px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillText(score + ' floors', W / 2, viewH / 2 - 8);
+        ctx.fillStyle = '#78909c';
+        ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillText('tap to rebuild', W / 2, viewH / 2 + 14);
+      }
+    }
+
+    // Movement is time-based, not per-frame, so the block travels at the
+    // same speed on a 60Hz and a 120Hz screen.
+    function loop(ts){
+      if(lastTs === null) lastTs = ts;
+      const dt = Math.min(50, ts - lastTs) / 16.667;
+      lastTs = ts;
+      if(current && !over){
+        current.x += current.speed * current.dir * dt;
+        if(current.x + current.w >= W){ current.x = W - current.w; current.dir = -1; }
+        else if(current.x <= 0){ current.x = 0; current.dir = 1; }
+      }
+      render();
+      raf = requestAnimationFrame(loop);
+    }
+
+    // The board is display:none in PM mode, so there is nothing to animate -
+    // don't burn a rAF loop until gamer mode is actually on.
+    startStack = function(){ if(!raf){ lastTs = null; raf = requestAnimationFrame(loop); } };
+    stopStack = function(){ if(raf){ cancelAnimationFrame(raf); raf = null; } };
+
+    fitStack = function(){
+      const rect = stack.getBoundingClientRect();
+      if(!rect.width || !rect.height) return;
+      const dpr = window.devicePixelRatio || 1;
+      stack.width = Math.round(rect.width * dpr);
+      stack.height = Math.round(rect.height * dpr);
+      stack.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+      W = rect.width; viewH = rect.height;
+      if(!blocks.length) reset();
+      render();
+    };
+
+    stack.addEventListener('pointerdown', (e)=>{
+      e.preventDefault();
+      if(over) reset(); else drop();
+    });
+    resetBtn.addEventListener('click', reset);
+    window.addEventListener('resize', fitStack);
   }
 </script>
 
