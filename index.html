@@ -472,7 +472,7 @@
   body.gamer-mode .mode-option,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='8.5' fill='none' stroke='%2300e5ff' stroke-width='1.6'/%3E%3Ccircle cx='14' cy='14' r='1.8' fill='%2300e5ff'/%3E%3Cpath d='M14 1.5v5M14 21.5v5M1.5 14h5M21.5 14h5' stroke='%2300e5ff' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") 14 14, pointer;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='11' fill='none' stroke='%2300e5ff' stroke-width='1.9'/%3E%3Ccircle cx='18' cy='18' r='15.5' fill='none' stroke='%238b5cf6' stroke-width='1.1' opacity='.55'/%3E%3Ccircle cx='18' cy='18' r='2.4' fill='%2300e5ff'/%3E%3Cpath d='M18 1.5v6.5M18 28v6.5M1.5 18h6.5M28 18h6.5' stroke='%2300e5ff' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E") 18 18, pointer;
   }
 
   /* ---------- Arcade ---------- */
@@ -512,7 +512,7 @@
   }
   /* Sniper scope reticle, only over the shooting board */
   #shootBoard, #shootBoard .game-target{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Ccircle cx='28' cy='28' r='21' fill='none' stroke='%2300e5ff' stroke-width='1.5' opacity='.95'/%3E%3Ccircle cx='28' cy='28' r='13' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28' cy='28' r='2' fill='%2300e5ff'/%3E%3Cpath d='M28 2v13M28 41v13M2 28h13M41 28h13' stroke='%2300e5ff' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M22 28h3M31 28h3M28 22v3M28 31v3' stroke='%2300e5ff' stroke-width='1' opacity='.7'/%3E%3C/svg%3E") 28 28, crosshair;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='66' viewBox='0 0 66 66'%3E%3Ccircle cx='33' cy='33' r='25' fill='none' stroke='%2300e5ff' stroke-width='1.8' opacity='.95'/%3E%3Ccircle cx='33' cy='33' r='31' fill='none' stroke='%238b5cf6' stroke-width='1.1' opacity='.5'/%3E%3Ccircle cx='33' cy='33' r='15' fill='none' stroke='%2300e5ff' stroke-width='1.1' opacity='.55'/%3E%3Ccircle cx='33' cy='33' r='2.4' fill='%2300e5ff'/%3E%3Cpath d='M33 2v15M33 49v15M2 33h15M49 33h15' stroke='%2300e5ff' stroke-width='1.8' stroke-linecap='round'/%3E%3Cpath d='M26 33h3.5M36.5 33h3.5M33 26v3.5M33 36.5v3.5' stroke='%2300e5ff' stroke-width='1.1' opacity='.7'/%3E%3C/svg%3E") 33 33, crosshair;
   }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
@@ -1144,8 +1144,19 @@
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const trailPoints = [];
   const sparks = [];
-  const TRAIL_LEN = 30;
-  const HEAD_W = 11;
+  const TRAIL_LEN = 46;
+  const HEAD_W = 16;
+  // Tail -> head. More stops than a simple two-colour fade so the ribbon
+  // shifts through pink/violet/indigo/blue before hitting cyan at the tip.
+  const TRAIL_STOPS = [
+    [0.00, 'rgba(255,47,138,0)'],
+    [0.16, 'rgba(255,47,138,0.20)'],
+    [0.34, 'rgba(168,85,247,0.42)'],
+    [0.54, 'rgba(99,102,241,0.62)'],
+    [0.74, 'rgba(59,157,255,0.82)'],
+    [1.00, 'rgba(0,229,255,0.98)']
+  ];
+  const SPARK_COLORS = ['0,229,255', '59,157,255', '139,92,246', '255,47,138'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
   let pointer = null, head = null;
 
@@ -1175,26 +1186,37 @@
     // Easing the head toward the pointer is what makes the ribbon flow
     // smoothly instead of tracking raw, jittery mouse samples.
     if(pointer && head){
-      const ease = 1 - Math.pow(1 - 0.32, dt);
+      const ease = 1 - Math.pow(1 - 0.20, dt);
       const dx = pointer.x - head.x, dy = pointer.y - head.y;
       head.x += dx * ease;
       head.y += dy * ease;
       trailPoints.push({x: head.x, y: head.y});
       if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
 
-      // Sparks peel off while actually moving, so the tail disperses.
+      // Sparks peel off while moving so the tail disperses. Each gets a
+      // depth: far ones are small, dim and slow, near ones big and bright,
+      // which reads as a cloud with volume rather than a flat sprinkle.
       const speed = Math.hypot(dx, dy);
-      if(speed > 6 && sparks.length < 90){
-        const n = speed > 40 ? 2 : 1;
+      if(speed > 4 && sparks.length < 130){
+        const n = speed > 34 ? 4 : (speed > 14 ? 3 : 2);
         for(let i = 0; i < n; i++){
           const ang = Math.random() * Math.PI * 2;
-          const spd = 0.4 + Math.random() * 1.5;
+          const depth = Math.random();
+          const spd = (0.35 + Math.random() * 1.9) * (0.55 + depth);
           sparks.push({
-            x: head.x, y: head.y,
-            vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 0.2,
-            life: 1, size: 1 + Math.random() * 2.2
+            x: head.x + (Math.random() - 0.5) * 6,
+            y: head.y + (Math.random() - 0.5) * 6,
+            vx: Math.cos(ang) * spd - dx * 0.035,
+            vy: Math.sin(ang) * spd - dy * 0.035 - 0.15,
+            life: 1,
+            decay: 0.016 + Math.random() * 0.014,
+            size: (0.9 + Math.random() * 2.4) * (0.55 + depth * 1.1),
+            depth: depth,
+            color: SPARK_COLORS[(Math.random() * SPARK_COLORS.length) | 0]
           });
         }
+        // Far particles first so nearer, brighter ones sit on top.
+        sparks.sort((a, b)=> a.depth - b.depth);
       }
     }
 
@@ -1202,9 +1224,7 @@
     if(pts.length > 2){
       const a = pts[0], b = pts[pts.length - 1];
       const grad = trailCtx.createLinearGradient(a.x, a.y, b.x, b.y);
-      grad.addColorStop(0, 'rgba(139,92,246,0)');
-      grad.addColorStop(0.45, 'rgba(59,157,255,0.55)');
-      grad.addColorStop(1, 'rgba(0,229,255,0.95)');
+      TRAIL_STOPS.forEach(s=> grad.addColorStop(s[0], s[1]));
 
       trailCtx.lineCap = 'round';
       trailCtx.lineJoin = 'round';
@@ -1218,9 +1238,9 @@
         const p = pts[i], nxt = pts[i + 1];
         const mx0 = (pts[i - 1].x + p.x) / 2, my0 = (pts[i - 1].y + p.y) / 2;
         const mx1 = (p.x + nxt.x) / 2, my1 = (p.y + nxt.y) / 2;
-        trailCtx.lineWidth = Math.max(0.6, HEAD_W * Math.pow(t, 1.35));
-        trailCtx.globalAlpha = Math.pow(t, 1.15);
-        trailCtx.shadowBlur = 14 * t;
+        trailCtx.lineWidth = Math.max(0.6, HEAD_W * Math.pow(t, 1.25));
+        trailCtx.globalAlpha = Math.pow(t, 1.05);
+        trailCtx.shadowBlur = 20 * t;
         trailCtx.beginPath();
         trailCtx.moveTo(mx0, my0);
         trailCtx.quadraticCurveTo(p.x, p.y, mx1, my1);
@@ -1228,10 +1248,20 @@
       }
       trailCtx.globalAlpha = 1;
 
-      trailCtx.shadowBlur = 18;
-      trailCtx.fillStyle = 'rgba(200,248,255,0.95)';
+      // Soft halo behind a bright core gives the head some glow depth.
+      const halo = trailCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, HEAD_W * 1.5);
+      halo.addColorStop(0, 'rgba(180,245,255,0.55)');
+      halo.addColorStop(0.5, 'rgba(59,157,255,0.22)');
+      halo.addColorStop(1, 'rgba(139,92,246,0)');
+      trailCtx.fillStyle = halo;
       trailCtx.beginPath();
-      trailCtx.arc(b.x, b.y, HEAD_W * 0.38, 0, Math.PI * 2);
+      trailCtx.arc(b.x, b.y, HEAD_W * 1.5, 0, Math.PI * 2);
+      trailCtx.fill();
+
+      trailCtx.shadowBlur = 22;
+      trailCtx.fillStyle = 'rgba(214,250,255,0.98)';
+      trailCtx.beginPath();
+      trailCtx.arc(b.x, b.y, HEAD_W * 0.34, 0, Math.PI * 2);
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
     }
@@ -1240,17 +1270,36 @@
       const s = sparks[i];
       s.x += s.vx * dt;
       s.y += s.vy * dt;
-      s.vy += 0.035 * dt;
-      s.vx *= Math.pow(0.97, dt);
-      s.life -= 0.022 * dt;
+      s.vy += (0.02 + s.depth * 0.03) * dt;
+      s.vx *= Math.pow(0.975, dt);
+      s.vy *= Math.pow(0.988, dt);
+      s.life -= s.decay * dt;
       if(s.life <= 0){ sparks.splice(i, 1); continue; }
-      trailCtx.globalAlpha = Math.max(0, s.life) * 0.8;
-      trailCtx.fillStyle = s.life > 0.55 ? 'rgba(0,229,255,1)' : 'rgba(139,92,246,1)';
+
+      const eased = s.life * s.life;
+      const r = Math.max(0.25, s.size * (0.35 + eased * 0.9));
+      trailCtx.globalAlpha = Math.max(0, eased) * (0.3 + s.depth * 0.7);
+
+      // Depth is sold with glow + soft falloff, but both are expensive, so
+      // only the near particles pay for them - far ones are flat dots.
+      if(s.depth > 0.5){
+        trailCtx.shadowBlur = 14 * s.depth;
+        trailCtx.shadowColor = 'rgba(' + s.color + ',0.9)';
+        const g = trailCtx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r);
+        g.addColorStop(0, 'rgba(' + s.color + ',1)');
+        g.addColorStop(0.55, 'rgba(' + s.color + ',0.7)');
+        g.addColorStop(1, 'rgba(' + s.color + ',0)');
+        trailCtx.fillStyle = g;
+      } else {
+        trailCtx.shadowBlur = 0;
+        trailCtx.fillStyle = 'rgba(' + s.color + ',0.75)';
+      }
       trailCtx.beginPath();
-      trailCtx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+      trailCtx.arc(s.x, s.y, r, 0, Math.PI * 2);
       trailCtx.fill();
     }
     trailCtx.globalAlpha = 1;
+    trailCtx.shadowBlur = 0;
 
     // When the pointer stops, the head catches up and the ribbon retracts
     // into the cursor on its own.
