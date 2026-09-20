@@ -563,6 +563,154 @@
     .mode-option{min-width:66px;padding:7px 8px;letter-spacing:0.5px;}
     .hero-top-row{gap:10px;}
   }
+
+  /* ======================================================================
+     GAMER MODE - full UI treatment
+     ====================================================================== */
+
+  /* Animated HUD grid behind everything, faded out toward the edges. */
+  body.gamer-mode::before{
+    content:"";position:fixed;inset:-50px;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.08) 1px, transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
+    animation:gridDrift 14s linear infinite;
+  }
+  @keyframes gridDrift{to{background-position:48px 48px, 48px 48px;}}
+
+  /* Faint CRT scanlines over the whole page (under the cursor trail). */
+  body.gamer-mode::after{
+    content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px);
+    opacity:0.28;
+  }
+  body.gamer-mode section, body.gamer-mode .hero, body.gamer-mode footer{position:relative;z-index:1;}
+
+  /* Cards become HUD panels: squared off, bracketed corners, scan sheen. */
+  body.gamer-mode .p-card,
+  body.gamer-mode .skill-card,
+  body.gamer-mode .edu-card,
+  body.gamer-mode .arcade-card{
+    border-radius:8px;
+    border-color:rgba(0,229,255,0.2);
+    background:linear-gradient(180deg, rgba(11,15,23,0.94), rgba(6,9,14,0.94));
+  }
+  body.gamer-mode .p-card::before,
+  body.gamer-mode .skill-card::before,
+  body.gamer-mode .edu-card::before,
+  body.gamer-mode .arcade-card::before,
+  body.gamer-mode .p-card::after,
+  body.gamer-mode .skill-card::after,
+  body.gamer-mode .edu-card::after,
+  body.gamer-mode .arcade-card::after{
+    content:"";position:absolute;width:13px;height:13px;pointer-events:none;
+    border-style:solid;border-color:var(--a1);opacity:0.65;
+    transition:opacity .3s ease, width .3s ease, height .3s ease;
+  }
+  body.gamer-mode .p-card::before,
+  body.gamer-mode .skill-card::before,
+  body.gamer-mode .edu-card::before,
+  body.gamer-mode .arcade-card::before{top:7px;left:7px;border-width:2px 0 0 2px;}
+  body.gamer-mode .p-card::after,
+  body.gamer-mode .skill-card::after,
+  body.gamer-mode .edu-card::after,
+  body.gamer-mode .arcade-card::after{bottom:7px;right:7px;border-width:0 2px 2px 0;}
+  body.gamer-mode .p-card:hover::before,
+  body.gamer-mode .skill-card:hover::before,
+  body.gamer-mode .edu-card:hover::before,
+  body.gamer-mode .p-card:hover::after,
+  body.gamer-mode .skill-card:hover::after,
+  body.gamer-mode .edu-card:hover::after{opacity:1;width:20px;height:20px;}
+  body.gamer-mode .p-card:hover,
+  body.gamer-mode .skill-card:hover,
+  body.gamer-mode .edu-card:hover{
+    border-color:var(--a1);
+    box-shadow:0 0 0 1px rgba(0,229,255,0.25), 0 20px 48px -22px rgba(0,229,255,0.5);
+  }
+  body.gamer-mode .skill-card:hover{transform:translateY(-4px) scale(1.01);}
+
+  /* Pills/tags read like HUD chips */
+  body.gamer-mode .pill{
+    border-radius:4px;border-color:rgba(0,229,255,0.25);
+    background:rgba(0,229,255,0.06);
+    transition:background .2s ease, border-color .2s ease, color .2s ease;
+  }
+  body.gamer-mode .pill:hover{background:rgba(0,229,255,0.16);border-color:var(--a1);color:#fff;}
+  body.gamer-mode .tag{border-radius:4px;}
+  body.gamer-mode .eyebrow-pill{border-radius:6px;border-color:rgba(0,229,255,0.3);}
+  body.gamer-mode .mode-toggle{border-radius:6px;}
+  body.gamer-mode .mode-slider,
+  body.gamer-mode .mode-option{border-radius:4px;}
+  body.gamer-mode .btn,
+  body.gamer-mode nav .cta,
+  body.gamer-mode .mini-btn{border-radius:5px;}
+  body.gamer-mode .hero-photo-card{border-radius:10px;}
+  body.gamer-mode .hero-photo-card .inner{border-radius:8px;}
+
+  /* Reveals get a quick power-on flicker instead of a soft fade */
+  body.gamer-mode .reveal,
+  body.gamer-mode .orbit-card{
+    transition-duration:.55s,.55s,.55s;
+    transition-timing-function:cubic-bezier(0.2,1.4,0.35,1);
+  }
+  body.gamer-mode .reveal.visible,
+  body.gamer-mode .orbit-card.visible{animation:powerOn .42s steps(1,end);}
+  @keyframes powerOn{
+    0%{opacity:0.25;}
+    18%{opacity:1;}
+    30%{opacity:0.45;}
+    46%{opacity:1;}
+  }
+
+  /* Timeline + arc take the neon treatment */
+  body.gamer-mode .c-dot{box-shadow:0 0 10px var(--dot-color), 0 0 22px var(--dot-color);}
+
+  /* ---------- Click burst (gamer mode, anywhere on the page) ---------- */
+  .click-ring{
+    position:fixed;z-index:9997;pointer-events:none;
+    width:26px;height:26px;border-radius:50%;
+    border:2px solid rgba(0,229,255,0.9);
+    transform:translate(-50%,-50%) scale(0.3);
+    animation:clickRing .55s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes clickRing{
+    to{transform:translate(-50%,-50%) scale(3);opacity:0;border-color:rgba(139,92,246,0.35);}
+  }
+  .click-spark{
+    position:fixed;z-index:9997;pointer-events:none;
+    width:5px;height:5px;border-radius:50%;
+    background:var(--a1);box-shadow:0 0 8px var(--a1);
+    transform:translate(-50%,-50%);
+    animation:sparkFly .5s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes sparkFly{
+    to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2);opacity:0;}
+  }
+
+  /* ---------- Ship It hit pop ---------- */
+  .hit-ring{
+    position:absolute;pointer-events:none;border-radius:50%;
+    border:2px solid rgba(0,229,255,0.95);
+    transform:translate(-50%,-50%) scale(0.5);
+    animation:hitRing .42s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes hitRing{to{transform:translate(-50%,-50%) scale(2.2);opacity:0;}}
+  .hit-spark{
+    position:absolute;pointer-events:none;
+    width:6px;height:6px;border-radius:50%;
+    background:#8df3ff;box-shadow:0 0 10px var(--a1);
+    transform:translate(-50%,-50%);
+    animation:sparkFly .45s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    body.gamer-mode::before{animation:none;}
+    body.gamer-mode .reveal.visible,
+    body.gamer-mode .orbit-card.visible{animation:none;}
+  }
 </style>
 </head>
 <body>
@@ -960,16 +1108,46 @@
     btn.addEventListener('click', ()=> setMode(btn.dataset.mode));
   });
 
+  // Every click anywhere fires a ring + shrapnel, but only in gamer mode.
+  document.addEventListener('pointerdown', (e)=>{
+    if(!gamerOn) return;
+    const ring = document.createElement('span');
+    ring.className = 'click-ring';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+    document.body.appendChild(ring);
+    ring.addEventListener('animationend', ()=> ring.remove());
+    setTimeout(()=> ring.remove(), 1200);
+
+    for(let i = 0; i < 6; i++){
+      const ang = (Math.PI * 2 * i) / 6 + Math.random() * 0.6;
+      const dist = 22 + Math.random() * 24;
+      const sp = document.createElement('span');
+      sp.className = 'click-spark';
+      sp.style.left = e.clientX + 'px';
+      sp.style.top = e.clientY + 'px';
+      sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+      sp.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+      document.body.appendChild(sp);
+      sp.addEventListener('animationend', ()=> sp.remove());
+      setTimeout(()=> sp.remove(), 1200);
+    }
+  }, {passive:true});
+
   // ---------------------------------------------------------------------
-  // Cursor trail. A fixed canvas draws a fading, glowing ribbon through the
-  // last N pointer positions. Only runs in gamer mode, and only where there
-  // is a real hovering pointer - phones have no cursor to trail.
+  // Cursor trail. A smoothed head chases the real pointer, and the ribbon is
+  // drawn as tapered curve segments under a cyan->violet gradient, with
+  // sparks peeling off so it disperses instead of just vanishing. Gamer mode
+  // only, and only for real hovering pointers - phones have no cursor.
   // ---------------------------------------------------------------------
   const trail = document.getElementById('trailCanvas');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const trailPoints = [];
-  const TRAIL_LEN = 18;
-  let trailRAF = null, trailCtx = null, lastMove = 0;
+  const sparks = [];
+  const TRAIL_LEN = 30;
+  const HEAD_W = 11;
+  let trailRAF = null, trailCtx = null, trailLastTs = null;
+  let pointer = null, head = null;
 
   function sizeTrail(){
     if(!trail) return;
@@ -981,47 +1159,112 @@
   }
 
   function onTrailMove(e){
-    trailPoints.push({x: e.clientX, y: e.clientY});
-    if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
-    lastMove = performance.now();
+    pointer = {x: e.clientX, y: e.clientY};
+    if(!head) head = {x: e.clientX, y: e.clientY};
   }
 
-  function drawTrail(){
+  function drawTrail(ts){
     if(!trailCtx){ trailRAF = requestAnimationFrame(drawTrail); return; }
-    trailCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    // Drop the oldest point when idle so the ribbon retracts into the cursor
-    // instead of hanging in mid-air.
-    if(performance.now() - lastMove > 40 && trailPoints.length) trailPoints.shift();
+    if(trailLastTs === null) trailLastTs = ts;
+    const dt = Math.min(50, ts - trailLastTs) / 16.667;
+    trailLastTs = ts;
 
-    if(trailPoints.length > 1){
+    const W = window.innerWidth, H = window.innerHeight;
+    trailCtx.clearRect(0, 0, W, H);
+
+    // Easing the head toward the pointer is what makes the ribbon flow
+    // smoothly instead of tracking raw, jittery mouse samples.
+    if(pointer && head){
+      const ease = 1 - Math.pow(1 - 0.32, dt);
+      const dx = pointer.x - head.x, dy = pointer.y - head.y;
+      head.x += dx * ease;
+      head.y += dy * ease;
+      trailPoints.push({x: head.x, y: head.y});
+      if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
+
+      // Sparks peel off while actually moving, so the tail disperses.
+      const speed = Math.hypot(dx, dy);
+      if(speed > 6 && sparks.length < 90){
+        const n = speed > 40 ? 2 : 1;
+        for(let i = 0; i < n; i++){
+          const ang = Math.random() * Math.PI * 2;
+          const spd = 0.4 + Math.random() * 1.5;
+          sparks.push({
+            x: head.x, y: head.y,
+            vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 0.2,
+            life: 1, size: 1 + Math.random() * 2.2
+          });
+        }
+      }
+    }
+
+    const pts = trailPoints;
+    if(pts.length > 2){
+      const a = pts[0], b = pts[pts.length - 1];
+      const grad = trailCtx.createLinearGradient(a.x, a.y, b.x, b.y);
+      grad.addColorStop(0, 'rgba(139,92,246,0)');
+      grad.addColorStop(0.45, 'rgba(59,157,255,0.55)');
+      grad.addColorStop(1, 'rgba(0,229,255,0.95)');
+
       trailCtx.lineCap = 'round';
       trailCtx.lineJoin = 'round';
-      for(let i = 1; i < trailPoints.length; i++){
-        const t = i / trailPoints.length;
-        const a = trailPoints[i - 1], b = trailPoints[i];
-        trailCtx.strokeStyle = 'rgba(0,229,255,' + (t * 0.55).toFixed(3) + ')';
-        trailCtx.shadowColor = 'rgba(0,229,255,0.8)';
-        trailCtx.shadowBlur = 12 * t;
-        trailCtx.lineWidth = 1 + 5 * t;
+      trailCtx.strokeStyle = grad;
+      trailCtx.shadowColor = 'rgba(0,229,255,0.55)';
+
+      // Curve through the midpoints so the ribbon has no visible corners,
+      // and taper the width from tail to head.
+      for(let i = 1; i < pts.length - 1; i++){
+        const t = i / (pts.length - 1);
+        const p = pts[i], nxt = pts[i + 1];
+        const mx0 = (pts[i - 1].x + p.x) / 2, my0 = (pts[i - 1].y + p.y) / 2;
+        const mx1 = (p.x + nxt.x) / 2, my1 = (p.y + nxt.y) / 2;
+        trailCtx.lineWidth = Math.max(0.6, HEAD_W * Math.pow(t, 1.35));
+        trailCtx.globalAlpha = Math.pow(t, 1.15);
+        trailCtx.shadowBlur = 14 * t;
         trailCtx.beginPath();
-        trailCtx.moveTo(a.x, a.y);
-        trailCtx.lineTo(b.x, b.y);
+        trailCtx.moveTo(mx0, my0);
+        trailCtx.quadraticCurveTo(p.x, p.y, mx1, my1);
         trailCtx.stroke();
       }
-      const head = trailPoints[trailPoints.length - 1];
-      trailCtx.shadowBlur = 16;
-      trailCtx.fillStyle = 'rgba(180,245,255,0.9)';
+      trailCtx.globalAlpha = 1;
+
+      trailCtx.shadowBlur = 18;
+      trailCtx.fillStyle = 'rgba(200,248,255,0.95)';
       trailCtx.beginPath();
-      trailCtx.arc(head.x, head.y, 3, 0, Math.PI * 2);
+      trailCtx.arc(b.x, b.y, HEAD_W * 0.38, 0, Math.PI * 2);
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
     }
+
+    for(let i = sparks.length - 1; i >= 0; i--){
+      const s = sparks[i];
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      s.vy += 0.035 * dt;
+      s.vx *= Math.pow(0.97, dt);
+      s.life -= 0.022 * dt;
+      if(s.life <= 0){ sparks.splice(i, 1); continue; }
+      trailCtx.globalAlpha = Math.max(0, s.life) * 0.8;
+      trailCtx.fillStyle = s.life > 0.55 ? 'rgba(0,229,255,1)' : 'rgba(139,92,246,1)';
+      trailCtx.beginPath();
+      trailCtx.arc(s.x, s.y, s.size * s.life, 0, Math.PI * 2);
+      trailCtx.fill();
+    }
+    trailCtx.globalAlpha = 1;
+
+    // When the pointer stops, the head catches up and the ribbon retracts
+    // into the cursor on its own.
+    if(pointer && head && Math.hypot(pointer.x - head.x, pointer.y - head.y) < 0.4 && trailPoints.length){
+      trailPoints.shift();
+    }
+
     trailRAF = requestAnimationFrame(drawTrail);
   }
 
   function startTrail(){
     if(!trail || !finePointer || trailRAF) return;
     sizeTrail();
+    trailLastTs = null;
     window.addEventListener('pointermove', onTrailMove, {passive:true});
     window.addEventListener('resize', sizeTrail);
     trailRAF = requestAnimationFrame(drawTrail);
@@ -1032,6 +1275,8 @@
     window.removeEventListener('pointermove', onTrailMove);
     window.removeEventListener('resize', sizeTrail);
     trailPoints.length = 0;
+    sparks.length = 0;
+    pointer = null; head = null;
     if(trailCtx) trailCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   }
 
@@ -1057,6 +1302,33 @@
     const sizeFor  = (s)=> Math.max(24, 46 - s * 1.4);
     const lifeFor  = (s)=> Math.max(420, 1400 - s * 70);
 
+    // Ring + shrapnel at the point of impact, cleaned up on animation end.
+    function popAt(cx, cy, size){
+      const ring = document.createElement('span');
+      ring.className = 'hit-ring';
+      ring.style.left = cx + 'px';
+      ring.style.top = cy + 'px';
+      ring.style.width = size + 'px';
+      ring.style.height = size + 'px';
+      shootBoard.appendChild(ring);
+      ring.addEventListener('animationend', ()=> ring.remove());
+      setTimeout(()=> ring.remove(), 1200);
+
+      for(let i = 0; i < 8; i++){
+        const ang = (Math.PI * 2 * i) / 8 + Math.random() * 0.5;
+        const dist = 26 + Math.random() * 26;
+        const sp = document.createElement('span');
+        sp.className = 'hit-spark';
+        sp.style.left = cx + 'px';
+        sp.style.top = cy + 'px';
+        sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
+        sp.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
+        shootBoard.appendChild(sp);
+        sp.addEventListener('animationend', ()=> sp.remove());
+        setTimeout(()=> sp.remove(), 1200);
+      }
+    }
+
     function spawn(){
       if(target) target.remove();
       clearTimeout(despawn);
@@ -1072,6 +1344,7 @@
       target.style.top = Math.random() * Math.max(0, rect.height - size) + 'px';
       target.addEventListener('pointerdown', (e)=>{
         e.preventDefault();
+        popAt(parseFloat(target.style.left) + size / 2, parseFloat(target.style.top) + size / 2, size);
         score++;
         scoreEl.textContent = score;
         spawn();
@@ -1124,6 +1397,7 @@
     const H = 18;                 // block height in css px
     let W = 0, viewH = 0;
     let blocks = [], current = null, score = 0, best = 0, over = false, raf = null, lastTs = null;
+    let falling = [];   // sliced-off pieces tumbling out of frame
 
     try{ best = parseInt(localStorage.getItem('stackBest') || '0', 10) || 0; }
     catch(err){ best = 0; }
@@ -1132,6 +1406,7 @@
     function reset(){
       const baseW = Math.min(150, W * 0.45);
       blocks = [{x: (W - baseW) / 2, w: baseW}];
+      falling = [];
       score = 0; over = false;
       scoreEl.textContent = '0';
       newBlock();
@@ -1148,6 +1423,16 @@
       };
     }
 
+    // A piece is tracked by the level it was cut at, so the camera pan
+    // applies to it exactly like it does to the tower.
+    function addFalling(x, w, level, dir){
+      falling.push({
+        x: x, w: w, level: level, dy: 0, vy: -0.6,
+        vx: dir * (0.8 + Math.random() * 0.7),
+        rot: 0, vr: dir * (0.025 + Math.random() * 0.03)
+      });
+    }
+
     function drop(){
       if(over || !current) return;
       const top = blocks[blocks.length - 1];
@@ -1156,6 +1441,8 @@
       const overlap = right - left;
 
       if(overlap <= 0){
+        // Missed completely - the whole block drops out of the world.
+        addFalling(current.x, current.w, blocks.length, current.x < top.x ? -1 : 1);
         over = true;
         current = null;
         if(score > best){
@@ -1165,6 +1452,11 @@
         }
         return;
       }
+
+      // Whatever hung over the edge gets sliced off and falls.
+      if(current.x < left) addFalling(current.x, left - current.x, blocks.length, -1);
+      if(current.x + current.w > right) addFalling(right, (current.x + current.w) - right, blocks.length, 1);
+
       blocks.push({x: left, w: overlap});
       score++;
       scoreEl.textContent = score;
@@ -1213,6 +1505,22 @@
         ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, monospace';
         ctx.fillText('tap to rebuild', W / 2, viewH / 2 + 14);
       }
+
+      // Debris draws last so it stays visible over the game-over veil.
+      falling.forEach(f=>{
+        const y = viewH - (f.level + 1) * H + camera + f.dy;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, 1 - f.dy / (viewH * 1.25));
+        ctx.translate(f.x + f.w / 2, y + H / 2);
+        ctx.rotate(f.rot);
+        const g2 = ctx.createLinearGradient(-f.w / 2, 0, f.w / 2, 0);
+        g2.addColorStop(0, '#00e5ff');
+        g2.addColorStop(1, '#8b5cf6');
+        ctx.fillStyle = g2;
+        ctx.fillRect(-f.w / 2, -H / 2, f.w, H - 2);
+        ctx.restore();
+      });
+      ctx.globalAlpha = 1;
     }
 
     // Movement is time-based, not per-frame, so the block travels at the
@@ -1225,6 +1533,14 @@
         current.x += current.speed * current.dir * dt;
         if(current.x + current.w >= W){ current.x = W - current.w; current.dir = -1; }
         else if(current.x <= 0){ current.x = 0; current.dir = 1; }
+      }
+      for(let i = falling.length - 1; i >= 0; i--){
+        const f = falling[i];
+        f.vy += 0.6 * dt;
+        f.dy += f.vy * dt;
+        f.x += f.vx * dt;
+        f.rot += f.vr * dt;
+        if(f.dy > viewH + 120) falling.splice(i, 1);
       }
       render();
       raf = requestAnimationFrame(loop);
