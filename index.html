@@ -199,16 +199,8 @@
     border-radius:22px;
     padding:34px;
     position:relative;overflow:hidden;
-    cursor:pointer;
     transition:transform .5s cubic-bezier(0.16,1,0.3,1), border-color .35s ease, background .35s ease, box-shadow .5s cubic-bezier(0.16,1,0.3,1);
   }
-  .card-cta{
-    display:flex;align-items:center;gap:6px;
-    width:fit-content;margin:18px 0 0 auto;
-    font-size:13px;font-weight:700;color:var(--a2);
-  }
-  .card-cta .arrow{display:inline-block;transition:transform .3s cubic-bezier(0.16,1,0.3,1);}
-  .p-card:hover .card-cta .arrow{transform:translateX(4px);}
   /* Orbit reveal: cards swing in along a circular arc (rotate/translate/counter-rotate
      around the card's own center) instead of the generic straight-line .reveal, so they
      appear to revolve into place on scroll down and reverse on scroll up. Scoped to
@@ -440,46 +432,42 @@
 
     <div class="bento stagger">
       <div class="p-slot big">
-        <div class="p-card big orbit-card" data-highlight="pms-tracker" role="button" tabindex="0">
+        <div class="p-card big orbit-card">
           <div>
             <span class="tag">0 → 1</span>
             <h3>India's First Daily PMS Portfolio Valuation Tracker</h3>
             <p>Defined the MVP, operating processes, and go-to-market for a Portfolio Management
             Services product at AssetPlus - end to end, from competitive gap analysis and stakeholder
             interviews through to launch.</p>
-            <span class="card-cta">Know more <span class="arrow">→</span></span>
           </div>
         </div>
       </div>
 
       <div class="p-slot">
-        <div class="p-card orbit-card" data-highlight="client-activation" role="button" tabindex="0">
+        <div class="p-card orbit-card">
           <div class="stat grad-text">45%</div>
           <h3>Faster Client Activation</h3>
           <p>Led a 5-engineer pod to redesign onboarding for a 200K+ user fintech platform, cutting
           time-to-activation while sustaining 400+ daily activations and full BSE &amp; SEBI compliance.</p>
-          <span class="card-cta">Know more <span class="arrow">→</span></span>
         </div>
       </div>
 
       <div class="p-slot">
-        <div class="p-card orbit-card" data-highlight="sif-mau" role="button" tabindex="0">
+        <div class="p-card orbit-card">
           <div class="stat grad-text">+119%</div>
           <h3>SIF Monthly Active Users</h3>
           <p>Grew SIF adoption through data-driven optimization of the end-to-end investment
           experience.</p>
-          <span class="card-cta">Know more <span class="arrow">→</span></span>
         </div>
       </div>
 
       <div class="p-slot big">
-        <div class="p-card big orbit-card" data-highlight="sprink-online" role="button" tabindex="0">
+        <div class="p-card big orbit-card">
           <div>
             <span class="tag">0 → 1</span>
             <h3>B2B Ordering &amp; Collections Platform - Sprink.Online</h3>
             <p>Launched a mobile web ordering platform from scratch, cutting counter order time by up
             to 60% and digitizing QA workflows to improve data accuracy and operational visibility.</p>
-            <span class="card-cta">Know more <span class="arrow">→</span></span>
           </div>
         </div>
       </div>
