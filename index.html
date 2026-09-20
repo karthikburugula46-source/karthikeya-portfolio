@@ -124,7 +124,7 @@
     font-size:14px;font-weight:700;letter-spacing:0.3px;text-transform:uppercase;
     transition:transform .2s, box-shadow .2s, opacity .2s;
   }
-  .btn-primary{background:var(--grad);color:#0a0a0a;}
+  .btn-primary{background:var(--grad);color:#fff;}
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,47,138,0.35);}
   .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi);}
   .btn-ghost:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px);}
@@ -238,7 +238,7 @@
   .p-card.big .stat{font-size:60px;}
   .p-card .tag{
     display:inline-block;font-size:11px;font-weight:800;letter-spacing:1px;
-    text-transform:uppercase;color:#0a0a0a;background:var(--grad);
+    text-transform:uppercase;color:#fff;background:var(--grad);
     padding:5px 12px;border-radius:980px;margin-bottom:18px;
   }
   .p-card h3{font-size:19px;margin:0 0 10px;font-weight:700;letter-spacing:-0.2px;}
@@ -382,6 +382,174 @@
   @media (max-width:380px){
     .hero h1{font-size:40px;}
   }
+
+  /* ======================================================================
+     MODE SYSTEM - PM (default) / GAMER
+     Everything gamer-specific is scoped under body.gamer-mode, so PM mode
+     renders exactly as it did before this block existed.
+     ====================================================================== */
+  .nav-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+  .mode-toggle{
+    position:relative;display:flex;padding:3px;
+    border-radius:980px;background:rgba(255,255,255,0.06);
+    border:1px solid var(--border);
+  }
+  .mode-slider{
+    position:absolute;top:3px;left:3px;z-index:0;
+    height:calc(100% - 6px);width:calc(50% - 3px);
+    border-radius:980px;background:var(--grad);
+    transition:transform .34s cubic-bezier(0.16,1,0.3,1), background .34s ease;
+  }
+  .mode-option{
+    position:relative;z-index:1;
+    border:0;background:none;font-family:inherit;
+    font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+    color:var(--text-dim);padding:6px 14px;border-radius:980px;cursor:pointer;
+    transition:color .25s ease;
+  }
+  .mode-option.active{color:#fff;}
+  body.gamer-mode .mode-slider{transform:translateX(100%);}
+
+  /* Arcade + its nav link only exist in gamer mode */
+  #arcade{display:none;}
+  .arcade-link{display:none;}
+  body.gamer-mode #arcade{display:block;}
+  body.gamer-mode .arcade-link{display:inline;}
+
+  /* ---------- Gamer theme ---------- */
+  body.gamer-mode{
+    --bg:#05070b;
+    --bg-2:#0a0d14;
+    --bg-3:#10141d;
+    --border:rgba(0,229,255,0.12);
+    --border-hi:rgba(0,229,255,0.34);
+    --text:#e6f7ff;
+    --text-dim:#78909c;
+    --a1:#00e5ff;
+    --a2:#3b9dff;
+    --a3:#8b5cf6;
+    --grad:linear-gradient(120deg,#00e5ff 0%,#3b9dff 52%,#8b5cf6 100%);
+  }
+  body.gamer-mode nav{background:rgba(5,7,11,0.72);}
+  body.gamer-mode nav.scrolled{background:rgba(5,7,11,0.9);}
+  /* Mono type + terminal prefix give the whole page the HUD feel */
+  body.gamer-mode .section-head h2,
+  body.gamer-mode .hero h1,
+  body.gamer-mode .stat,
+  body.gamer-mode .section-eyebrow,
+  body.gamer-mode .c-date,
+  body.gamer-mode .tag,
+  body.gamer-mode .pill,
+  body.gamer-mode .mode-option{
+    font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+  }
+  body.gamer-mode .section-head h2{letter-spacing:-0.5px;}
+  body.gamer-mode .section-head h2::before{content:"> ";color:var(--a1);}
+  body.gamer-mode .hero h1{letter-spacing:-2px;}
+  body.gamer-mode .eyebrow-pill .dot{background:var(--a1);box-shadow:0 0 8px var(--a1);}
+  body.gamer-mode .p-card:hover{box-shadow:0 24px 50px -20px rgba(0,229,255,0.25);}
+  body.gamer-mode .btn-primary:hover{box-shadow:0 10px 30px rgba(0,229,255,0.35);}
+  body.gamer-mode ::selection{background:var(--a1);color:#04121a;}
+
+  /* Gamer-only cursor. Scoped so PM mode keeps the normal system pointer. */
+  body.gamer-mode .p-card,
+  body.gamer-mode .skill-card,
+  body.gamer-mode .edu-card,
+  body.gamer-mode .c-item,
+  body.gamer-mode .btn,
+  body.gamer-mode .pill,
+  body.gamer-mode nav a,
+  body.gamer-mode .mode-option,
+  body.gamer-mode .mini-btn,
+  body.gamer-mode .swatch{
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='8.5' fill='none' stroke='%2300e5ff' stroke-width='1.6'/%3E%3Ccircle cx='14' cy='14' r='1.8' fill='%2300e5ff'/%3E%3Cpath d='M14 1.5v5M14 21.5v5M1.5 14h5M21.5 14h5' stroke='%2300e5ff' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") 14 14, pointer;
+  }
+
+  /* ---------- Arcade ---------- */
+  .arcade-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;position:relative;z-index:1;
+  }
+  .arcade-card{
+    background:var(--bg-2);border:1px solid var(--border);
+    border-radius:20px;padding:22px;
+    display:flex;flex-direction:column;
+  }
+  .arcade-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;}
+  .arcade-head h3{
+    margin:0;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;
+    font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+  }
+  .arcade-head .hint{font-size:11px;color:var(--text-dim);letter-spacing:0.5px;}
+  .doodle-canvas{
+    width:100%;height:300px;display:block;
+    border-radius:14px;border:1px solid var(--border);
+    background:#070a0f;
+    touch-action:none;
+    cursor:crosshair;
+  }
+  .doodle-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;}
+  .swatches{display:flex;gap:8px;margin-right:auto;}
+  .swatch{
+    width:24px;height:24px;border-radius:50%;padding:0;
+    border:2px solid rgba(255,255,255,0.18);cursor:pointer;
+    transition:transform .2s ease, border-color .2s ease;
+  }
+  .swatch:hover{transform:scale(1.12);}
+  .swatch.active{border-color:#fff;transform:scale(1.12);}
+  .mini-btn{
+    font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+    font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:var(--text);background:rgba(255,255,255,0.05);
+    border:1px solid var(--border-hi);border-radius:980px;
+    padding:7px 14px;cursor:pointer;
+    transition:background .2s ease, color .2s ease, transform .2s ease;
+  }
+  .mini-btn:hover{background:rgba(0,229,255,0.12);transform:translateY(-1px);}
+  .mini-btn.primary{background:var(--grad);border-color:transparent;color:#fff;}
+
+  .game-board{
+    position:relative;width:100%;height:300px;
+    border-radius:14px;border:1px solid var(--border);
+    background:
+      radial-gradient(circle at 50% 50%, rgba(0,229,255,0.06), transparent 70%),
+      #070a0f;
+    overflow:hidden;touch-action:manipulation;
+  }
+  .game-target{
+    position:absolute;width:46px;height:46px;border-radius:50%;
+    background:var(--grad);
+    box-shadow:0 0 18px rgba(0,229,255,0.5);
+    border:0;padding:0;cursor:pointer;
+    transform:scale(0);
+    animation:targetPop .18s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes targetPop{to{transform:scale(1);}}
+  .game-overlay{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:12px;text-align:center;
+    background:rgba(5,7,11,0.78);
+  }
+  .game-overlay p{
+    margin:0;font-size:12.5px;color:var(--text-dim);
+    font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+  }
+  .game-bar{
+    display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;
+    font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
+    font-size:11.5px;letter-spacing:1px;text-transform:uppercase;color:var(--text-dim);
+  }
+  .game-bar b{color:var(--text);font-size:13px;}
+
+  @media (max-width:640px){
+    .mode-option{padding:6px 11px;font-size:10px;}
+    .nav-right{gap:10px;}
+    .doodle-canvas,.game-board{height:240px;}
+    .arcade-card{padding:18px;}
+  }
+  @media (max-width:400px){
+    .mode-option{padding:5px 9px;letter-spacing:0.5px;}
+  }
 </style>
 </head>
 <body>
@@ -390,11 +558,19 @@
   <div class="wrap">
     <div class="brand"><img class="mark" src="assets/profile.png" alt="">Karthikeya Burugula</div>
     <div class="links">
-      <a href="#highlights">Highlights</a>
-      <a href="#career">Career</a>
+      <a href="#highlights">Recent Work</a>
       <a href="#skills">Skills</a>
+      <a href="#career">Career</a>
+      <a class="arcade-link" href="#arcade">Arcade</a>
     </div>
-    <a class="cta" href="#contact">Contact</a>
+    <div class="nav-right">
+      <div class="mode-toggle" role="group" aria-label="Site mode">
+        <div class="mode-slider" aria-hidden="true"></div>
+        <button type="button" class="mode-option active" data-mode="pm" aria-pressed="true">PM</button>
+        <button type="button" class="mode-option" data-mode="gamer" aria-pressed="false">Gamer</button>
+      </div>
+      <a class="cta" href="#contact">Contact</a>
+    </div>
   </div>
 </nav>
 
@@ -409,7 +585,7 @@
     with data, customer research, and speed.
   </p>
   <div class="cta-row">
-    <a class="btn btn-primary" href="#highlights">See Highlights</a>
+    <a class="btn btn-primary" href="#highlights">See Recent Work</a>
     <a class="btn btn-ghost" href="#contact">Get in Touch</a>
   </div>
 
@@ -425,8 +601,7 @@
 <section id="highlights">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="section-eyebrow">Impact</div>
-      <h2>Highlights</h2>
+      <h2>Recent Work</h2>
       <p>A few of the 0-to-1 launches and optimizations I've led.</p>
     </div>
 
@@ -469,6 +644,104 @@
             <p>Launched a mobile web ordering platform from scratch, cutting counter order time by up
             to 60% and digitizing QA workflows to improve data accuracy and operational visibility.</p>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="arcade">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Arcade</h2>
+      <p>You switched to gamer mode. Draw something, or see how fast you can ship.</p>
+    </div>
+
+    <div class="arcade-grid">
+      <div class="arcade-card">
+        <div class="arcade-head">
+          <h3>Doodle Pad</h3>
+          <span class="hint">Drag to draw</span>
+        </div>
+        <canvas id="doodleCanvas" class="doodle-canvas"></canvas>
+        <div class="doodle-bar">
+          <div class="swatches" id="doodleSwatches">
+            <button type="button" class="swatch active" data-color="#00e5ff" style="background:#00e5ff" aria-label="Cyan"></button>
+            <button type="button" class="swatch" data-color="#8b5cf6" style="background:#8b5cf6" aria-label="Violet"></button>
+            <button type="button" class="swatch" data-color="#ff2f8a" style="background:#ff2f8a" aria-label="Pink"></button>
+            <button type="button" class="swatch" data-color="#f5f5f7" style="background:#f5f5f7" aria-label="White"></button>
+          </div>
+          <button type="button" class="mini-btn" id="doodleUndo">Undo</button>
+          <button type="button" class="mini-btn" id="doodleClear">Clear</button>
+        </div>
+      </div>
+
+      <div class="arcade-card">
+        <div class="arcade-head">
+          <h3>Ship It</h3>
+          <span class="hint">Hit the targets</span>
+        </div>
+        <div class="game-board" id="gameBoard">
+          <div class="game-overlay" id="gameOverlay">
+            <p>20 seconds. How many can you ship?</p>
+            <button type="button" class="mini-btn primary" id="gameStart">Start</button>
+          </div>
+        </div>
+        <div class="game-bar">
+          <span>Score <b id="gameScore">0</b></span>
+          <span>Time <b id="gameTime">20</b>s</span>
+          <span>Best <b id="gameBest">0</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <h2>Skills</h2>
+    </div>
+    <div class="skills-grid stagger">
+      <div class="skill-card reveal">
+        <h3>Product Management</h3>
+        <div class="tag-row">
+          <span class="pill">Feature Prioritization</span>
+          <span class="pill">PRDs</span>
+          <span class="pill">Stakeholder Management</span>
+          <span class="pill">Agile</span>
+          <span class="pill">Backlog Management</span>
+          <span class="pill">Roadmapping</span>
+          <span class="pill">Product Discovery</span>
+          <span class="pill">User Stories</span>
+          <span class="pill">Product Strategy</span>
+          <span class="pill">Sprint Planning</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Analytics &amp; Data</h3>
+        <div class="tag-row">
+          <span class="pill">KPI &amp; Metrics Analysis</span>
+          <span class="pill">SQL</span>
+          <span class="pill">Product Analytics</span>
+          <span class="pill">Excel</span>
+          <span class="pill">CleverTap</span>
+          <span class="pill">Mixpanel</span>
+          <span class="pill">Appsmith</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <h3>Prototyping &amp; Tools</h3>
+        <div class="tag-row">
+          <span class="pill">Claude &amp; CoWork (Rapid Prototyping)</span>
+          <span class="pill">Figma</span>
+          <span class="pill">Miro</span>
+          <span class="pill">OpenAI (Research)</span>
+          <span class="pill">Gemini (Image Generation)</span>
+          <span class="pill">Whimsical</span>
+          <span class="pill">Claude Code (Building)</span>
+          <span class="pill">JIRA</span>
+          <span class="pill">Notion</span>
         </div>
       </div>
     </div>
@@ -532,57 +805,6 @@
         <div class="c-company">Infometry Inc. · <span>BI Consultancy</span></div>
         <div class="c-date">Feb 2022 - Aug 2022</div>
         <p class="c-line">Optimized reporting dashboards and managed ETL pipelines.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <h2>Skills</h2>
-    </div>
-    <div class="skills-grid stagger">
-      <div class="skill-card reveal">
-        <h3>Product Management</h3>
-        <div class="tag-row">
-          <span class="pill">Feature Prioritization</span>
-          <span class="pill">PRDs</span>
-          <span class="pill">Stakeholder Management</span>
-          <span class="pill">Agile</span>
-          <span class="pill">Backlog Management</span>
-          <span class="pill">Roadmapping</span>
-          <span class="pill">Product Discovery</span>
-          <span class="pill">User Stories</span>
-          <span class="pill">Product Strategy</span>
-          <span class="pill">Sprint Planning</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3>Analytics &amp; Data</h3>
-        <div class="tag-row">
-          <span class="pill">KPI &amp; Metrics Analysis</span>
-          <span class="pill">SQL</span>
-          <span class="pill">Product Analytics</span>
-          <span class="pill">Excel</span>
-          <span class="pill">CleverTap</span>
-          <span class="pill">Mixpanel</span>
-          <span class="pill">Appsmith</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3>Prototyping &amp; Tools</h3>
-        <div class="tag-row">
-          <span class="pill">Claude &amp; CoWork (Rapid Prototyping)</span>
-          <span class="pill">Figma</span>
-          <span class="pill">Miro</span>
-          <span class="pill">OpenAI (Research)</span>
-          <span class="pill">Gemini (Image Generation)</span>
-          <span class="pill">Whimsical</span>
-          <span class="pill">Claude Code (Building)</span>
-          <span class="pill">JIRA</span>
-          <span class="pill">Notion</span>
-        </div>
       </div>
     </div>
   </div>
@@ -699,6 +921,172 @@
       });
     }, {threshold:0.1, rootMargin:'0px 0px -10% 0px'});
     arcObserver.observe(arcWrap);
+  }
+
+  // ---------------------------------------------------------------------
+  // Mode switch: PM (default) / Gamer. Everything gamer-specific hangs off
+  // the body class, so PM mode behaves exactly as it did before.
+  // ---------------------------------------------------------------------
+  const modeButtons = Array.from(document.querySelectorAll('.mode-option'));
+  const setMode = (mode)=>{
+    const gamer = mode === 'gamer';
+    document.body.classList.toggle('gamer-mode', gamer);
+    modeButtons.forEach(btn=>{
+      const on = btn.dataset.mode === mode;
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', String(on));
+    });
+    if(gamer) fitDoodle();
+  };
+  modeButtons.forEach(btn=>{
+    btn.addEventListener('click', ()=> setMode(btn.dataset.mode));
+  });
+
+  // ---------------------------------------------------------------------
+  // Doodle pad. Pointer events cover mouse, touch and pen in one path;
+  // strokes are kept as point lists so undo can just re-render.
+  // ---------------------------------------------------------------------
+  const doodle = document.getElementById('doodleCanvas');
+  const strokes = [];
+  let activeStroke = null;
+  let penColor = '#00e5ff';
+
+  function renderDoodle(){
+    if(!doodle) return;
+    const ctx = doodle.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, doodle.width / dpr, doodle.height / dpr);
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    strokes.forEach(stroke=>{
+      if(stroke.points.length < 2) return;
+      ctx.strokeStyle = stroke.color;
+      ctx.lineWidth = stroke.width;
+      ctx.beginPath();
+      ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+      for(let i = 1; i < stroke.points.length; i++){
+        ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+      }
+      ctx.stroke();
+    });
+  }
+
+  // Canvas is sized in CSS, so the bitmap has to be matched to its box (and
+  // to devicePixelRatio) or strokes land off-cursor and look blurry.
+  function fitDoodle(){
+    if(!doodle) return;
+    const rect = doodle.getBoundingClientRect();
+    if(!rect.width || !rect.height) return;
+    const dpr = window.devicePixelRatio || 1;
+    doodle.width = Math.round(rect.width * dpr);
+    doodle.height = Math.round(rect.height * dpr);
+    renderDoodle();
+  }
+
+  if(doodle){
+    const pointAt = (e)=>{
+      const rect = doodle.getBoundingClientRect();
+      return {x: e.clientX - rect.left, y: e.clientY - rect.top};
+    };
+
+    doodle.addEventListener('pointerdown', (e)=>{
+      doodle.setPointerCapture(e.pointerId);
+      activeStroke = {color: penColor, width: 3, points: [pointAt(e)]};
+      strokes.push(activeStroke);
+    });
+    doodle.addEventListener('pointermove', (e)=>{
+      if(!activeStroke) return;
+      activeStroke.points.push(pointAt(e));
+      renderDoodle();
+    });
+    const endStroke = ()=>{ activeStroke = null; };
+    doodle.addEventListener('pointerup', endStroke);
+    doodle.addEventListener('pointercancel', endStroke);
+    doodle.addEventListener('pointerleave', endStroke);
+
+    document.getElementById('doodleSwatches').addEventListener('click', (e)=>{
+      const swatch = e.target.closest('.swatch');
+      if(!swatch) return;
+      penColor = swatch.dataset.color;
+      document.querySelectorAll('.swatch').forEach(s=> s.classList.toggle('active', s === swatch));
+    });
+    document.getElementById('doodleUndo').addEventListener('click', ()=>{
+      strokes.pop();
+      renderDoodle();
+    });
+    document.getElementById('doodleClear').addEventListener('click', ()=>{
+      strokes.length = 0;
+      renderDoodle();
+    });
+    window.addEventListener('resize', fitDoodle);
+  }
+
+  // ---------------------------------------------------------------------
+  // "Ship It" - 20s target-tapping game. pointerdown (not click) so it
+  // responds on the first touch on mobile.
+  // ---------------------------------------------------------------------
+  const board = document.getElementById('gameBoard');
+  if(board){
+    const overlay = document.getElementById('gameOverlay');
+    const scoreEl = document.getElementById('gameScore');
+    const timeEl = document.getElementById('gameTime');
+    const bestEl = document.getElementById('gameBest');
+    const startBtn = document.getElementById('gameStart');
+    const ROUND = 20;
+    const TARGET = 46;
+    let score = 0, timeLeft = ROUND, timer = null, target = null, best = 0;
+
+    try{
+      best = parseInt(localStorage.getItem('shipItBest') || '0', 10) || 0;
+    }catch(err){ best = 0; }
+    bestEl.textContent = best;
+
+    function spawn(){
+      if(target) target.remove();
+      target = document.createElement('button');
+      target.type = 'button';
+      target.className = 'game-target';
+      target.setAttribute('aria-label', 'Ship it');
+      const rect = board.getBoundingClientRect();
+      target.style.left = Math.random() * Math.max(0, rect.width - TARGET) + 'px';
+      target.style.top = Math.random() * Math.max(0, rect.height - TARGET) + 'px';
+      target.addEventListener('pointerdown', (e)=>{
+        e.preventDefault();
+        score++;
+        scoreEl.textContent = score;
+        spawn();
+      });
+      board.appendChild(target);
+    }
+
+    function stop(){
+      clearInterval(timer);
+      timer = null;
+      if(target){ target.remove(); target = null; }
+      if(score > best){
+        best = score;
+        bestEl.textContent = best;
+        try{ localStorage.setItem('shipItBest', String(best)); }catch(err){}
+      }
+      overlay.querySelector('p').textContent = 'Shipped ' + score + '. Go again?';
+      startBtn.textContent = 'Replay';
+      overlay.style.display = '';
+    }
+
+    startBtn.addEventListener('click', ()=>{
+      score = 0;
+      timeLeft = ROUND;
+      scoreEl.textContent = '0';
+      timeEl.textContent = ROUND;
+      overlay.style.display = 'none';
+      spawn();
+      timer = setInterval(()=>{
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        if(timeLeft <= 0) stop();
+      }, 1000);
+    });
   }
 </script>
 
