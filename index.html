@@ -1165,6 +1165,12 @@
   const SPARK_COLORS = ['0,229,255', '59,157,255', '139,92,246', '255,47,138'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
   let pointer = null, head = null, lastMoveTs = 0;
+  let lastScrollY = 0;
+  // Touch gestures are short - a scroll flick is often under 300ms of
+  // contact - so on mobile the ribbon is given longer before it starts
+  // retracting, and it drains at half the rate. Desktop keeps its old feel.
+  const IDLE_MS = coarsePointer ? 190 : 70;
+  const DRAIN_PER_FRAME = coarsePointer ? 1 : 2;
 
   function sizeTrail(){
     if(!trail) return;
@@ -1212,6 +1218,24 @@
     pointer = null;
   }
 
+  // After a flick the finger is gone but the page keeps moving, so carry the
+  // ribbon along with the scroll. Without this the trail dies the instant
+  // you let go, which is most of a normal scroll. Mobile only - the web
+  // behaviour is deliberately left alone.
+  function onTrailScroll(){
+    if(!coarsePointer || !head) return;
+    const y = window.scrollY;
+    const dy = y - lastScrollY;
+    lastScrollY = y;
+    if(pointer || Math.abs(dy) <= 0.5) return;
+    const ny = head.y - dy;
+    // Once the trail would run off-screen, stop following - otherwise it
+    // pins itself against the edge and collapses into a blob.
+    if(ny < 8 || ny > window.innerHeight - 8) return;
+    pointer = {x: head.x, y: ny};
+    lastMoveTs = performance.now();
+  }
+
   // Catmull-Rom keeps the curve passing through every sampled point, so
   // direction changes stay round instead of kinking.
   function spline(p0, p1, p2, p3, t){
@@ -1236,8 +1260,13 @@
       const dx = pointer.x - head.x, dy = pointer.y - head.y;
       head.x += dx * ease;
       head.y += dy * ease;
-      trailPoints.push({x: head.x, y: head.y});
-      if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
+      // Only extend the ribbon while the pointer is live. If it kept
+      // pushing once idle, the push would cancel out the drain below and
+      // a stub would hang around forever.
+      if(performance.now() - lastMoveTs <= IDLE_MS){
+        trailPoints.push({x: head.x, y: head.y});
+        if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
+      }
 
       const speed = Math.hypot(dx, dy);
       if(speed > 4 && sparks.length < SPARK_CAP){
@@ -1364,10 +1393,9 @@
     // lifted. Keying off idle time rather than head/pointer convergence
     // matters when frames outpace pointer sampling (120Hz screens), where
     // the head catches up mid-gesture and the ribbon would drain early.
-    const idle = performance.now() - lastMoveTs > 70;
+    const idle = performance.now() - lastMoveTs > IDLE_MS;
     if((idle || !pointer) && trailPoints.length){
-      trailPoints.shift();
-      if(trailPoints.length) trailPoints.shift();
+      for(let d = 0; d < DRAIN_PER_FRAME && trailPoints.length; d++) trailPoints.shift();
     }
 
     trailRAF = requestAnimationFrame(drawTrail);
@@ -1382,6 +1410,8 @@
     window.addEventListener('touchmove', onTouchMove, {passive:true});
     window.addEventListener('touchend', onTouchEnd, {passive:true});
     window.addEventListener('touchcancel', onTouchEnd, {passive:true});
+    lastScrollY = window.scrollY;
+    window.addEventListener('scroll', onTrailScroll, {passive:true});
     window.addEventListener('resize', sizeTrail);
     trailRAF = requestAnimationFrame(drawTrail);
   }
@@ -1393,6 +1423,7 @@
     window.removeEventListener('touchmove', onTouchMove);
     window.removeEventListener('touchend', onTouchEnd);
     window.removeEventListener('touchcancel', onTouchEnd);
+    window.removeEventListener('scroll', onTrailScroll);
     window.removeEventListener('resize', sizeTrail);
     trailPoints.length = 0;
     sparks.length = 0;
