@@ -472,7 +472,7 @@
   body.gamer-mode .mode-option,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Ccircle cx='18' cy='18' r='11' fill='none' stroke='%2300e5ff' stroke-width='1.9'/%3E%3Ccircle cx='18' cy='18' r='15.5' fill='none' stroke='%238b5cf6' stroke-width='1.1' opacity='.55'/%3E%3Ccircle cx='18' cy='18' r='2.4' fill='%2300e5ff'/%3E%3Cpath d='M18 1.5v6.5M18 28v6.5M1.5 18h6.5M28 18h6.5' stroke='%2300e5ff' stroke-width='1.9' stroke-linecap='round'/%3E%3C/svg%3E") 18 18, pointer;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%2300e5ff' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%238b5cf6' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%2300e5ff'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%2300e5ff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
   }
 
   /* ---------- Arcade ---------- */
@@ -512,7 +512,7 @@
   }
   /* Sniper scope reticle, only over the shooting board */
   #shootBoard, #shootBoard .game-target{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='66' height='66' viewBox='0 0 66 66'%3E%3Ccircle cx='33' cy='33' r='25' fill='none' stroke='%2300e5ff' stroke-width='1.8' opacity='.95'/%3E%3Ccircle cx='33' cy='33' r='31' fill='none' stroke='%238b5cf6' stroke-width='1.1' opacity='.5'/%3E%3Ccircle cx='33' cy='33' r='15' fill='none' stroke='%2300e5ff' stroke-width='1.1' opacity='.55'/%3E%3Ccircle cx='33' cy='33' r='2.4' fill='%2300e5ff'/%3E%3Cpath d='M33 2v15M33 49v15M2 33h15M49 33h15' stroke='%2300e5ff' stroke-width='1.8' stroke-linecap='round'/%3E%3Cpath d='M26 33h3.5M36.5 33h3.5M33 26v3.5M33 36.5v3.5' stroke='%2300e5ff' stroke-width='1.1' opacity='.7'/%3E%3C/svg%3E") 33 33, crosshair;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%2300e5ff' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%238b5cf6' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%2300e5ff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%2300e5ff' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%2300e5ff' stroke-width='1' opacity='.7'/%3E%3C/svg%3E") 28 28, crosshair;
   }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
@@ -1141,12 +1141,16 @@
   // only, and only for real hovering pointers - phones have no cursor.
   // ---------------------------------------------------------------------
   const trail = document.getElementById('trailCanvas');
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  // Phones have no hovering cursor, so the ribbon follows the finger while
+  // it is down instead. Coarse pointers also get a lighter build of the
+  // effect, since they are usually the weaker hardware.
+  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
   const trailPoints = [];
   const sparks = [];
   const TRAIL_LEN = 40;
   const HEAD_W = 15;
-  const SUB = 5;             // spline samples per source point
+  const SUB = coarsePointer ? 9 : 14;   // spline samples per source point
+  const SPARK_CAP = coarsePointer ? 70 : 140;
   // Tail -> head. Opaque all the way: the ribbon thins out rather than
   // fading out, which is what makes it read as solid/milky instead of a
   // stack of translucent strokes.
@@ -1160,7 +1164,7 @@
   ];
   const SPARK_COLORS = ['0,229,255', '59,157,255', '139,92,246', '255,47,138'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
-  let pointer = null, head = null;
+  let pointer = null, head = null, lastMoveTs = 0;
 
   function sizeTrail(){
     if(!trail) return;
@@ -1174,6 +1178,24 @@
   function onTrailMove(e){
     pointer = {x: e.clientX, y: e.clientY};
     if(!head) head = {x: e.clientX, y: e.clientY};
+    lastMoveTs = performance.now();
+  }
+
+  // Touch has no hover, so a press starts the ribbon right at the finger
+  // rather than easing in from wherever it was last left.
+  function onTrailDown(e){
+    if(e.pointerType === 'mouse') return;
+    pointer = {x: e.clientX, y: e.clientY};
+    head = {x: e.clientX, y: e.clientY};
+    trailPoints.length = 0;
+    lastMoveTs = performance.now();
+  }
+
+  // Lifting off clears the target so the ribbon drains instead of leaving a
+  // stub flickering at the last touch point.
+  function onTrailUp(e){
+    if(e.pointerType === 'mouse') return;
+    pointer = null;
   }
 
   // Catmull-Rom keeps the curve passing through every sampled point, so
@@ -1204,7 +1226,7 @@
       if(trailPoints.length > TRAIL_LEN) trailPoints.shift();
 
       const speed = Math.hypot(dx, dy);
-      if(speed > 4 && sparks.length < 140){
+      if(speed > 4 && sparks.length < SPARK_CAP){
         const n = speed > 34 ? 4 : (speed > 14 ? 3 : 2);
         for(let i = 0; i < n; i++){
           const ang = Math.random() * Math.PI * 2;
@@ -1217,7 +1239,7 @@
             vy: Math.sin(ang) * spd - dy * 0.05 - 0.2,
             life: 1,
             decay: 0.013 + Math.random() * 0.012,
-            size: (1.1 + Math.random() * 2.6) * (0.55 + depth * 1.1),
+            size: (0.75 + Math.random() * 1.75) * (0.55 + depth * 1.1),
             depth: depth,
             color: SPARK_COLORS[(Math.random() * SPARK_COLORS.length) | 0]
           });
@@ -1228,18 +1250,36 @@
 
     const pts = trailPoints;
     if(pts.length > 3){
-      // 1) Resample the raw path into a dense smooth curve.
+      // 1) Soften the raw polyline first. The spline passes exactly through
+      //    its inputs, so a hard corner in the source stays a hard corner -
+      //    averaging each point with its neighbours rounds the turn before
+      //    the curve is fitted. Two passes kills the visible flat runs.
+      let base = pts;
+      for(let pass = 0; pass < 2; pass++){
+        const sm = [];
+        for(let i = 0; i < base.length; i++){
+          const p = base[i];
+          const pa = base[i - 1] || p;
+          const pb = base[i + 1] || p;
+          sm.push({x: (pa.x + p.x * 2 + pb.x) / 4, y: (pa.y + p.y * 2 + pb.y) / 4});
+        }
+        // Pin the head so the ribbon still ends exactly at the cursor.
+        sm[sm.length - 1] = base[base.length - 1];
+        base = sm;
+      }
+
+      // 2) Resample into a dense smooth curve.
       const samples = [];
-      for(let i = 0; i < pts.length - 1; i++){
-        const p0 = pts[i - 1] || pts[i];
-        const p1 = pts[i];
-        const p2 = pts[i + 1];
-        const p3 = pts[i + 2] || pts[i + 1];
+      for(let i = 0; i < base.length - 1; i++){
+        const p0 = base[i - 1] || base[i];
+        const p1 = base[i];
+        const p2 = base[i + 1];
+        const p3 = base[i + 2] || base[i + 1];
         for(let s = 0; s < SUB; s++) samples.push(spline(p0, p1, p2, p3, s / SUB));
       }
-      samples.push(pts[pts.length - 1]);
+      samples.push(base[base.length - 1]);
 
-      // 2) Walk the curve building both edges of a tapered ribbon, then
+      // 3) Walk the curve building both edges of a tapered ribbon, then
       //    fill it as ONE shape. A single fill means no overlapping alpha
       //    and no per-segment caps, which is what removes the beading that
       //    looked like a string of cursors.
@@ -1267,15 +1307,15 @@
       for(let i = n - 1; i >= 0; i--) trailCtx.lineTo(rightEdge[i].x, rightEdge[i].y);
       trailCtx.closePath();
       trailCtx.fillStyle = grad;
-      trailCtx.shadowColor = 'rgba(0,229,255,0.4)';
-      trailCtx.shadowBlur = 9;
+      trailCtx.shadowColor = 'rgba(0,229,255,0.35)';
+      trailCtx.shadowBlur = 5;
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
 
       // Solid round tip so the head merges into the ribbon seamlessly.
       trailCtx.fillStyle = 'rgba(150,245,255,1)';
       trailCtx.beginPath();
-      trailCtx.arc(b.x, b.y, HEAD_W * 0.5, 0, Math.PI * 2);
+      trailCtx.arc(b.x, b.y, HEAD_W * 0.42, 0, Math.PI * 2);
       trailCtx.fill();
     }
 
@@ -1291,7 +1331,7 @@
 
       const eased = s.life * s.life;
       const r = Math.max(0.3, s.size * (0.35 + eased * 0.95));
-      trailCtx.globalAlpha = Math.max(0, eased) * (0.55 + s.depth * 0.45);
+      trailCtx.globalAlpha = Math.max(0, eased) * (0.72 + s.depth * 0.28);
       if(s.depth > 0.5){
         trailCtx.shadowBlur = 14 * s.depth;
         trailCtx.shadowColor = 'rgba(' + s.color + ',0.9)';
@@ -1306,8 +1346,12 @@
     trailCtx.globalAlpha = 1;
     trailCtx.shadowBlur = 0;
 
-    // Once the head has caught up, retract the ribbon into the cursor.
-    if(pointer && head && Math.hypot(pointer.x - head.x, pointer.y - head.y) < 0.5 && trailPoints.length){
+    // Retract only once the pointer has actually gone quiet, or the finger
+    // lifted. Keying off idle time rather than head/pointer convergence
+    // matters when frames outpace pointer sampling (120Hz screens), where
+    // the head catches up mid-gesture and the ribbon would drain early.
+    const idle = performance.now() - lastMoveTs > 70;
+    if((idle || !pointer) && trailPoints.length){
       trailPoints.shift();
       if(trailPoints.length) trailPoints.shift();
     }
@@ -1316,10 +1360,13 @@
   }
 
   function startTrail(){
-    if(!trail || !finePointer || trailRAF) return;
+    if(!trail || trailRAF) return;
     sizeTrail();
     trailLastTs = null;
     window.addEventListener('pointermove', onTrailMove, {passive:true});
+    window.addEventListener('pointerdown', onTrailDown, {passive:true});
+    window.addEventListener('pointerup', onTrailUp, {passive:true});
+    window.addEventListener('pointercancel', onTrailUp, {passive:true});
     window.addEventListener('resize', sizeTrail);
     trailRAF = requestAnimationFrame(drawTrail);
   }
@@ -1327,6 +1374,9 @@
   function stopTrail(){
     if(trailRAF){ cancelAnimationFrame(trailRAF); trailRAF = null; }
     window.removeEventListener('pointermove', onTrailMove);
+    window.removeEventListener('pointerdown', onTrailDown);
+    window.removeEventListener('pointerup', onTrailUp);
+    window.removeEventListener('pointercancel', onTrailUp);
     window.removeEventListener('resize', sizeTrail);
     trailPoints.length = 0;
     sparks.length = 0;
