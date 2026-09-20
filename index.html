@@ -1175,26 +1175,40 @@
     trailCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  // Mouse is driven by pointer events...
   function onTrailMove(e){
+    if(e.pointerType && e.pointerType !== 'mouse') return;
     pointer = {x: e.clientX, y: e.clientY};
     if(!head) head = {x: e.clientX, y: e.clientY};
     lastMoveTs = performance.now();
   }
 
-  // Touch has no hover, so a press starts the ribbon right at the finger
-  // rather than easing in from wherever it was last left.
-  function onTrailDown(e){
-    if(e.pointerType === 'mouse') return;
-    pointer = {x: e.clientX, y: e.clientY};
-    head = {x: e.clientX, y: e.clientY};
+  // ...but touch is driven by touch events, deliberately. Once a finger
+  // starts dragging, the browser claims the gesture for scrolling and fires
+  // pointercancel - pointermove then stops arriving, which made the ribbon
+  // vanish the moment you moved. Passive touch listeners keep firing right
+  // through a scroll, so the trail can follow the finger either way.
+  function onTouchStart(e){
+    const t = e.touches[0];
+    if(!t) return;
+    pointer = {x: t.clientX, y: t.clientY};
+    head = {x: t.clientX, y: t.clientY};
     trailPoints.length = 0;
     lastMoveTs = performance.now();
   }
 
-  // Lifting off clears the target so the ribbon drains instead of leaving a
-  // stub flickering at the last touch point.
-  function onTrailUp(e){
-    if(e.pointerType === 'mouse') return;
+  function onTouchMove(e){
+    const t = e.touches[0];
+    if(!t) return;
+    pointer = {x: t.clientX, y: t.clientY};
+    if(!head) head = {x: t.clientX, y: t.clientY};
+    lastMoveTs = performance.now();
+  }
+
+  // Only clear once the last finger is up, so the ribbon drains instead of
+  // leaving a stub at the final touch point.
+  function onTouchEnd(e){
+    if(e.touches && e.touches.length) return;
     pointer = null;
   }
 
@@ -1364,9 +1378,10 @@
     sizeTrail();
     trailLastTs = null;
     window.addEventListener('pointermove', onTrailMove, {passive:true});
-    window.addEventListener('pointerdown', onTrailDown, {passive:true});
-    window.addEventListener('pointerup', onTrailUp, {passive:true});
-    window.addEventListener('pointercancel', onTrailUp, {passive:true});
+    window.addEventListener('touchstart', onTouchStart, {passive:true});
+    window.addEventListener('touchmove', onTouchMove, {passive:true});
+    window.addEventListener('touchend', onTouchEnd, {passive:true});
+    window.addEventListener('touchcancel', onTouchEnd, {passive:true});
     window.addEventListener('resize', sizeTrail);
     trailRAF = requestAnimationFrame(drawTrail);
   }
@@ -1374,9 +1389,10 @@
   function stopTrail(){
     if(trailRAF){ cancelAnimationFrame(trailRAF); trailRAF = null; }
     window.removeEventListener('pointermove', onTrailMove);
-    window.removeEventListener('pointerdown', onTrailDown);
-    window.removeEventListener('pointerup', onTrailUp);
-    window.removeEventListener('pointercancel', onTrailUp);
+    window.removeEventListener('touchstart', onTouchStart);
+    window.removeEventListener('touchmove', onTouchMove);
+    window.removeEventListener('touchend', onTouchEnd);
+    window.removeEventListener('touchcancel', onTouchEnd);
     window.removeEventListener('resize', sizeTrail);
     trailPoints.length = 0;
     sparks.length = 0;
