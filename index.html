@@ -286,7 +286,7 @@
   /* ---------- Career (arc timeline) ---------- */
   .career-arc-wrap{
     max-width:820px;margin:0 auto;position:relative;z-index:1;
-    height:680px;
+    height:800px;
   }
   .arc-svg{position:absolute;top:0;left:0;width:260px;height:100%;overflow:visible;}
   .arc-node{filter:drop-shadow(0 0 10px currentColor);transform-box:fill-box;transform-origin:center;}
@@ -307,6 +307,7 @@
   .c-company span{color:var(--a2);}
   .c-date{color:var(--text-dim);font-size:12.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;}
   .c-line{font-size:14.5px;color:var(--text-dim);margin:0;max-width:400px;}
+  .c-sub + .c-sub{margin-top:14px;}
 
   @media (max-width:700px){
     .career-arc-wrap{
@@ -534,11 +535,10 @@
         </defs>
         <path class="arc-path" d="M242.9,60 A300,300 0 0,0 20,350 A300,300 0 0,0 242.9,640"
               fill="none" stroke="url(#arcGrad)" stroke-width="4" stroke-linecap="round"/>
-        <circle class="arc-node" data-i="0" cx="242.9" cy="60"  r="9" style="color:#ff5f3a" fill="#ff5f3a"/>
-        <circle class="arc-node" data-i="1" cx="57.4"  cy="205" r="9" style="color:#ff4570" fill="#ff4570"/>
-        <circle class="arc-node" data-i="2" cx="20"    cy="350" r="9" style="color:#ff2f8a" fill="#ff2f8a"/>
-        <circle class="arc-node" data-i="3" cx="57.4"  cy="495" r="9" style="color:#d13bb8" fill="#d13bb8"/>
-        <circle class="arc-node" data-i="4" cx="242.9" cy="640" r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
+        <circle class="arc-node" data-i="0" cx="242.9" cy="60"     r="9" style="color:#ff5f3a" fill="#ff5f3a"/>
+        <circle class="arc-node" data-i="1" cx="36"    cy="253.33" r="9" style="color:#ff4570" fill="#ff4570"/>
+        <circle class="arc-node" data-i="2" cx="36"    cy="446.67" r="9" style="color:#d13bb8" fill="#d13bb8"/>
+        <circle class="arc-node" data-i="3" cx="242.9" cy="640"    r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
       </svg>
 
       <div class="arc-line-mobile"></div>
@@ -549,25 +549,25 @@
         <div class="c-date">Jun 2024 - Present</div>
         <p class="c-line">Leading 0-to-1 PMS launches and onboarding growth for a 200K+ user fintech platform.</p>
       </div>
-      <div class="c-item" data-i="1" style="top:29.29%; --dot-color:#ff4570">
+      <div class="c-item" data-i="1" style="top:36.19%; --dot-color:#ff4570">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Associate Product Manager</div></div>
         <div class="c-company">Sprink.Online · <span>B2B Meals Supply</span></div>
         <div class="c-date">Oct 2023 - Jun 2024</div>
         <p class="c-line">Launched a 0-to-1 B2B mobile ordering and collections platform.</p>
       </div>
-      <div class="c-item" data-i="2" style="top:50%; --dot-color:#ff2f8a">
-        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Intern</div></div>
-        <div class="c-company">Upliance.ai · <span>Smart Kitchen Appliances</span></div>
-        <div class="c-date">Aug 2023 - Oct 2023</div>
-        <p class="c-line">User research and problem framing for an MVP kitchen appliance product.</p>
+      <div class="c-item" data-i="2" style="top:63.81%; --dot-color:#d13bb8">
+        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Internships</div></div>
+        <div class="c-date">Mar 2023 - Oct 2023</div>
+        <div class="c-sub">
+          <div class="c-company">Upliance.ai · <span>Smart Kitchen Appliances</span></div>
+          <p class="c-line">User research and problem framing for an MVP kitchen appliance product.</p>
+        </div>
+        <div class="c-sub">
+          <div class="c-company">Accredian · <span>Upskilling Programs</span></div>
+          <p class="c-line">Built and scaled a ~600-member product learning community.</p>
+        </div>
       </div>
-      <div class="c-item" data-i="3" style="top:70.71%; --dot-color:#d13bb8">
-        <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Intern</div></div>
-        <div class="c-company">Accredian · <span>Upskilling Programs</span></div>
-        <div class="c-date">Mar 2023 - Aug 2023</div>
-        <p class="c-line">Built and scaled a ~600-member product learning community.</p>
-      </div>
-      <div class="c-item" data-i="4" style="top:91.43%; --dot-color:#8b5cf6">
+      <div class="c-item" data-i="3" style="top:91.43%; --dot-color:#8b5cf6">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">BI Developer</div></div>
         <div class="c-company">Infometry Inc. · <span>BI Consultancy</span></div>
         <div class="c-date">Feb 2022 - Aug 2022</div>
