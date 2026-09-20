@@ -184,6 +184,37 @@
     position:relative;overflow:hidden;
     transition:transform .5s cubic-bezier(0.16,1,0.3,1), border-color .35s ease, background .35s ease, box-shadow .5s cubic-bezier(0.16,1,0.3,1);
   }
+  /* Orbit reveal: cards swing in along a circular arc (rotate/translate/counter-rotate
+     around the card's own center) instead of the generic straight-line .reveal, so they
+     appear to revolve into place on scroll down and reverse on scroll up. Scoped to
+     .orbit-card only - #highlights' 4 bento cards - and does not touch .reveal/.stagger. */
+  .orbit-card{
+    opacity:0;
+    transform-origin:center center;
+    transform:rotate(var(--orbit-deg,-45deg)) translateX(var(--orbit-dist,200px)) rotate(calc(var(--orbit-deg,-45deg) * -1)) scale(0.5);
+    filter:blur(10px);
+    transition:
+      opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+      transform 0.9s cubic-bezier(0.16,1,0.3,1),
+      filter 0.9s cubic-bezier(0.16,1,0.3,1);
+    transition-delay:var(--delay,0s);
+    will-change:transform, opacity, filter;
+  }
+  .orbit-card.visible{
+    opacity:1;
+    filter:blur(0);
+    transform:rotate(0deg) translateX(0) rotate(0deg) scale(1);
+  }
+  .bento > .orbit-card:nth-child(1){--orbit-deg:-38deg;--orbit-dist:240px;}
+  .bento > .orbit-card:nth-child(2){--orbit-deg:64deg;--orbit-dist:170px;}
+  .bento > .orbit-card:nth-child(3){--orbit-deg:-64deg;--orbit-dist:170px;}
+  .bento > .orbit-card:nth-child(4){--orbit-deg:38deg;--orbit-dist:240px;}
+  @media (max-width:640px){
+    .bento > .orbit-card:nth-child(1){--orbit-dist:120px;}
+    .bento > .orbit-card:nth-child(2){--orbit-dist:90px;}
+    .bento > .orbit-card:nth-child(3){--orbit-dist:90px;}
+    .bento > .orbit-card:nth-child(4){--orbit-dist:120px;}
+  }
   .p-card:hover{transform:translateY(-8px) scale(1.015);border-color:var(--border-hi);background:var(--bg-3);box-shadow:0 24px 50px -20px rgba(255,47,138,0.22);}
   .p-card.big{grid-column:span 6;display:flex;align-items:center;gap:40px;flex-wrap:wrap;}
   .p-card .stat{font-size:50px;font-weight:800;letter-spacing:-1.5px;margin-bottom:6px;}
@@ -401,7 +432,7 @@
     </div>
 
     <div class="bento stagger">
-      <div class="p-card big reveal">
+      <div class="p-card big orbit-card">
         <div>
           <span class="tag">0 → 1</span>
           <h3>India's First Daily PMS Portfolio Valuation Tracker</h3>
@@ -411,21 +442,21 @@
         </div>
       </div>
 
-      <div class="p-card reveal">
+      <div class="p-card orbit-card">
         <div class="stat grad-text">45%</div>
         <h3>Faster Client Activation</h3>
         <p>Led a 5-engineer pod to redesign onboarding for a 200K+ user fintech platform, cutting
         time-to-activation while sustaining 400+ daily activations and full BSE &amp; SEBI compliance.</p>
       </div>
 
-      <div class="p-card reveal">
+      <div class="p-card orbit-card">
         <div class="stat grad-text">+119%</div>
         <h3>SIF Monthly Active Users</h3>
         <p>Grew SIF adoption through data-driven optimization of the end-to-end investment
         experience.</p>
       </div>
 
-      <div class="p-card big reveal">
+      <div class="p-card big orbit-card">
         <div>
           <span class="tag">0 → 1</span>
           <h3>B2B Ordering &amp; Collections Platform - Sprink.Online</h3>
@@ -620,7 +651,7 @@
       entry.target.classList.toggle('visible', entry.isIntersecting);
     });
   }, {threshold:0.15, rootMargin:'0px 0px -10% 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+  document.querySelectorAll('.reveal, .orbit-card').forEach(el=>revealObserver.observe(el));
 
   // Career arc: draws in the moment the section arrives, reverses if you scroll
   // back above it. Uses the same visible-class + CSS-transition approach as
