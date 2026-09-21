@@ -691,23 +691,64 @@
   }
 
   /* ---------- Ship It hit pop ---------- */
+  /* White-hot core that blows out for a frame, so the hit reads instantly. */
+  .hit-flash{
+    position:absolute;pointer-events:none;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,0.98) 0%,rgba(141,243,255,0.8) 34%,rgba(0,229,255,0.35) 58%,rgba(139,92,246,0) 74%);
+    transform:translate(-50%,-50%) scale(0.3);
+    animation:hitFlash .36s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes hitFlash{
+    35%{opacity:1;}
+    to{transform:translate(-50%,-50%) scale(2.1);opacity:0;}
+  }
   .hit-ring{
     position:absolute;pointer-events:none;border-radius:50%;
-    border:2px solid rgba(0,229,255,0.95);
-    transform:translate(-50%,-50%) scale(0.5);
-    animation:hitRing .42s cubic-bezier(0.16,1,0.3,1) forwards;
+    border:3px solid rgba(0,229,255,0.95);
+    box-shadow:0 0 20px rgba(0,229,255,0.8), inset 0 0 14px rgba(0,229,255,0.45);
+    transform:translate(-50%,-50%) scale(0.35);
+    animation:hitRing .58s cubic-bezier(0.16,1,0.3,1) forwards;
   }
-  @keyframes hitRing{to{transform:translate(-50%,-50%) scale(2.2);opacity:0;}}
+  @keyframes hitRing{
+    to{transform:translate(-50%,-50%) scale(3.4);opacity:0;border-color:rgba(139,92,246,0.3);}
+  }
+  /* Second, faster shockwave chasing the first one out. */
+  .hit-ring.hit-ring-2{
+    border-width:2px;border-color:rgba(255,255,255,0.9);
+    box-shadow:0 0 16px rgba(255,255,255,0.55);
+    animation-duration:.44s;animation-delay:.08s;
+  }
   .hit-spark{
     position:absolute;pointer-events:none;
-    width:6px;height:6px;border-radius:50%;
-    background:#8df3ff;box-shadow:0 0 10px var(--a1);
+    width:8px;height:8px;border-radius:50%;
+    background:#8df3ff;box-shadow:0 0 14px var(--a1),0 0 28px var(--a1);
     transform:translate(-50%,-50%);
-    animation:sparkFly .45s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation:hitSparkFly .6s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes hitSparkFly{
+    to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.15);opacity:0;}
+  }
+  .hit-plus{
+    position:absolute;pointer-events:none;
+    transform:translate(-50%,-50%);
+    font:700 15px ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    color:#8df3ff;text-shadow:0 0 12px rgba(0,229,255,0.95);
+    animation:hitPlus .62s cubic-bezier(0.16,1,0.3,1) forwards;
+  }
+  @keyframes hitPlus{
+    to{transform:translate(-50%,calc(-50% - 36px));opacity:0;}
+  }
+  /* The whole board pulses once on impact. */
+  .board-hit{animation:boardHit .3s ease-out;}
+  @keyframes boardHit{
+    0%{box-shadow:inset 0 0 0 0 rgba(0,229,255,0);}
+    28%{box-shadow:inset 0 0 44px 0 rgba(0,229,255,0.4);}
+    to{box-shadow:inset 0 0 0 0 rgba(0,229,255,0);}
   }
 
   @media (prefers-reduced-motion: reduce){
     body.gamer-mode::before{animation:none;}
+    .board-hit{animation:none;}
     body.gamer-mode .reveal.visible,
     body.gamer-mode .orbit-card.visible{animation:none;}
   }
@@ -724,7 +765,7 @@
       <a href="#career">Career</a>
       <a class="arcade-link" href="#arcade">Arcade</a>
     </div>
-    <a class="cta" href="#contact">Contact</a>
+    <a class="cta" href="tel:+918296114865" aria-label="Call +91 8296114865">Contact</a>
   </div>
 </nav>
 
@@ -747,7 +788,7 @@
   </p>
   <div class="cta-row">
     <a class="btn btn-primary" href="#highlights">See Recent Work</a>
-    <a class="btn btn-ghost" href="#contact">Get in Touch</a>
+    <a class="btn btn-ghost" href="tel:+918296114865" aria-label="Call +91 8296114865">Get in Touch</a>
   </div>
 
   <div class="hero-photo-wrap">
@@ -1453,31 +1494,52 @@
     const sizeFor  = (s)=> Math.max(24, 46 - s * 1.4);
     const lifeFor  = (s)=> Math.max(420, 1400 - s * 70);
 
-    // Ring + shrapnel at the point of impact, cleaned up on animation end.
+    // Flash + twin shockwaves + shrapnel + a floating score bump, so a hit
+    // is impossible to miss. Everything is cleaned up on animation end.
     function popAt(cx, cy, size){
+      const place = (el, w, h)=>{
+        el.style.left = cx + 'px';
+        el.style.top = cy + 'px';
+        if(w){ el.style.width = w + 'px'; el.style.height = h + 'px'; }
+        shootBoard.appendChild(el);
+        el.addEventListener('animationend', ()=> el.remove());
+        setTimeout(()=> el.remove(), 1400);
+      };
+
+      const flash = document.createElement('span');
+      flash.className = 'hit-flash';
+      place(flash, size * 2.2, size * 2.2);
+
       const ring = document.createElement('span');
       ring.className = 'hit-ring';
-      ring.style.left = cx + 'px';
-      ring.style.top = cy + 'px';
-      ring.style.width = size + 'px';
-      ring.style.height = size + 'px';
-      shootBoard.appendChild(ring);
-      ring.addEventListener('animationend', ()=> ring.remove());
-      setTimeout(()=> ring.remove(), 1200);
+      place(ring, size, size);
 
-      for(let i = 0; i < 8; i++){
-        const ang = (Math.PI * 2 * i) / 8 + Math.random() * 0.5;
-        const dist = 26 + Math.random() * 26;
+      const ring2 = document.createElement('span');
+      ring2.className = 'hit-ring hit-ring-2';
+      place(ring2, size * 0.6, size * 0.6);
+
+      const plus = document.createElement('span');
+      plus.className = 'hit-plus';
+      plus.textContent = '+1';
+      place(plus);
+
+      const N = 14;
+      for(let i = 0; i < N; i++){
+        const ang = (Math.PI * 2 * i) / N + Math.random() * 0.4;
+        const dist = 46 + Math.random() * 48;
         const sp = document.createElement('span');
         sp.className = 'hit-spark';
-        sp.style.left = cx + 'px';
-        sp.style.top = cy + 'px';
         sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
         sp.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
-        shootBoard.appendChild(sp);
-        sp.addEventListener('animationend', ()=> sp.remove());
-        setTimeout(()=> sp.remove(), 1200);
+        const px = 5 + Math.random() * 6;
+        place(sp, px, px);
       }
+
+      // One pulse across the board itself. Re-trigger by removing the class
+      // and forcing a reflow, otherwise rapid hits only animate the first.
+      shootBoard.classList.remove('board-hit');
+      void shootBoard.offsetWidth;
+      shootBoard.classList.add('board-hit');
     }
 
     function spawn(){
@@ -1549,6 +1611,10 @@
     let W = 0, viewH = 0;
     let blocks = [], current = null, score = 0, best = 0, over = false, raf = null, lastTs = null;
     let falling = [];   // sliced-off pieces tumbling out of frame
+    let pops = [];      // perfect-stack bursts, aged in frame units
+    let combo = 0;      // consecutive perfect stacks
+    const PERFECT_PX = 2.5;   // slop allowed before a drop stops being perfect
+    const POP_LIFE = 48;      // ~0.8s at 60fps
 
     try{ best = parseInt(localStorage.getItem('stackBest') || '0', 10) || 0; }
     catch(err){ best = 0; }
@@ -1558,7 +1624,8 @@
       const baseW = Math.min(150, W * 0.45);
       blocks = [{x: (W - baseW) / 2, w: baseW}];
       falling = [];
-      score = 0; over = false;
+      pops = [];
+      score = 0; combo = 0; over = false;
       scoreEl.textContent = '0';
       newBlock();
     }
@@ -1584,6 +1651,23 @@
       });
     }
 
+    // A perfect landing: shockwave bars, sparks and a rising label, all
+    // anchored to the level they happened on so the camera pan carries them.
+    function addPop(x, w, level, comboAt){
+      const parts = [];
+      const n = 12;
+      for(let i = 0; i < n; i++){
+        const ang = (Math.PI * 2 * i) / n + Math.random() * 0.4;
+        parts.push({
+          ox: x + w * (0.15 + Math.random() * 0.7),
+          vx: Math.cos(ang) * (1.6 + Math.random() * 2.2),
+          vy: Math.sin(ang) * (1.6 + Math.random() * 2.2) - 1.2,
+          px: 0, py: 0, r: 1.6 + Math.random() * 2
+        });
+      }
+      pops.push({x: x, w: w, level: level, t: 0, combo: comboAt, parts: parts});
+    }
+
     function drop(){
       if(over || !current) return;
       const top = blocks[blocks.length - 1];
@@ -1594,7 +1678,7 @@
       if(overlap <= 0){
         // Missed completely - the whole block drops out of the world.
         addFalling(current.x, current.w, blocks.length, current.x < top.x ? -1 : 1);
-        over = true;
+        over = true; combo = 0;
         current = null;
         if(score > best){
           best = score;
@@ -1604,11 +1688,20 @@
         return;
       }
 
-      // Whatever hung over the edge gets sliced off and falls.
-      if(current.x < left) addFalling(current.x, left - current.x, blocks.length, -1);
-      if(current.x + current.w > right) addFalling(right, (current.x + current.w) - right, blocks.length, 1);
-
-      blocks.push({x: left, w: overlap});
+      // Landing within a couple of px counts as perfect: the block keeps its
+      // full width, nothing is sliced off, and the burst fires.
+      const perfect = Math.abs(current.x - top.x) <= PERFECT_PX;
+      if(perfect){
+        combo++;
+        blocks.push({x: top.x, w: top.w});
+        addPop(top.x, top.w, blocks.length - 1, combo);
+      }else{
+        combo = 0;
+        // Whatever hung over the edge gets sliced off and falls.
+        if(current.x < left) addFalling(current.x, left - current.x, blocks.length, -1);
+        if(current.x + current.w > right) addFalling(right, (current.x + current.w) - right, blocks.length, 1);
+        blocks.push({x: left, w: overlap});
+      }
       score++;
       scoreEl.textContent = score;
       newBlock();
@@ -1644,6 +1737,63 @@
         ctx.lineWidth = 1;
         ctx.strokeRect(current.x + 0.5, y + 0.5, current.w - 1, H - 3);
       }
+
+      // Perfect-stack burst: white flash on the block, an expanding outline,
+      // side beams, shrapnel and a rising PERFECT label.
+      pops.forEach(f=>{
+        const a = Math.min(1, f.t / POP_LIFE);
+        const y = viewH - (f.level + 1) * H + camera;
+        if(y < -80 || y > viewH + 80) return;
+        const ease = 1 - Math.pow(1 - a, 3);
+        ctx.save();
+
+        // Blown-out block, fading fast.
+        ctx.globalAlpha = Math.max(0, 1 - a * 2.6);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(f.x, y, f.w, H - 2);
+
+        // Shockwave outline pushing out from the block.
+        const grow = ease * 26;
+        ctx.globalAlpha = Math.max(0, 1 - a);
+        ctx.strokeStyle = '#8df3ff';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = 'rgba(0,229,255,0.9)';
+        ctx.shadowBlur = 14;
+        ctx.strokeRect(f.x - grow, y - grow * 0.55, f.w + grow * 2, (H - 2) + grow * 1.1);
+
+        // Beams shooting out of both edges.
+        const beam = ease * 46;
+        ctx.globalAlpha = Math.max(0, 0.85 - a);
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(f.x - grow * 0.4, y + H / 2);
+        ctx.lineTo(f.x - grow * 0.4 - beam, y + H / 2);
+        ctx.moveTo(f.x + f.w + grow * 0.4, y + H / 2);
+        ctx.lineTo(f.x + f.w + grow * 0.4 + beam, y + H / 2);
+        ctx.stroke();
+
+        // Shrapnel.
+        ctx.shadowBlur = 10;
+        ctx.fillStyle = '#8df3ff';
+        ctx.globalAlpha = Math.max(0, 1 - a);
+        f.parts.forEach(pt=>{
+          ctx.beginPath();
+          ctx.arc(pt.ox + pt.px, y + H / 2 + pt.py, pt.r, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Label, rising and fading.
+        ctx.globalAlpha = Math.max(0, 1 - a * 1.15);
+        ctx.textAlign = 'center';
+        ctx.font = '700 13px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = 'rgba(0,229,255,1)';
+        ctx.shadowBlur = 16;
+        ctx.fillText('PERFECT' + (f.combo > 1 ? ' x' + f.combo : ''),
+                     f.x + f.w / 2, y - 10 - ease * 26);
+        ctx.restore();
+      });
+      ctx.globalAlpha = 1;
 
       if(over){
         ctx.fillStyle = 'rgba(5,7,11,0.78)';
@@ -1692,6 +1842,16 @@
         f.x += f.vx * dt;
         f.rot += f.vr * dt;
         if(f.dy > viewH + 120) falling.splice(i, 1);
+      }
+      for(let i = pops.length - 1; i >= 0; i--){
+        const f = pops[i];
+        f.t += dt;
+        f.parts.forEach(pt=>{
+          pt.px += pt.vx * dt;
+          pt.py += pt.vy * dt;
+          pt.vy += 0.18 * dt;
+        });
+        if(f.t > POP_LIFE) pops.splice(i, 1);
       }
       render();
       raf = requestAnimationFrame(loop);
