@@ -2,7 +2,7 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-09-22 · HEAD `52d628b`
+Last updated: 2026-09-22 · HEAD `pending`
 
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. Now has a **PM mode / Gamer mode** toggle that re-themes the whole site.
@@ -97,22 +97,23 @@ body.gamer-mode .mode-slider{transform:translateX(100%);}
 ```
 **`min-width:84px`, not `flex:1`** — flex items have `min-width:auto`, so "PM" and "GAMER" have different content floors and the slider misaligns.
 
-Gamer theme — **"RGB battle-station"** (hot magenta + electric violet, cyan demoted to a tertiary "bonus" accent; replaced the original soft cyan→blue→violet look the user said "looked like Canva"):
+Gamer theme — **"Combat Terminal"** (rebuilt from scratch a second time — the RGB battle-station attempt above was rejected outright: *"the entire theme is really bad... this looks more like Canva now... I don't want any gradient kind of feel on this... The only gradient that is there is the cursor"*). Current design is a single flat accent, no blended color anywhere in the UI chrome:
 ```css
 body.gamer-mode{--bg:#05070b;--bg-2:#0a0d14;--bg-3:#10141d;
-  --border:rgba(255,47,176,.14);--border-hi:rgba(255,47,176,.4);
-  --text:#f3ecff;--text-dim:#8d8aa3;--a1:#ff2fb0;--a2:#7c3aff;--a3:#00e5ff;
-  --grad:linear-gradient(120deg,#ff2fb0 0%,#7c3aff 52%,#00e5ff 100%);}
+  --border:rgba(198,255,46,.18);--border-hi:rgba(198,255,46,.5);
+  --text:#e7ffe2;--text-dim:#798c78;--a1:#c6ff2e;--a2:#c6ff2e;--a3:#c6ff2e;
+  --grad:#c6ff2e;}
 ```
-Base darks (`--bg/--bg-2/--bg-3`) were deliberately left untouched — the redesign is about the accent trio, borders and motion, not the neutrals. Cyan (`#00e5ff`) stays live in a bunch of un-migrated literal `rgba(0,229,255,…)` spots (Stack's "perfect" burst, the trail glow) — intentional, it's still `--a3`, just no longer primary.
+**`--grad` is a flat hex, not a `linear-gradient()`, on purpose.** Every consumer of `var(--grad)` (`.grad-text` hero name, `.mode-slider`, `.btn-primary`, `.mini-btn.primary`, `.game-target`, the `.hero-photo-card` padding-trick border) turns into a solid fill automatically just by changing this one variable — no other markup/JS touched. `--a1/--a2/--a3` are all the same green (no trio, no "gradient contrast" between accents) since a multi-hue scheme was itself part of what got rejected. Bright-green fills need dark text for contrast: `body.gamer-mode .btn-primary{color:#04140a}` and same for `.mini-btn.primary`.
 
 Plus:
-- **Ambient bg**: diagonal pink/violet crosshatch (`body.gamer-mode::before`, `gridDrift 14s`) — was an orthogonal grid, the biggest "graph paper" tell. `::after` layers CRT scanlines with a soft pink radar-style scan beam sweeping top↔bottom (`scanSweep 6.5s`), all one `background-position` keyframe across both comma-separated layers (can't run two animations on the same property in parallel).
-- **Cards**: thin RGB gradient "power strip" laid across the top of every panel via an extra `background-image` layer (`linear-gradient(90deg,var(--a1),var(--a2),var(--a3)) top left / 100% 3px no-repeat`) — the clearest at-a-glance new-theme tell. Pink border/glow, existing corner-bracket accents auto-inherit `var(--a1)`.
-- **RGB cycle**: `@keyframes rgbCycle{to{filter:hue-rotate(360deg);}}` on `.mode-slider` (always-on, small, low-key) and `.btn-primary:hover` (only while hovered, so the CTA is calm at rest) — the "peripheral lighting" signature.
-- **Neon flicker**: the `> ` heading prefix (`.section-head h2::before`) flickers on its own `neonFlicker 6s` keyframe, independent of the parent heading's reveal animation (different element, no property conflict).
-- `> ` prefix on section headings, 8px card radius with expanding corner brackets on hover, `powerOn .42s steps(1,end)` on `.reveal` only (not `.orbit-card` — see orbit-reveal note above), click bursts (now RGB-confetti `SPARK_COLORS`).
-- Cursors (crosshair + sniper scope, both inline SVG data-URIs) recolored to match.
+- **Ambient bg**: back to an orthogonal grid (single green hue, `gridDrift 9s`, faster/more opaque than either earlier attempt so the drift actually reads). `::after` is CRT scanlines only, **static, no animation** — the earlier version's sweeping scan beam was the specific thing the user called "distracting... in the foreground," so it's gone outright, not just recolored.
+- **No RGB hue-cycle anywhere.** `rgbCycle`/`hue-rotate` was deleted entirely (was on `.mode-slider` and `.btn-primary:hover`) — cycling through hues is exactly the "gradient contrast going up and down" the user rejected, even though it's a `filter`, not a literal CSS gradient.
+- **Cards**: flat `#070c07` background, flat border, no top strip, `border-radius:0`. Corner-bracket accents kept (bumped 13px→15px since nothing else decorates the card now), auto-inherit `var(--a1)`.
+- **Sharp corners everywhere** (`border-radius:0` on cards, pills, buttons, mode-toggle, hero-photo-card) — a shape-language signal, not just color, for "polar opposite of PM's rounded cards."
+- Neon flicker on the `> ` heading prefix kept (a flat-color opacity blink, not a moving/blended element — wasn't part of either complaint).
+- Cursors (crosshair + sniper scope) recolored to flat green + a white center dot, dropped the old two/three-tone rings.
+- `SPARK_COLORS` (site-wide click confetti) cut down to `['198,255,46','255,255,255']` — two flat hues, still not a gradient since each spark is one solid color.
 
 **Cursors are gamer-only** — PM mode stays `auto` (explicit user requirement). Crosshair 31×31 hotspot 15 15; sniper scope 57×57 hotspot 28 28 scoped to `#shootBoard`.
 
@@ -146,7 +147,7 @@ const TRAIL_STOPS = [[0,'rgba(255,47,138,0)'],[0.10,'rgba(255,47,138,1)'],[0.32,
 ---
 
 ## Games (`#arcade`)
-- **Ship It** (`#shootBoard`) — targets speed up as you shoot: `sizeFor(s)=Math.max(24, 46-s*1.4)`, `lifeFor(s)=Math.max(420, 1400-s*70)`. Sniper-scope cursor over the board. **`popAt()` was a bright flash + board-wide pulse; the user said "I don't want that," so it's now a water-droplet dispersal only**: two concentric ripples (`.hit-ring` pink + `.hit-ring-2` a fainter cyan one a beat behind, no white/bright shockwave) + 11 `.hit-droplet` beads that burst outward to a mid-flight point (`--mx,--my`) then arc further down under simulated gravity to a final point (`--fx,--fy`) via the `dropletFly` keyframe, fading out as they fall. No flash, no `+1` label, no board pulse — all three were removed outright (`hitFlash`, `hitPlus`, `boardHit` keyframes and their classes deleted).
+- **Ship It** (`#shootBoard`) — targets speed up as you shoot: `sizeFor(s)=Math.max(24, 46-s*1.4)`, `lifeFor(s)=Math.max(420, 1400-s*70)`. Sniper-scope cursor over the board. Went through **three** hit-effect designs this project: loud flash+shockwave → water-droplet dispersal → **current: an FPS hit-marker** (researched real shooter/RPG UI conventions before building this one — see Sources below). The droplet version had a real bug the user caught ("when I am clicking on it, I don't get any effects"): `.hit-ring`/`.hit-droplet` were `position:absolute` children of `#shootBoard` (`z-index:auto`), while the site-wide click-burst (`.click-ring`/`.click-spark`, fired on *every* pointerdown including on the target) is `position:fixed;z-index:9997`. Since `#shootBoard` never establishes its own stacking context, the fixed click-ring rendered on top of and visually masked the specific hit effect at the same coordinates — a pure CSS/stacking bug, invisible to a JS-error check. **Fix, and the new design's whole point:** `popAt()` now renders `.hit-marker` (white X, COD-style), `.hit-ring`, and `.hit-number` ("+1") as `position:fixed` elements appended straight to `<body>` at the click's *viewport* coordinates (`shootBoard.getBoundingClientRect()` + `cx/cy`) with `z-index:9999` — same layer as the click burst, deliberately higher, so it can never be masked again. Damage number drifts up and fades over ~0.7s (instant spawn, drift-up-and-fade is the universal convention). Plus a `.board-shake` transform-based shake on `#shootBoard` itself (kept *off* the fx elements' ancestry specifically so the shake's `transform` — which creates a new stacking context — can't trap them again).
 - **Stack** (`#stackCanvas`) — time-based motion: `dt = Math.min(50, ts-lastTs)/16.667` (per-frame movement made it speed-dependent across 60/120Hz). **A miss used to fall as one solid slab; now `addFalling()` crumbles it into 3-5 irregular chunks (each its own `falling[]` entry with independent `vx/vy/rot/vr`) plus 7 tiny white dust chips** (`dust:true` flag branches the renderer to draw a small square instead of the tower's gradient bar) kicked up at the fracture line. All entries still ride the one `falling[]` array/physics loop and draw **last**, above the game-over veil.
   - **Perfect stack**: landing within `PERFECT_PX = 2.5` keeps the block's full width, slices nothing off, and increments `combo`. `addPop()` pushes to `pops[]` (`{x,w,level,t,combo,parts[]}`), aged in frame units to `POP_LIFE = 48`. Drawn on canvas: white blow-out of the block, an expanding glowing outline, beams out of both edges, 12 shrapnel dots, and a rising `PERFECT`/`PERFECT xN` label — deliberately left cyan-accented (untouched by the RGB battle-station recolor) so "perfect" reads as a distinct bonus color against the pink/violet main palette. Anchored by `level` so the camera pan carries it, exactly like `falling[]`. `combo` resets on any non-perfect drop and on game over.
   - Tower blocks and falling chunks now render in the new pink→violet→cyan gradient (`#ff2fb0 → #7c3aff → #00e5ff`), was cyan→blue→violet.
@@ -189,13 +190,21 @@ git push
 ---
 
 ## Most recent completed request
-*Fix orbit-card flicker break; Ship It "no flash, water droplets instead"; Stack crumble; brand-new gamer theme ("hardcore gamer", not Canva-looking).* Four changes:
-1. Fixed the Recent Work orbit-card "slight break" by removing `.orbit-card` from the `powerOn` animation selector (animation/transition conflict on `opacity` — see orbit-reveal note above).
-2. Ship It hit effect rebuilt as a water-droplet dispersal — no flash, no board pulse, per explicit "I don't want that."
-3. Stack misses now crumble into 3-5 chunks + dust instead of one solid falling block.
-4. Full gamer-mode reskin to a pink/violet "RGB battle-station" identity (see Gamer / PM mode section above) — PM mode untouched.
+*The "RGB battle-station" theme was rejected wholesale — "looks more like Canva now... I don't want any gradient kind of feel... no more gradient contrast on the theme side... the background is not moving anymore... don't add anything like what you added" — plus a real bug report: "you again fucked up the animation on Ship It... when I am clicking on it, I don't get any effects."* Did actual web research (see Sources) before rebuilding, rather than iterating blind a third time. Two things landed in the same pass:
 
-Verified headless: zero JS errors both before and after toggling gamer mode; tags balanced; `flash=0,plus=0,boardhit=0` confirms the old elements are gone while `rings=2,droplets=11` confirms the new ones fire; a forced full-miss drop went from 0 → 10 entries in `falling[]` (crumble chunks + dust) where the old code would have added exactly 1. Screenshots: droplet ripple+beads frozen mid-flight, Stack crumble mid-tumble (multiple rotated pink/violet/cyan chunks + white dust, not one block), and the new theme on the hero/cards (diagonal crosshatch bg, pink→violet→cyan gradient border and top power-strip visible). The RGB-cycle hue-rotate and neon-flicker animations were sanity-checked for JS errors only — like the cursor trail, their *motion* isn't visible under headless `--virtual-time-budget` and hasn't been eyeballed live; flag this if the user reports anything off.
+1. **Full gamer-mode re-theme #2 — "Combat Terminal.".** Single flat toxic-green accent on black, `--grad` changed from a `linear-gradient()` to a flat hex so every consumer becomes a solid fill for free, all RGB hue-cycling deleted, the distracting scan-beam deleted (reverted `::after` to plain static scanlines), ambient grid restored to a single-hue orthogonal drift (faster/more visible), sharp `border-radius:0` everywhere for a real shape-level "opposite of PM" signal, cards flattened to a solid color (no top-strip gradient). Full rationale and diff of what changed vs. the rejected version is in the Gamer theme section above.
+2. **Ship It hit effect — found and fixed the real bug, rebuilt as a proper FPS hit-marker.** Root cause of "no effects": a stacking-context/z-index bug (site-wide click-burst at `z-index:9997` masked the hit-specific effect, which had no explicit z-index) — a pure CSS bug a JS-error check can't catch. Rebuilt per real hit-marker/damage-number conventions researched online: white X hit-marker + "+1" damage number (drifts up, fades ~0.7s) + a flat ring + a short `translate()`-based board shake, all rendered `position:fixed` straight on `<body>` at `z-index:9999` so they can never be masked again.
+3. **Stack was explicitly left untouched** — "Stack It is perfect. Don't change anything in that" — including its own gradient fills, which is a deliberate, disclosed exception to the "no gradient" rule everywhere else.
+
+Verified: zero JS errors toggling PM↔gamer↔PM repeatedly; tags balanced; a harness confirmed `.hit-marker`'s computed `z-index` (9999) beats `.click-ring`'s (9997) — `markerBeatsClick=true` — which is the actual mechanical fix, not just "we changed some CSS and hoped." Stack re-screenshotted pixel-identical to before (same pink/violet/cyan gradient tower, same crumble) to prove zero collateral changes. Old classes (`hit-flash`, `hit-plus`, `board-hit`, `hit-droplet`, `hit-ring-2`, `rgbCycle`, `scanSweep`) confirmed fully removed, not just superseded. Screenshots confirm the new black/green look and the button-contrast fix (dark text on bright green). **Caveat carried over from every past attempt:** motion (grid drift, neon flicker, hit-marker/shake timing) isn't visible under headless `--virtual-time-budget` and hasn't been eyeballed live by either of us — please look at it live before judging.
+
+### Sources (read before this pass, informed the design)
+- [Esports/HUD typography: Bebas Neue, angular condensed type](https://fontalternatives.com/blog/gaming-fonts-hud-esports-branding/)
+- [2026 UI trends: grids as foreground elements, monospace-as-identity](https://tubikstudio.com/blog/ui-design-trends-2026/)
+- [FPS damage indicator UX analysis](https://medium.com/@jasper.stephenson/a-ux-analysis-of-first-person-shooter-damage-indicators-59ac9d41caf8)
+- [Damage numbers as "juice": instant spawn, drift-up-and-fade 0.6–1.2s convention](https://www.gamejuice.co.uk/articles/damage-numbers-satisfying-feedback)
+- [Game feel on the web: screen shake via `transform`/`translate3d`, hitstop](https://valdemird.com/blog/game-feel-on-the-web/)
+- [Gaming portfolio/dark-UI inspiration](https://www.sitebuilderreport.com/inspiration/game-developer-portfolios)
 
 ## Previous completed request
 *"It should work on the normal scrolling also… irrespective of the time pool and everything."* → Mobile trail now survives flick + momentum scroll. Three mobile-only changes (momentum following, longer idle grace, half drain rate) plus the push/drain cancellation fix. Verified: `flick=3027, mom3=1845, mom8=1066, idle600=0, idle1500=0`; desktop unchanged at `mousePainted=14046, opaqueRatio=0.52, afterIdle=0`. Zero JS errors, tags balanced. Commit `07af968`, pushed, Pages build `built`.
