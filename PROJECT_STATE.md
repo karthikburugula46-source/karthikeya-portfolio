@@ -2,7 +2,7 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-09-21 · HEAD `11b1626`
+Last updated: 2026-09-22 · HEAD `pending`
 
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. Now has a **PM mode / Gamer mode** toggle that re-themes the whole site.
@@ -52,7 +52,7 @@ Section-by-section:
 
 **Global reveal:** `.reveal` starts hidden; `revealObserver` (index.html:1016) toggles `.visible` bidirectionally on `entry.isIntersecting`, so scrolling back up reverses it.
 
-**Orbit reveal — Recent Work only** (replicates the revolving-card entrance from a reference recording of ultrahuman.com). This must NOT be applied to any other section.
+**Orbit reveal — Recent Work only** (replicates the revolving-card entrance from a reference recording of ultrahuman.com). This must NOT be applied to any other section. **Gamer mode must never apply the `powerOn` stepped-opacity flicker (below) to `.orbit-card`** — an animation always wins over a transition on the same property while it plays, so when the .42s `powerOn` animation ended before the orbit card's own .55s opacity transition did, opacity snapped to whatever the transition had reached mid-swing — a visible break the user caught. `.orbit-card.visible` gets no animation now, only its own smooth transition; `.reveal.visible` still gets `powerOn`.
 ```css
 .orbit-card{
   opacity:0; transform-origin:center center;
@@ -97,14 +97,22 @@ body.gamer-mode .mode-slider{transform:translateX(100%);}
 ```
 **`min-width:84px`, not `flex:1`** — flex items have `min-width:auto`, so "PM" and "GAMER" have different content floors and the slider misaligns.
 
-Gamer theme (dark, minimal, cyan→blue→violet):
+Gamer theme — **"RGB battle-station"** (hot magenta + electric violet, cyan demoted to a tertiary "bonus" accent; replaced the original soft cyan→blue→violet look the user said "looked like Canva"):
 ```css
 body.gamer-mode{--bg:#05070b;--bg-2:#0a0d14;--bg-3:#10141d;
-  --border:rgba(0,229,255,.12);--border-hi:rgba(0,229,255,.34);
-  --text:#e6f7ff;--text-dim:#78909c;--a1:#00e5ff;--a2:#3b9dff;--a3:#8b5cf6;
-  --grad:linear-gradient(120deg,#00e5ff 0%,#3b9dff 52%,#8b5cf6 100%);}
+  --border:rgba(255,47,176,.14);--border-hi:rgba(255,47,176,.4);
+  --text:#f3ecff;--text-dim:#8d8aa3;--a1:#ff2fb0;--a2:#7c3aff;--a3:#00e5ff;
+  --grad:linear-gradient(120deg,#ff2fb0 0%,#7c3aff 52%,#00e5ff 100%);}
 ```
-Plus: animated HUD grid + vignette (`body.gamer-mode::before`, `gridDrift 14s`), CRT scanlines (`::after`, z-index 9998), `> ` prefix on section headings, 8px card radius with expanding corner brackets on hover, `powerOn .42s steps(1,end)` on reveal, click bursts.
+Base darks (`--bg/--bg-2/--bg-3`) were deliberately left untouched — the redesign is about the accent trio, borders and motion, not the neutrals. Cyan (`#00e5ff`) stays live in a bunch of un-migrated literal `rgba(0,229,255,…)` spots (Stack's "perfect" burst, the trail glow) — intentional, it's still `--a3`, just no longer primary.
+
+Plus:
+- **Ambient bg**: diagonal pink/violet crosshatch (`body.gamer-mode::before`, `gridDrift 14s`) — was an orthogonal grid, the biggest "graph paper" tell. `::after` layers CRT scanlines with a soft pink radar-style scan beam sweeping top↔bottom (`scanSweep 6.5s`), all one `background-position` keyframe across both comma-separated layers (can't run two animations on the same property in parallel).
+- **Cards**: thin RGB gradient "power strip" laid across the top of every panel via an extra `background-image` layer (`linear-gradient(90deg,var(--a1),var(--a2),var(--a3)) top left / 100% 3px no-repeat`) — the clearest at-a-glance new-theme tell. Pink border/glow, existing corner-bracket accents auto-inherit `var(--a1)`.
+- **RGB cycle**: `@keyframes rgbCycle{to{filter:hue-rotate(360deg);}}` on `.mode-slider` (always-on, small, low-key) and `.btn-primary:hover` (only while hovered, so the CTA is calm at rest) — the "peripheral lighting" signature.
+- **Neon flicker**: the `> ` heading prefix (`.section-head h2::before`) flickers on its own `neonFlicker 6s` keyframe, independent of the parent heading's reveal animation (different element, no property conflict).
+- `> ` prefix on section headings, 8px card radius with expanding corner brackets on hover, `powerOn .42s steps(1,end)` on `.reveal` only (not `.orbit-card` — see orbit-reveal note above), click bursts (now RGB-confetti `SPARK_COLORS`).
+- Cursors (crosshair + sniper scope, both inline SVG data-URIs) recolored to match.
 
 **Cursors are gamer-only** — PM mode stays `auto` (explicit user requirement). Crosshair 31×31 hotspot 15 15; sniper scope 57×57 hotspot 28 28 scoped to `#shootBoard`.
 
@@ -138,9 +146,10 @@ const TRAIL_STOPS = [[0,'rgba(255,47,138,0)'],[0.10,'rgba(255,47,138,1)'],[0.32,
 ---
 
 ## Games (`#arcade`)
-- **Ship It** (`#shootBoard`) — targets speed up as you shoot: `sizeFor(s)=Math.max(24, 46-s*1.4)`, `lifeFor(s)=Math.max(420, 1400-s*70)`. Sniper-scope cursor over the board. `popAt()` fires a **loud** hit: `.hit-flash` (white-hot radial core) + `.hit-ring` + `.hit-ring-2` (second, faster shockwave, `.08s` delay) + 14 `.hit-spark` (8px, 46–94px travel, own `hitSparkFly` keyframe so the shared `sparkFly` click burst is untouched) + a floating `.hit-plus` "+1", plus a one-shot `board-hit` inset pulse on the board. The `board-hit` class is removed → reflow → re-added so rapid hits re-trigger it.
-- **Stack** (`#stackCanvas`) — time-based motion: `dt = Math.min(50, ts-lastTs)/16.667` (per-frame movement made it speed-dependent across 60/120Hz). Missed overhang becomes `falling[]` debris `{x,w,level,dy,vy,vx,rot,vr}`, drawn **last** so it renders above the game-over veil.
-  - **Perfect stack**: landing within `PERFECT_PX = 2.5` keeps the block's full width, slices nothing off, and increments `combo`. `addPop()` pushes to `pops[]` (`{x,w,level,t,combo,parts[]}`), aged in frame units to `POP_LIFE = 48`. Drawn on canvas: white blow-out of the block, an expanding glowing outline, beams out of both edges, 12 shrapnel dots, and a rising `PERFECT`/`PERFECT xN` label. Anchored by `level` so the camera pan carries it, exactly like `falling[]`. `combo` resets on any non-perfect drop and on game over.
+- **Ship It** (`#shootBoard`) — targets speed up as you shoot: `sizeFor(s)=Math.max(24, 46-s*1.4)`, `lifeFor(s)=Math.max(420, 1400-s*70)`. Sniper-scope cursor over the board. **`popAt()` was a bright flash + board-wide pulse; the user said "I don't want that," so it's now a water-droplet dispersal only**: two concentric ripples (`.hit-ring` pink + `.hit-ring-2` a fainter cyan one a beat behind, no white/bright shockwave) + 11 `.hit-droplet` beads that burst outward to a mid-flight point (`--mx,--my`) then arc further down under simulated gravity to a final point (`--fx,--fy`) via the `dropletFly` keyframe, fading out as they fall. No flash, no `+1` label, no board pulse — all three were removed outright (`hitFlash`, `hitPlus`, `boardHit` keyframes and their classes deleted).
+- **Stack** (`#stackCanvas`) — time-based motion: `dt = Math.min(50, ts-lastTs)/16.667` (per-frame movement made it speed-dependent across 60/120Hz). **A miss used to fall as one solid slab; now `addFalling()` crumbles it into 3-5 irregular chunks (each its own `falling[]` entry with independent `vx/vy/rot/vr`) plus 7 tiny white dust chips** (`dust:true` flag branches the renderer to draw a small square instead of the tower's gradient bar) kicked up at the fracture line. All entries still ride the one `falling[]` array/physics loop and draw **last**, above the game-over veil.
+  - **Perfect stack**: landing within `PERFECT_PX = 2.5` keeps the block's full width, slices nothing off, and increments `combo`. `addPop()` pushes to `pops[]` (`{x,w,level,t,combo,parts[]}`), aged in frame units to `POP_LIFE = 48`. Drawn on canvas: white blow-out of the block, an expanding glowing outline, beams out of both edges, 12 shrapnel dots, and a rising `PERFECT`/`PERFECT xN` label — deliberately left cyan-accented (untouched by the RGB battle-station recolor) so "perfect" reads as a distinct bonus color against the pink/violet main palette. Anchored by `level` so the camera pan carries it, exactly like `falling[]`. `combo` resets on any non-perfect drop and on game over.
+  - Tower blocks and falling chunks now render in the new pink→violet→cyan gradient (`#ff2fb0 → #7c3aff → #00e5ff`), was cyan→blue→violet.
 - High scores in `localStorage`: `shipItBest`, `stackBest`.
 
 ---
@@ -180,7 +189,13 @@ git push
 ---
 
 ## Most recent completed request
-*Contact CTAs → dialer; louder Ship It hit; perfect-stack animation.* Verified headless: zero JS errors; tags balanced; Ship It hit spawns `flash=1, rings=2 (incl. ring2), sparks=14, plus=1, board-hit=1`; a forced pixel-perfect Stack drop paints 159 near-white px at frame 1 → 32 at frame 11 → 0 at frame 56, against a **control non-perfect drop that paints 0 at every frame**, so the burst is provably the perfect path. Visual screenshot of the Stack burst confirmed.
+*Fix orbit-card flicker break; Ship It "no flash, water droplets instead"; Stack crumble; brand-new gamer theme ("hardcore gamer", not Canva-looking).* Four changes:
+1. Fixed the Recent Work orbit-card "slight break" by removing `.orbit-card` from the `powerOn` animation selector (animation/transition conflict on `opacity` — see orbit-reveal note above).
+2. Ship It hit effect rebuilt as a water-droplet dispersal — no flash, no board pulse, per explicit "I don't want that."
+3. Stack misses now crumble into 3-5 chunks + dust instead of one solid falling block.
+4. Full gamer-mode reskin to a pink/violet "RGB battle-station" identity (see Gamer / PM mode section above) — PM mode untouched.
+
+Verified headless: zero JS errors both before and after toggling gamer mode; tags balanced; `flash=0,plus=0,boardhit=0` confirms the old elements are gone while `rings=2,droplets=11` confirms the new ones fire; a forced full-miss drop went from 0 → 10 entries in `falling[]` (crumble chunks + dust) where the old code would have added exactly 1. Screenshots: droplet ripple+beads frozen mid-flight, Stack crumble mid-tumble (multiple rotated pink/violet/cyan chunks + white dust, not one block), and the new theme on the hero/cards (diagonal crosshatch bg, pink→violet→cyan gradient border and top power-strip visible). The RGB-cycle hue-rotate and neon-flicker animations were sanity-checked for JS errors only — like the cursor trail, their *motion* isn't visible under headless `--virtual-time-budget` and hasn't been eyeballed live; flag this if the user reports anything off.
 
 ## Previous completed request
 *"It should work on the normal scrolling also… irrespective of the time pool and everything."* → Mobile trail now survives flick + momentum scroll. Three mobile-only changes (momentum following, longer idle grace, half drain rate) plus the push/drain cancellation fix. Verified: `flick=3027, mom3=1845, mom8=1066, idle600=0, idle1500=0`; desktop unchanged at `mousePainted=14046, opaqueRatio=0.52, afterIdle=0`. Zero JS errors, tags balanced. Commit `07af968`, pushed, Pages build `built`.

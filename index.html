@@ -431,14 +431,14 @@
     --bg:#05070b;
     --bg-2:#0a0d14;
     --bg-3:#10141d;
-    --border:rgba(0,229,255,0.12);
-    --border-hi:rgba(0,229,255,0.34);
-    --text:#e6f7ff;
-    --text-dim:#78909c;
-    --a1:#00e5ff;
-    --a2:#3b9dff;
-    --a3:#8b5cf6;
-    --grad:linear-gradient(120deg,#00e5ff 0%,#3b9dff 52%,#8b5cf6 100%);
+    --border:rgba(255,47,176,0.14);
+    --border-hi:rgba(255,47,176,0.4);
+    --text:#f3ecff;
+    --text-dim:#8d8aa3;
+    --a1:#ff2fb0;
+    --a2:#7c3aff;
+    --a3:#00e5ff;
+    --grad:linear-gradient(120deg,#ff2fb0 0%,#7c3aff 52%,#00e5ff 100%);
   }
   body.gamer-mode nav{background:rgba(5,7,11,0.72);}
   body.gamer-mode nav.scrolled{background:rgba(5,7,11,0.9);}
@@ -454,11 +454,24 @@
     font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
   }
   body.gamer-mode .section-head h2{letter-spacing:-0.5px;}
-  body.gamer-mode .section-head h2::before{content:"> ";color:var(--a1);}
+  body.gamer-mode .section-head h2::before{
+    content:"> ";color:var(--a1);text-shadow:0 0 8px var(--a1);
+    animation:neonFlicker 6s ease-in-out infinite;
+  }
+  @keyframes neonFlicker{
+    0%,18%,22%,52%,56%,100%{opacity:1;}
+    20%,54%{opacity:0.35;}
+  }
   body.gamer-mode .hero h1{letter-spacing:-2px;}
   body.gamer-mode .eyebrow-pill .dot{background:var(--a1);box-shadow:0 0 8px var(--a1);}
-  body.gamer-mode .p-card:hover{box-shadow:0 24px 50px -20px rgba(0,229,255,0.25);}
-  body.gamer-mode .btn-primary:hover{box-shadow:0 10px 30px rgba(0,229,255,0.35);}
+  body.gamer-mode .p-card:hover{box-shadow:0 24px 50px -20px rgba(255,47,176,0.28);}
+  /* RGB pulse on hover - the "peripheral lighting" cue, only while hovered
+     so the button is calm at rest. */
+  body.gamer-mode .btn-primary:hover{
+    box-shadow:0 10px 30px rgba(255,47,176,0.4);
+    animation:rgbCycle 1.4s linear infinite;
+  }
+  @keyframes rgbCycle{to{filter:hue-rotate(360deg);}}
   body.gamer-mode ::selection{background:var(--a1);color:#04121a;}
 
   /* Gamer-only cursor. Scoped so PM mode keeps the normal system pointer. */
@@ -472,7 +485,7 @@
   body.gamer-mode .mode-option,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%2300e5ff' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%238b5cf6' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%2300e5ff'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%2300e5ff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23ff2fb0' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%237c3aff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%2300e5ff'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23ff2fb0' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
   }
 
   /* ---------- Arcade ---------- */
@@ -499,25 +512,25 @@
     padding:7px 14px;cursor:pointer;
     transition:background .2s ease, color .2s ease, transform .2s ease;
   }
-  .mini-btn:hover{background:rgba(0,229,255,0.12);transform:translateY(-1px);}
+  .mini-btn:hover{background:rgba(255,47,176,0.14);transform:translateY(-1px);}
   .mini-btn.primary{background:var(--grad);border-color:transparent;color:#fff;}
 
   .game-board{
     position:relative;width:100%;height:300px;
     border-radius:14px;border:1px solid var(--border);
     background:
-      radial-gradient(circle at 50% 50%, rgba(0,229,255,0.06), transparent 70%),
+      radial-gradient(circle at 50% 50%, rgba(255,47,176,0.07), transparent 70%),
       #070a0f;
     overflow:hidden;touch-action:manipulation;
   }
   /* Sniper scope reticle, only over the shooting board */
   #shootBoard, #shootBoard .game-target{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%2300e5ff' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%238b5cf6' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%2300e5ff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%2300e5ff' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%2300e5ff' stroke-width='1' opacity='.7'/%3E%3C/svg%3E") 28 28, crosshair;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%23ff2fb0' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%237c3aff' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ff2fb0'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%23ff2fb0' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%2300e5ff' stroke-width='1' opacity='.7'/%3E%3C/svg%3E") 28 28, crosshair;
   }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
     background:var(--grad);
-    box-shadow:0 0 18px rgba(0,229,255,0.5);
+    box-shadow:0 0 14px rgba(255,47,176,0.55), 0 0 26px rgba(0,229,255,0.3);
     border:0;padding:0;
     transform:scale(0);
     animation:targetPop .16s cubic-bezier(0.16,1,0.3,1) forwards;
@@ -568,24 +581,36 @@
      GAMER MODE - full UI treatment
      ====================================================================== */
 
-  /* Animated HUD grid behind everything, faded out toward the edges. */
+  /* Animated tactical crosshatch behind everything, faded toward the edges -
+     diagonal instead of a square grid, so it reads as a HUD, not graph paper. */
   body.gamer-mode::before{
     content:"";position:fixed;inset:-50px;z-index:0;pointer-events:none;
     background-image:
-      linear-gradient(rgba(0,229,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,255,0.08) 1px, transparent 1px);
+      repeating-linear-gradient(45deg, rgba(255,47,176,0.08) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(-45deg, rgba(124,58,255,0.07) 0 1px, transparent 1px 34px);
     background-size:48px 48px;
     -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
     mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 30%, transparent 78%);
     animation:gridDrift 14s linear infinite;
   }
-  @keyframes gridDrift{to{background-position:48px 48px, 48px 48px;}}
+  @keyframes gridDrift{to{background-position:48px 48px, -48px 48px;}}
 
-  /* Faint CRT scanlines over the whole page (under the cursor trail). */
+  /* CRT scanlines plus a soft radar-style scan beam sweeping top to bottom
+     and back, over the whole page (under the cursor trail). */
   body.gamer-mode::after{
     content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px),
+      linear-gradient(180deg, transparent 0%, rgba(255,47,176,0.55) 48%, rgba(255,47,176,0.85) 50%, rgba(255,47,176,0.55) 52%, transparent 100%);
+    background-size:100% 100%, 100% 240%;
+    background-position:0 0, 0 -170%;
     opacity:0.28;
+    animation:scanSweep 6.5s ease-in-out infinite;
+  }
+  @keyframes scanSweep{
+    0%{background-position:0 0, 0 -170%;}
+    50%{background-position:0 0, 0 170%;}
+    100%{background-position:0 0, 0 -170%;}
   }
   body.gamer-mode section, body.gamer-mode .hero, body.gamer-mode footer{position:relative;z-index:1;}
 
@@ -595,8 +620,10 @@
   body.gamer-mode .edu-card,
   body.gamer-mode .arcade-card{
     border-radius:8px;
-    border-color:rgba(0,229,255,0.2);
-    background:linear-gradient(180deg, rgba(11,15,23,0.94), rgba(6,9,14,0.94));
+    border-color:rgba(255,47,176,0.22);
+    background:
+      linear-gradient(90deg, var(--a1), var(--a2), var(--a3)) top left / 100% 3px no-repeat,
+      linear-gradient(180deg, rgba(16,10,22,0.94), rgba(6,4,9,0.94));
   }
   body.gamer-mode .p-card::before,
   body.gamer-mode .skill-card::before,
@@ -628,22 +655,24 @@
   body.gamer-mode .skill-card:hover,
   body.gamer-mode .edu-card:hover{
     border-color:var(--a1);
-    box-shadow:0 0 0 1px rgba(0,229,255,0.25), 0 20px 48px -22px rgba(0,229,255,0.5);
+    box-shadow:0 0 0 1px rgba(255,47,176,0.28), 0 20px 48px -22px rgba(255,47,176,0.55);
   }
   body.gamer-mode .skill-card:hover{transform:translateY(-4px) scale(1.01);}
 
   /* Pills/tags read like HUD chips */
   body.gamer-mode .pill{
-    border-radius:4px;border-color:rgba(0,229,255,0.25);
-    background:rgba(0,229,255,0.06);
+    border-radius:4px;border-color:rgba(255,47,176,0.28);
+    background:rgba(255,47,176,0.07);
     transition:background .2s ease, border-color .2s ease, color .2s ease;
   }
-  body.gamer-mode .pill:hover{background:rgba(0,229,255,0.16);border-color:var(--a1);color:#fff;}
+  body.gamer-mode .pill:hover{background:rgba(255,47,176,0.18);border-color:var(--a1);color:#fff;}
   body.gamer-mode .tag{border-radius:4px;}
-  body.gamer-mode .eyebrow-pill{border-radius:6px;border-color:rgba(0,229,255,0.3);}
+  body.gamer-mode .eyebrow-pill{border-radius:6px;border-color:rgba(255,47,176,0.32);}
   body.gamer-mode .mode-toggle{border-radius:6px;}
-  body.gamer-mode .mode-slider,
   body.gamer-mode .mode-option{border-radius:4px;}
+  /* The toggle thumb cycles hue continuously - the one always-on "RGB
+     peripheral" cue, kept small and low-key so it reads as flair, not noise. */
+  body.gamer-mode .mode-slider{border-radius:4px;animation:rgbCycle 5s linear infinite;}
   body.gamer-mode .btn,
   body.gamer-mode nav .cta,
   body.gamer-mode .mini-btn{border-radius:5px;}
@@ -656,8 +685,10 @@
     transition-duration:.55s,.55s,.55s;
     transition-timing-function:cubic-bezier(0.2,1.4,0.35,1);
   }
-  body.gamer-mode .reveal.visible,
-  body.gamer-mode .orbit-card.visible{animation:powerOn .42s steps(1,end);}
+  body.gamer-mode .reveal.visible{animation:powerOn .42s steps(1,end);}
+  /* Orbit cards (Recent Work) do NOT get the powerOn flicker - it fights
+     the arc reveal's own opacity transition on the same property and
+     causes a visible snap partway through the swing-in. */
   @keyframes powerOn{
     0%{opacity:0.25;}
     18%{opacity:1;}
@@ -672,7 +703,7 @@
   .click-ring{
     position:fixed;z-index:9997;pointer-events:none;
     width:26px;height:26px;border-radius:50%;
-    border:2px solid rgba(0,229,255,0.9);
+    border:2px solid rgba(255,47,176,0.9);
     transform:translate(-50%,-50%) scale(0.3);
     animation:clickRing .55s cubic-bezier(0.16,1,0.3,1) forwards;
   }
@@ -690,67 +721,43 @@
     to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2);opacity:0;}
   }
 
-  /* ---------- Ship It hit pop ---------- */
-  /* White-hot core that blows out for a frame, so the hit reads instantly. */
-  .hit-flash{
-    position:absolute;pointer-events:none;border-radius:50%;
-    background:radial-gradient(circle,rgba(255,255,255,0.98) 0%,rgba(141,243,255,0.8) 34%,rgba(0,229,255,0.35) 58%,rgba(139,92,246,0) 74%);
-    transform:translate(-50%,-50%) scale(0.3);
-    animation:hitFlash .36s cubic-bezier(0.16,1,0.3,1) forwards;
-  }
-  @keyframes hitFlash{
-    35%{opacity:1;}
-    to{transform:translate(-50%,-50%) scale(2.1);opacity:0;}
-  }
+  /* ---------- Ship It hit pop: water-droplet dispersal, no flash ---------- */
   .hit-ring{
     position:absolute;pointer-events:none;border-radius:50%;
-    border:3px solid rgba(0,229,255,0.95);
-    box-shadow:0 0 20px rgba(0,229,255,0.8), inset 0 0 14px rgba(0,229,255,0.45);
-    transform:translate(-50%,-50%) scale(0.35);
-    animation:hitRing .58s cubic-bezier(0.16,1,0.3,1) forwards;
+    border:2px solid rgba(255,47,176,0.75);
+    transform:translate(-50%,-50%) scale(0.4);
+    animation:hitRipple .6s cubic-bezier(0.16,1,0.3,1) forwards;
   }
-  @keyframes hitRing{
-    to{transform:translate(-50%,-50%) scale(3.4);opacity:0;border-color:rgba(139,92,246,0.3);}
+  @keyframes hitRipple{
+    to{transform:translate(-50%,-50%) scale(2.5);opacity:0;border-width:0.5px;}
   }
-  /* Second, faster shockwave chasing the first one out. */
+  /* A second, fainter ripple a beat behind the first - concentric rings
+     like a droplet hitting water, not a bright shockwave. */
   .hit-ring.hit-ring-2{
-    border-width:2px;border-color:rgba(255,255,255,0.9);
-    box-shadow:0 0 16px rgba(255,255,255,0.55);
-    animation-duration:.44s;animation-delay:.08s;
+    border-color:rgba(0,229,255,0.5);
+    animation-duration:.75s;animation-delay:.1s;
   }
-  .hit-spark{
-    position:absolute;pointer-events:none;
-    width:8px;height:8px;border-radius:50%;
-    background:#8df3ff;box-shadow:0 0 14px var(--a1),0 0 28px var(--a1);
-    transform:translate(-50%,-50%);
-    animation:hitSparkFly .6s cubic-bezier(0.16,1,0.3,1) forwards;
+  /* Droplets bead outward then arc down under gravity, like a splash. */
+  .hit-droplet{
+    position:absolute;pointer-events:none;border-radius:60% 60% 60% 8%;
+    background:radial-gradient(circle at 32% 28%, #eafcff 0%, #8df3ff 32%, var(--a2, #7c3aff) 78%);
+    box-shadow:0 0 6px rgba(0,229,255,0.45);
+    transform:translate(-50%,-50%) rotate(var(--rot,0deg));
+    animation:dropletFly var(--dur,0.75s) cubic-bezier(0.32,0.72,0.35,1) forwards;
   }
-  @keyframes hitSparkFly{
-    to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.15);opacity:0;}
-  }
-  .hit-plus{
-    position:absolute;pointer-events:none;
-    transform:translate(-50%,-50%);
-    font:700 15px ui-monospace,'SF Mono',Menlo,Consolas,monospace;
-    color:#8df3ff;text-shadow:0 0 12px rgba(0,229,255,0.95);
-    animation:hitPlus .62s cubic-bezier(0.16,1,0.3,1) forwards;
-  }
-  @keyframes hitPlus{
-    to{transform:translate(-50%,calc(-50% - 36px));opacity:0;}
-  }
-  /* The whole board pulses once on impact. */
-  .board-hit{animation:boardHit .3s ease-out;}
-  @keyframes boardHit{
-    0%{box-shadow:inset 0 0 0 0 rgba(0,229,255,0);}
-    28%{box-shadow:inset 0 0 44px 0 rgba(0,229,255,0.4);}
-    to{box-shadow:inset 0 0 0 0 rgba(0,229,255,0);}
+  @keyframes dropletFly{
+    0%{transform:translate(-50%,-50%) translate(0,0) rotate(var(--rot,0deg)) scale(1); opacity:1;}
+    55%{transform:translate(-50%,-50%) translate(var(--mx),var(--my)) rotate(calc(var(--rot,0deg) * 1.6)) scale(0.85); opacity:1;}
+    100%{transform:translate(-50%,-50%) translate(var(--fx),var(--fy)) rotate(calc(var(--rot,0deg) * 2.4)) scale(0.4); opacity:0;}
   }
 
   @media (prefers-reduced-motion: reduce){
     body.gamer-mode::before{animation:none;}
-    .board-hit{animation:none;}
-    body.gamer-mode .reveal.visible,
-    body.gamer-mode .orbit-card.visible{animation:none;}
+    body.gamer-mode::after{animation:none;}
+    body.gamer-mode .reveal.visible{animation:none;}
+    body.gamer-mode .mode-slider,
+    body.gamer-mode .btn-primary:hover,
+    body.gamer-mode .section-head h2::before{animation:none;}
   }
 </style>
 </head>
@@ -1203,7 +1210,7 @@
     [0.76, 'rgba(59,157,255,1)'],
     [1.00, 'rgba(120,240,255,1)']
   ];
-  const SPARK_COLORS = ['0,229,255', '59,157,255', '139,92,246', '255,47,138'];
+  const SPARK_COLORS = ['255,47,176', '124,58,255', '0,229,255', '255,255,255'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
   let pointer = null, head = null, lastMoveTs = 0;
   let lastScrollY = 0;
@@ -1494,8 +1501,8 @@
     const sizeFor  = (s)=> Math.max(24, 46 - s * 1.4);
     const lifeFor  = (s)=> Math.max(420, 1400 - s * 70);
 
-    // Flash + twin shockwaves + shrapnel + a floating score bump, so a hit
-    // is impossible to miss. Everything is cleaned up on animation end.
+    // A water-droplet dispersal: two soft ripples plus a spray of droplets
+    // that bead outward and fall under gravity - no flash, no board pulse.
     function popAt(cx, cy, size){
       const place = (el, w, h)=>{
         el.style.left = cx + 'px';
@@ -1503,12 +1510,8 @@
         if(w){ el.style.width = w + 'px'; el.style.height = h + 'px'; }
         shootBoard.appendChild(el);
         el.addEventListener('animationend', ()=> el.remove());
-        setTimeout(()=> el.remove(), 1400);
+        setTimeout(()=> el.remove(), 1200);
       };
-
-      const flash = document.createElement('span');
-      flash.className = 'hit-flash';
-      place(flash, size * 2.2, size * 2.2);
 
       const ring = document.createElement('span');
       ring.className = 'hit-ring';
@@ -1516,30 +1519,28 @@
 
       const ring2 = document.createElement('span');
       ring2.className = 'hit-ring hit-ring-2';
-      place(ring2, size * 0.6, size * 0.6);
+      place(ring2, size * 0.7, size * 0.7);
 
-      const plus = document.createElement('span');
-      plus.className = 'hit-plus';
-      plus.textContent = '+1';
-      place(plus);
-
-      const N = 14;
+      const N = 11;
       for(let i = 0; i < N; i++){
         const ang = (Math.PI * 2 * i) / N + Math.random() * 0.4;
-        const dist = 46 + Math.random() * 48;
-        const sp = document.createElement('span');
-        sp.className = 'hit-spark';
-        sp.style.setProperty('--dx', Math.cos(ang) * dist + 'px');
-        sp.style.setProperty('--dy', Math.sin(ang) * dist + 'px');
-        const px = 5 + Math.random() * 6;
-        place(sp, px, px);
+        // Outward burst first (mid-flight point), then gravity pulls it
+        // further down and slightly onward for the final resting point.
+        const midDist = 16 + Math.random() * 20;
+        const mx = Math.cos(ang) * midDist, my = Math.sin(ang) * midDist;
+        const fx = mx + (Math.random() - 0.5) * 14;
+        const fy = my + 26 + Math.random() * 30;
+        const drop = document.createElement('span');
+        drop.className = 'hit-droplet';
+        drop.style.setProperty('--mx', mx + 'px');
+        drop.style.setProperty('--my', my + 'px');
+        drop.style.setProperty('--fx', fx + 'px');
+        drop.style.setProperty('--fy', fy + 'px');
+        drop.style.setProperty('--rot', Math.round(ang * 57.3) + 'deg');
+        drop.style.setProperty('--dur', (0.6 + Math.random() * 0.35) + 's');
+        const px = 5 + Math.random() * 5;
+        place(drop, px, px * 1.3);
       }
-
-      // One pulse across the board itself. Re-trigger by removing the class
-      // and forcing a reflow, otherwise rapid hits only animate the first.
-      shootBoard.classList.remove('board-hit');
-      void shootBoard.offsetWidth;
-      shootBoard.classList.add('board-hit');
     }
 
     function spawn(){
@@ -1642,13 +1643,36 @@
     }
 
     // A piece is tracked by the level it was cut at, so the camera pan
-    // applies to it exactly like it does to the tower.
+    // applies to it exactly like it does to the tower. Rather than dropping
+    // as one solid slab, it crumbles into a handful of irregular chunks
+    // plus a puff of dust at the break line - each chunk keeps falling
+    // through the same falling[] array/physics, just flagged as debris.
     function addFalling(x, w, level, dir){
-      falling.push({
-        x: x, w: w, level: level, dy: 0, vy: -0.6,
-        vx: dir * (0.8 + Math.random() * 0.7),
-        rot: 0, vr: dir * (0.025 + Math.random() * 0.03)
-      });
+      const n = 3 + Math.floor(Math.random() * 3); // 3-5 chunks
+      let cx = x, remaining = w;
+      for(let i = 0; i < n; i++){
+        const cw = (i === n - 1) ? remaining : Math.max(4, remaining * (0.22 + Math.random() * 0.26));
+        const d = dir || (Math.random() < 0.5 ? -1 : 1);
+        falling.push({
+          x: cx, w: Math.max(3, cw), level: level, dy: 0,
+          vy: -0.7 - Math.random() * 0.8,
+          vx: d * (0.5 + Math.random() * 1.4),
+          rot: 0, vr: (Math.random() < 0.5 ? -1 : 1) * (0.035 + Math.random() * 0.06)
+        });
+        cx += cw;
+        remaining -= cw;
+      }
+      // Dust chips kicked up at the fracture line - tiny, fast, short-lived.
+      for(let i = 0; i < 7; i++){
+        const d = dir || (Math.random() < 0.5 ? -1 : 1);
+        falling.push({
+          x: x + Math.random() * w, w: 2 + Math.random() * 3, level: level, dy: 0,
+          vy: -(1.1 + Math.random() * 1.5),
+          vx: d * (0.6 + Math.random() * 2),
+          rot: 0, vr: (Math.random() < 0.5 ? -1 : 1) * (0.12 + Math.random() * 0.16),
+          dust: true, shade: 0.45 + Math.random() * 0.4
+        });
+      }
     }
 
     // A perfect landing: shockwave bars, sparks and a rising label, all
@@ -1716,9 +1740,9 @@
       const camera = Math.max(0, stackH + H * 3 - viewH);
 
       const grad = ctx.createLinearGradient(0, 0, W, 0);
-      grad.addColorStop(0, '#00e5ff');
-      grad.addColorStop(0.5, '#3b9dff');
-      grad.addColorStop(1, '#8b5cf6');
+      grad.addColorStop(0, '#ff2fb0');
+      grad.addColorStop(0.5, '#7c3aff');
+      grad.addColorStop(1, '#00e5ff');
 
       blocks.forEach((b, i)=>{
         const y = viewH - (i + 1) * H + camera;
@@ -1814,11 +1838,16 @@
         ctx.globalAlpha = Math.max(0, 1 - f.dy / (viewH * 1.25));
         ctx.translate(f.x + f.w / 2, y + H / 2);
         ctx.rotate(f.rot);
-        const g2 = ctx.createLinearGradient(-f.w / 2, 0, f.w / 2, 0);
-        g2.addColorStop(0, '#00e5ff');
-        g2.addColorStop(1, '#8b5cf6');
-        ctx.fillStyle = g2;
-        ctx.fillRect(-f.w / 2, -H / 2, f.w, H - 2);
+        if(f.dust){
+          ctx.fillStyle = 'rgba(255,255,255,' + f.shade + ')';
+          ctx.fillRect(-f.w / 2, -f.w / 2, f.w, f.w);
+        }else{
+          const g2 = ctx.createLinearGradient(-f.w / 2, 0, f.w / 2, 0);
+          g2.addColorStop(0, '#ff2fb0');
+          g2.addColorStop(1, '#00e5ff');
+          ctx.fillStyle = g2;
+          ctx.fillRect(-f.w / 2, -H / 2, f.w, H - 2);
+        }
         ctx.restore();
       });
       ctx.globalAlpha = 1;
