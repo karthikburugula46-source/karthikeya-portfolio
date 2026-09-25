@@ -486,11 +486,12 @@
   body.gamer-mode .grad-text{text-shadow:3px 3px 0 var(--a3);}
   body.gamer-mode .eyebrow-pill .dot{background:var(--a1);}
   /* btn-primary/mini-btn.primary fill solid with --grad (a flat color,
-     not a gradient) - dark text keeps it legible, and a hard offset
+     not a gradient) - white text is the same convention the Recent Work
+     CTA/tag already uses (.p-card .tag{color:#fff}), and a hard offset
      shadow that shrinks on press is the new tactile language replacing
      the old hover-glow everywhere in this theme. */
   body.gamer-mode .btn-primary{
-    color:#1a0006;font-weight:800;border:3px solid #000;
+    color:#fff;font-weight:800;border:3px solid #000;
     box-shadow:5px 5px 0 #000;
     transition:box-shadow .15s ease, transform .15s ease;
   }
@@ -501,18 +502,17 @@
     transition:box-shadow .15s ease, transform .15s ease;
   }
   body.gamer-mode .btn-ghost:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000;}
-  body.gamer-mode .mini-btn.primary{color:#1a0006;}
+  body.gamer-mode .mini-btn.primary{color:#fff;}
   body.gamer-mode ::selection{background:var(--a2);color:#1a0006;}
 
   /* The hero photo keeps its border/background frame - restored, not
      removed - it just adapts to the theme like everything else instead
-     of holding a fixed color. Rotated and nudged up out of the tidy
-     centered stack PM uses, with a hard trading-card shadow instead of
-     the soft ambient one, so gamer mode's hero is a genuinely different
-     composition, not the same layout in different colors. Nothing is
-     layered on top of the photo itself - the frame is still the
-     padding+background technique that sits AROUND it. */
-  body.gamer-mode .hero-photo-wrap{transform:translateY(-26px) rotate(-3deg);}
+     of holding a fixed color. Nudged up out of the tidy centered stack PM
+     uses, with a hard trading-card shadow instead of the soft ambient
+     one, so gamer mode's hero is a genuinely different composition, not
+     the same layout in different colors - but kept straight, not tilted,
+     per explicit correction (the cards elsewhere keep their tilt). */
+  body.gamer-mode .hero-photo-wrap{transform:translateY(-26px);}
   body.gamer-mode .hero-photo-card{
     border-radius:14px;padding:6px;border:3px solid #000;
     box-shadow:12px 12px 0 #000;
@@ -1218,27 +1218,32 @@
     setTimeout(()=> flash.remove(), 500);
   }
 
-  // Ambient sparkle: every few seconds while idle in gamer mode, a small
+  // Ambient sparkle: every second or so while idle in gamer mode, a small
   // flat-color pixel drifts up and fades (smooth ease-out, no jitter) -
   // the "background is moving" signal for this pass, replacing the
-  // stepped glitch bars.
+  // stepped glitch bars. User liked this one and asked for it more often,
+  // so the interval is shorter than the first cut, and it occasionally
+  // spawns a pair instead of always just one.
   const SPARKLE_COLORS = ['255,47,79', '255,207,63', '47,155,255'];
   let sparkleTimer = null;
   function spawnSparkle(){
-    const s = document.createElement('div');
-    s.className = 'arcade-sparkle';
-    s.style.left = (Math.random() * 100) + 'vw';
-    s.style.top = (30 + Math.random() * 60) + 'vh';
-    s.style.background = 'rgb(' + SPARKLE_COLORS[(Math.random() * SPARKLE_COLORS.length) | 0] + ')';
-    document.body.appendChild(s);
-    s.addEventListener('animationend', ()=> s.remove());
-    setTimeout(()=> s.remove(), 2400);
+    const n = Math.random() < 0.35 ? 2 : 1;
+    for(let i = 0; i < n; i++){
+      const s = document.createElement('div');
+      s.className = 'arcade-sparkle';
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.top = (30 + Math.random() * 60) + 'vh';
+      s.style.background = 'rgb(' + SPARKLE_COLORS[(Math.random() * SPARKLE_COLORS.length) | 0] + ')';
+      document.body.appendChild(s);
+      s.addEventListener('animationend', ()=> s.remove());
+      setTimeout(()=> s.remove(), 2400);
+    }
   }
   function scheduleSparkle(){
     sparkleTimer = setTimeout(()=>{
       if(gamerOn) spawnSparkle();
       if(gamerOn) scheduleSparkle();
-    }, 1400 + Math.random() * 1800);
+    }, 650 + Math.random() * 750);
   }
   function startSparkle(){
     if(reduceMotion) return;
