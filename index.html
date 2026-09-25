@@ -426,35 +426,38 @@
   body.gamer-mode #arcade{display:block;}
   body.gamer-mode .arcade-link{display:inline;}
 
-  /* ---------- Gamer theme: "Signal Glitch" ----------
-     Third full reskin. Palette: amber (primary), hot magenta (secondary),
-     cyan (tertiary) - discrete flat colors used on different elements,
-     never blended together in one fill (still "no gradient except the
-     cursor trail" - the rule from two redesigns ago still holds; the
-     richness here comes from motion and color VARIETY, not blending).
-     New this pass: a stepped chromatic-aberration reveal (text-shadow
-     jitter, not opacity/transform - see the note by .orbit-card below for
-     why that property choice matters), periodic ambient glitch bars, and
-     a glitch burst on every PM<->Gamer switch. Cursor trail and the Stack
-     tower recolor to match. The hero photo drops its permanent colored
-     frame entirely in gamer mode - it's the one thing that does NOT
-     change with the theme. */
+  /* ---------- Gamer theme: "Arcade Cabinet" ----------
+     Fourth pass. Every earlier version - cyan/blue/violet, pink/violet/
+     cyan "RGB battle-station", flat green "Combat Terminal", amber/
+     magenta/cyan "Signal Glitch" - was the same dark-HUD-with-glow
+     skeleton wearing different hex codes, and the user called that out
+     directly: "you're just changing colors... try something extremely
+     new." This one changes the VOCABULARY, not just the palette: hard,
+     unblurred, offset drop-shadows instead of soft glow (comic-panel/
+     trading-card depth, not neon), thick solid borders instead of thin
+     translucent HUD lines, a tactile press-down interaction on buttons
+     and cards instead of a hover glow, alternating card tilt instead of
+     a perfectly aligned grid, and the corner-bracket HUD accents (which
+     survived unchanged through all three previous passes) are gone
+     entirely. Motion is smooth cubic-bezier/ease throughout - no
+     steps()-based "digital glitch" jitter anywhere, which is what made
+     the last version feel stuttery. */
   body.gamer-mode{
-    --bg:#07050a;
-    --bg-2:#0f0912;
-    --bg-3:#160d1c;
-    --border:rgba(255,122,26,0.2);
-    --border-hi:rgba(255,122,26,0.55);
-    --text:#fff2e6;
-    --text-dim:#8a7c8f;
-    --a1:#ff7a1a;
-    --a2:#ff2079;
-    --a3:#00e5ff;
-    --grad:#ff7a1a;
+    --bg:#0b0b10;
+    --bg-2:#141419;
+    --bg-3:#1c1c22;
+    --border:#000;
+    --border-hi:#000;
+    --text:#fff9e8;
+    --text-dim:#9a93a6;
+    --a1:#ff2f4f;
+    --a2:#ffcf3f;
+    --a3:#2f9bff;
+    --grad:#ff2f4f;
   }
-  body.gamer-mode nav{background:rgba(7,5,10,0.72);}
-  body.gamer-mode nav.scrolled{background:rgba(7,5,10,0.9);}
-  /* Mono type + terminal prefix give the whole page the HUD feel */
+  body.gamer-mode nav{background:rgba(11,11,16,0.72);}
+  body.gamer-mode nav.scrolled{background:rgba(11,11,16,0.92);}
+  /* Mono type gives the whole page a console/scoreboard feel */
   body.gamer-mode .section-head h2,
   body.gamer-mode .hero h1,
   body.gamer-mode .stat,
@@ -466,28 +469,55 @@
     font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
   }
   body.gamer-mode .section-head h2{letter-spacing:-0.5px;}
+  /* A select-cursor prefix instead of a terminal prompt, breathing gently
+     (one smooth ease-in-out pulse, not an intermittent flicker). */
   body.gamer-mode .section-head h2::before{
-    content:"> ";color:var(--a1);text-shadow:0 0 8px var(--a1);
-    animation:neonFlicker 6s ease-in-out infinite;
+    content:"\25B8 ";color:var(--a1);
+    animation:selectPulse 2.4s ease-in-out infinite;
   }
-  @keyframes neonFlicker{
-    0%,18%,22%,52%,56%,100%{opacity:1;}
-    20%,54%{opacity:0.35;}
+  @keyframes selectPulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.55;}
   }
-  body.gamer-mode .hero h1{letter-spacing:-2px;}
-  body.gamer-mode .eyebrow-pill .dot{background:var(--a1);box-shadow:0 0 8px var(--a1);}
-  body.gamer-mode .p-card:hover{box-shadow:0 24px 50px -20px rgba(255,122,26,0.3);}
-  /* btn-primary/mini-btn.primary fill solid with --grad (a flat color in
-     gamer mode, not a gradient) - dark text keeps it legible on bright amber. */
-  body.gamer-mode .btn-primary{color:#180a00;font-weight:800;}
-  body.gamer-mode .btn-primary:hover{box-shadow:0 10px 30px rgba(255,122,26,0.4);}
-  body.gamer-mode .mini-btn.primary{color:#180a00;}
-  body.gamer-mode ::selection{background:var(--a2);color:#fff;}
+  body.gamer-mode .hero h1{
+    letter-spacing:-2px;
+    text-shadow:3px 3px 0 var(--a3);
+  }
+  body.gamer-mode .grad-text{text-shadow:3px 3px 0 var(--a3);}
+  body.gamer-mode .eyebrow-pill .dot{background:var(--a1);}
+  /* btn-primary/mini-btn.primary fill solid with --grad (a flat color,
+     not a gradient) - dark text keeps it legible, and a hard offset
+     shadow that shrinks on press is the new tactile language replacing
+     the old hover-glow everywhere in this theme. */
+  body.gamer-mode .btn-primary{
+    color:#1a0006;font-weight:800;border:3px solid #000;
+    box-shadow:5px 5px 0 #000;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  body.gamer-mode .btn-primary:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 #000;}
+  body.gamer-mode .btn-primary:active{transform:translate(3px,3px);box-shadow:0 0 0 #000;}
+  body.gamer-mode .btn-ghost{
+    border:3px solid #000;
+    transition:box-shadow .15s ease, transform .15s ease;
+  }
+  body.gamer-mode .btn-ghost:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000;}
+  body.gamer-mode .mini-btn.primary{color:#1a0006;}
+  body.gamer-mode ::selection{background:var(--a2);color:#1a0006;}
 
-  /* The hero photo is the one thing that does NOT re-theme - no colored
-     frame, no glow, no border layer sitting on it in gamer mode. */
-  body.gamer-mode .hero-photo-card{padding:0;background:none;box-shadow:none;}
-  body.gamer-mode .hero-photo-card .inner{border-radius:0;}
+  /* The hero photo keeps its border/background frame - restored, not
+     removed - it just adapts to the theme like everything else instead
+     of holding a fixed color. Rotated and nudged up out of the tidy
+     centered stack PM uses, with a hard trading-card shadow instead of
+     the soft ambient one, so gamer mode's hero is a genuinely different
+     composition, not the same layout in different colors. Nothing is
+     layered on top of the photo itself - the frame is still the
+     padding+background technique that sits AROUND it. */
+  body.gamer-mode .hero-photo-wrap{transform:translateY(-26px) rotate(-3deg);}
+  body.gamer-mode .hero-photo-card{
+    border-radius:14px;padding:6px;border:3px solid #000;
+    box-shadow:12px 12px 0 #000;
+  }
+  body.gamer-mode .hero-photo-card .inner{border-radius:8px;}
 
   /* Gamer-only cursor. Scoped so PM mode keeps the normal system pointer. */
   body.gamer-mode .p-card,
@@ -500,7 +530,7 @@
   body.gamer-mode .mode-option,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23ff7a1a' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%23ff2079' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23ff7a1a' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23ff2f4f' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%232f9bff' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffcf3f'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23ff2f4f' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
   }
 
   /* ---------- Arcade ---------- */
@@ -527,7 +557,7 @@
     padding:7px 14px;cursor:pointer;
     transition:background .2s ease, color .2s ease, transform .2s ease;
   }
-  .mini-btn:hover{background:rgba(255,122,26,0.14);transform:translateY(-1px);}
+  .mini-btn:hover{background:rgba(255,47,79,0.14);transform:translateY(-1px);}
   .mini-btn.primary{background:var(--grad);border-color:transparent;color:#fff;}
 
   .game-board{
@@ -538,13 +568,14 @@
   }
   /* Sniper scope reticle, only over the shooting board */
   #shootBoard, #shootBoard .game-target{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%23ff7a1a' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%23ff2079' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%23ff7a1a' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%23ffffff' stroke-width='1' opacity='.8'/%3E%3C/svg%3E") 28 28, crosshair;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%23ff2f4f' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%232f9bff' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%23ffcf3f' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%23ff2f4f' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%23ffffff' stroke-width='1' opacity='.8'/%3E%3C/svg%3E") 28 28, crosshair;
   }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
     background:var(--grad);
-    box-shadow:0 0 16px rgba(255,122,26,0.6);
-    border:0;padding:0;
+    border:3px solid #000;
+    box-shadow:4px 4px 0 #000;
+    padding:0;
     transform:scale(0);
     animation:targetPop .16s cubic-bezier(0.16,1,0.3,1) forwards;
   }
@@ -552,7 +583,7 @@
   .game-overlay{
     position:absolute;inset:0;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:12px;text-align:center;
-    background:rgba(7,5,10,0.8);
+    background:rgba(11,11,16,0.82);
   }
   .game-overlay p{
     margin:0;font-size:12.5px;color:var(--text-dim);
@@ -601,8 +632,8 @@
   body.gamer-mode::before{
     content:"";position:fixed;inset:-50px;z-index:0;pointer-events:none;
     background-image:
-      linear-gradient(rgba(255,122,26,0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,122,26,0.1) 1px, transparent 1px);
+      linear-gradient(rgba(255,47,79,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,47,79,0.08) 1px, transparent 1px);
     background-size:42px 42px;
     -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
     mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
@@ -610,7 +641,8 @@
   }
   @keyframes gridDrift{to{background-position:42px 42px, 42px 42px;}}
 
-  /* Static CRT scanlines over the whole page (under the cursor trail). */
+  /* Static CRT scanlines - arcade cabinets ran on CRTs too, so this still
+     fits the new identity, not a leftover. */
   body.gamer-mode::after{
     content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
     background:repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px);
@@ -618,85 +650,63 @@
   }
   body.gamer-mode section, body.gamer-mode .hero, body.gamer-mode footer{position:relative;z-index:1;}
 
-  /* Cards: flat solid panels, sharp corners, bracketed corner accents on
-     hover. No background gradient. */
+  /* Cards: thick black border + hard, unblurred offset shadow (comic
+     panel / trading card depth) instead of a soft colored glow - the
+     glow-on-hover language every earlier pass used is gone. Alternating
+     tilt breaks PM's perfectly aligned grid on purpose. Press down on
+     hover/active like a physical card lifting and settling. No corner
+     brackets this time - that HUD affordance survived three straight
+     redesigns unchanged, so it's retired along with the glow. */
   body.gamer-mode .p-card,
   body.gamer-mode .skill-card,
   body.gamer-mode .edu-card,
   body.gamer-mode .arcade-card{
-    border-radius:0;
-    border-color:var(--border);
-    background:#0d090f;
+    border-radius:14px;
+    border:3px solid #000;
+    background:#15121a;
+    box-shadow:7px 7px 0 #000;
+    transform:rotate(var(--tilt,0deg));
+    transition:transform .25s cubic-bezier(0.34,1.56,0.64,1), box-shadow .25s ease;
   }
-  body.gamer-mode .p-card::before,
-  body.gamer-mode .skill-card::before,
-  body.gamer-mode .edu-card::before,
-  body.gamer-mode .arcade-card::before,
-  body.gamer-mode .p-card::after,
-  body.gamer-mode .skill-card::after,
-  body.gamer-mode .edu-card::after,
-  body.gamer-mode .arcade-card::after{
-    content:"";position:absolute;width:15px;height:15px;pointer-events:none;
-    border-style:solid;border-color:var(--a1);opacity:0.65;
-    transition:opacity .3s ease, width .3s ease, height .3s ease;
-  }
-  body.gamer-mode .p-card::before,
-  body.gamer-mode .skill-card::before,
-  body.gamer-mode .edu-card::before,
-  body.gamer-mode .arcade-card::before{top:7px;left:7px;border-width:2px 0 0 2px;}
-  body.gamer-mode .p-card::after,
-  body.gamer-mode .skill-card::after,
-  body.gamer-mode .edu-card::after,
-  body.gamer-mode .arcade-card::after{bottom:7px;right:7px;border-width:0 2px 2px 0;}
-  body.gamer-mode .p-card:hover::before,
-  body.gamer-mode .skill-card:hover::before,
-  body.gamer-mode .edu-card:hover::before,
-  body.gamer-mode .p-card:hover::after,
-  body.gamer-mode .skill-card:hover::after,
-  body.gamer-mode .edu-card:hover::after{opacity:1;width:24px;height:24px;border-color:var(--a2);}
+  body.gamer-mode .bento > .p-slot:nth-child(odd) .p-card{--tilt:-1.6deg;}
+  body.gamer-mode .bento > .p-slot:nth-child(even) .p-card{--tilt:1.6deg;}
+  body.gamer-mode .skills-grid .skill-card:nth-child(odd),
+  body.gamer-mode .edu-grid .edu-card:nth-child(odd){--tilt:-1.6deg;}
+  body.gamer-mode .skills-grid .skill-card:nth-child(even),
+  body.gamer-mode .edu-grid .edu-card:nth-child(even){--tilt:1.6deg;}
   body.gamer-mode .p-card:hover,
   body.gamer-mode .skill-card:hover,
   body.gamer-mode .edu-card:hover{
+    transform:rotate(0deg) translate(-3px,-3px);
+    box-shadow:11px 11px 0 #000;
     border-color:var(--a1);
-    box-shadow:0 0 0 1px rgba(255,122,26,0.3), 0 20px 48px -22px rgba(255,122,26,0.45);
   }
-  body.gamer-mode .skill-card:hover{transform:translateY(-4px) scale(1.01);}
 
-  /* Pills/tags read like HUD chips */
+  /* Pills/tags: thick border, flat fill, no glow */
   body.gamer-mode .pill{
-    border-radius:0;border-color:rgba(255,122,26,0.32);
-    background:rgba(255,122,26,0.07);
-    transition:background .2s ease, border-color .2s ease, color .2s ease;
+    border-radius:8px;border:2px solid #000;
+    background:rgba(255,47,79,0.12);
+    transition:background .2s ease, transform .15s ease;
   }
-  body.gamer-mode .pill:hover{background:rgba(255,122,26,0.18);border-color:var(--a1);color:#fff;}
-  body.gamer-mode .tag{border-radius:0;}
-  body.gamer-mode .eyebrow-pill{border-radius:0;border-color:rgba(255,122,26,0.34);}
-  body.gamer-mode .mode-toggle{border-radius:0;}
+  body.gamer-mode .pill:hover{background:var(--a1);color:#fff;transform:translateY(-2px);}
+  body.gamer-mode .tag{border-radius:6px;}
+  body.gamer-mode .eyebrow-pill{border-radius:8px;border:2px solid #000;}
+  body.gamer-mode .mode-toggle{border-radius:8px;border:2px solid #000;}
   body.gamer-mode .mode-slider,
-  body.gamer-mode .mode-option{border-radius:0;}
+  body.gamer-mode .mode-option{border-radius:6px;}
   body.gamer-mode .btn,
   body.gamer-mode nav .cta,
-  body.gamer-mode .mini-btn{border-radius:0;}
+  body.gamer-mode .mini-btn{border-radius:8px;}
 
-  /* Reveal: a stepped chromatic-aberration flicker (two flat-color
-     text-shadow offsets snapping toward 0) instead of a soft fade. Uses
-     text-shadow deliberately - NOT opacity/transform/filter, which
-     .reveal/.orbit-card already animate via transition. Two controllers
-     fighting the same property is what caused the old orbit-card "break"
-     the user caught; text-shadow has zero overlap with either transition,
-     so this is safe on both .reveal AND .orbit-card. */
+  /* Reveal keeps ONE mechanism, not two fighting over the same property -
+     just a bouncier curve on the existing transition (opacity/transform/
+     filter), no separate `animation` layered on top. That's also why this
+     is safe on .orbit-card: nothing new is competing with its own
+     transition. Smooth the whole way, no steps()/jitter. */
   body.gamer-mode .reveal,
   body.gamer-mode .orbit-card{
-    transition-duration:.55s,.55s,.55s;
-    transition-timing-function:cubic-bezier(0.2,1.4,0.35,1);
-  }
-  body.gamer-mode .reveal.visible,
-  body.gamer-mode .orbit-card.visible{animation:glitchIn .4s steps(6,end);}
-  @keyframes glitchIn{
-    0%{text-shadow:-3px 0 var(--a2), 3px 0 var(--a3);}
-    30%{text-shadow:2px 0 var(--a2), -2px 0 var(--a3);}
-    60%{text-shadow:-1px 0 var(--a2), 1px 0 var(--a3);}
-    100%{text-shadow:0 0 transparent;}
+    transition-duration:.6s,.6s,.6s;
+    transition-timing-function:cubic-bezier(0.34,1.56,0.64,1);
   }
 
   /* Timeline + arc take the neon treatment */
@@ -706,7 +716,7 @@
   .click-ring{
     position:fixed;z-index:9997;pointer-events:none;
     width:26px;height:26px;border-radius:50%;
-    border:2px solid rgba(255,122,26,0.9);
+    border:2px solid rgba(255,47,79,0.9);
     transform:translate(-50%,-50%) scale(0.3);
     animation:clickRing .5s cubic-bezier(0.16,1,0.3,1) forwards;
   }
@@ -724,40 +734,33 @@
     to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2);opacity:0;}
   }
 
-  /* ---------- Ambient glitch bars ----------
-     A short-lived pair of flat-color bars (magenta + cyan, offset a few
-     px from each other - a chromatic-aberration illusion made of two
-     solid layers, not a blended gradient) flickers across the page every
-     few seconds while idle in gamer mode. This is the "background is
-     moving" signal - continuous, JS-scheduled, and confined to a low
-     z-index so it never sits on top of content. */
-  .ambient-glitch{
-    position:fixed;left:0;width:100%;pointer-events:none;z-index:2;
-    mix-blend-mode:screen;
-    animation:glitchBar .3s steps(5,end) forwards;
+  /* ---------- Ambient arcade sparkles ----------
+     A small flat-color pixel drifts up and fades every few seconds while
+     idle in gamer mode - smooth ease-out the whole way (no stepped
+     jitter), a coin-sparkle instead of a glitch bar. This is the
+     "background is moving" signal for this pass. */
+  .arcade-sparkle{
+    position:fixed;width:5px;height:5px;pointer-events:none;z-index:2;
+    animation:sparkleDrift 2.1s ease-out forwards;
   }
-  .ambient-glitch.g-a{background:rgba(255,32,121,0.4);}
-  .ambient-glitch.g-b{background:rgba(0,229,255,0.35);}
-  @keyframes glitchBar{
-    0%{transform:translateX(var(--gx));opacity:0.85;}
-    45%{transform:translateX(calc(var(--gx) * -0.5));opacity:0.55;}
-    100%{transform:translateX(0);opacity:0;}
+  @keyframes sparkleDrift{
+    0%{transform:translateY(0) scale(1);opacity:0.85;}
+    100%{transform:translateY(-100px) scale(0.3);opacity:0;}
   }
 
-  /* ---------- Mode-switch glitch burst ----------
-     A quick flicker of amber bars across the full viewport on every
-     PM<->Gamer toggle - a deliberate transition moment instead of a flat
-     class swap. Cleaned up by JS ~450ms after it fires. */
-  .mode-glitch{position:fixed;inset:0;z-index:10000;pointer-events:none;}
-  .mg-bar{
-    position:absolute;left:0;width:100%;opacity:0;
+  /* ---------- Mode-switch power flash ----------
+     A single smooth opacity pulse across the full viewport on every
+     PM<->Gamer toggle - a deliberate transition moment, but a calm one
+     (ease-out, one property, no offset bars) instead of the jittery
+     glitch burst an earlier pass used. */
+  .mode-flash{
+    position:fixed;inset:0;z-index:10000;pointer-events:none;
     background:var(--a1);
-    animation:mgBar .32s steps(4,end) forwards;
+    animation:modeFlash .4s ease-out forwards;
   }
-  @keyframes mgBar{
-    0%{transform:translateX(var(--gx));opacity:0.5;}
-    55%{transform:translateX(calc(var(--gx) * -0.4));opacity:0.28;}
-    100%{transform:translateX(0);opacity:0;}
+  @keyframes modeFlash{
+    0%{opacity:0.3;}
+    100%{opacity:0;}
   }
 
   /* ---------- Ship It hit feedback: FPS-style hit marker ----------
@@ -821,8 +824,6 @@
 
   @media (prefers-reduced-motion: reduce){
     body.gamer-mode::before{animation:none;}
-    body.gamer-mode .reveal.visible,
-    body.gamer-mode .orbit-card.visible{animation:none;}
     body.gamer-mode .section-head h2::before{animation:none;}
     .board-shake{animation:none;}
   }
@@ -1204,58 +1205,48 @@
   let gamerOn = false;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // A quick flicker of flat-colored bars across the whole viewport on
-  // every PM<->Gamer toggle, so switching feels like an intentional
-  // transition rather than a flat class swap. Self-cleans after ~450ms.
-  function modeGlitchBurst(){
+  // A single smooth opacity flash across the whole viewport on every
+  // PM<->Gamer toggle, so switching feels like an intentional transition
+  // rather than a flat class swap - calm (one property, ease-out) rather
+  // than the jittery multi-bar burst an earlier pass used.
+  function modePowerFlash(){
     if(reduceMotion) return;
-    const layer = document.createElement('div');
-    layer.className = 'mode-glitch';
-    for(let i = 0; i < 5; i++){
-      const bar = document.createElement('div');
-      bar.className = 'mg-bar';
-      bar.style.top = (8 + Math.random() * 84) + '%';
-      bar.style.height = (3 + Math.random() * 14) + 'px';
-      bar.style.animationDelay = (i * 18) + 'ms';
-      bar.style.setProperty('--gx', (Math.random() < 0.5 ? -1 : 1) * (20 + Math.random() * 60) + 'px');
-      layer.appendChild(bar);
-    }
-    document.body.appendChild(layer);
-    setTimeout(()=> layer.remove(), 450);
+    const flash = document.createElement('div');
+    flash.className = 'mode-flash';
+    document.body.appendChild(flash);
+    flash.addEventListener('animationend', ()=> flash.remove());
+    setTimeout(()=> flash.remove(), 500);
   }
 
-  // Ambient glitch: every few seconds while idle in gamer mode, a pair of
-  // flat-color bars (magenta + cyan, offset a couple px - a chromatic
-  // aberration made of two solid layers, not a blended gradient) flickers
-  // across the page. This is the "background is moving" signal.
-  let glitchTimer = null;
-  function spawnGlitchBar(){
-    const y = Math.random() * 100;
-    const h = 2 + Math.random() * 8;
-    ['g-a', 'g-b'].forEach((cls, i)=>{
-      const bar = document.createElement('div');
-      bar.className = 'ambient-glitch ' + cls;
-      bar.style.top = (y + i * 0.15) + 'vh';
-      bar.style.height = h + 'px';
-      bar.style.setProperty('--gx', (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 22) + 'px');
-      document.body.appendChild(bar);
-      bar.addEventListener('animationend', ()=> bar.remove());
-      setTimeout(()=> bar.remove(), 500);
-    });
+  // Ambient sparkle: every few seconds while idle in gamer mode, a small
+  // flat-color pixel drifts up and fades (smooth ease-out, no jitter) -
+  // the "background is moving" signal for this pass, replacing the
+  // stepped glitch bars.
+  const SPARKLE_COLORS = ['255,47,79', '255,207,63', '47,155,255'];
+  let sparkleTimer = null;
+  function spawnSparkle(){
+    const s = document.createElement('div');
+    s.className = 'arcade-sparkle';
+    s.style.left = (Math.random() * 100) + 'vw';
+    s.style.top = (30 + Math.random() * 60) + 'vh';
+    s.style.background = 'rgb(' + SPARKLE_COLORS[(Math.random() * SPARKLE_COLORS.length) | 0] + ')';
+    document.body.appendChild(s);
+    s.addEventListener('animationend', ()=> s.remove());
+    setTimeout(()=> s.remove(), 2400);
   }
-  function scheduleGlitch(){
-    glitchTimer = setTimeout(()=>{
-      if(gamerOn) spawnGlitchBar();
-      if(gamerOn) scheduleGlitch();
-    }, 3200 + Math.random() * 3600);
+  function scheduleSparkle(){
+    sparkleTimer = setTimeout(()=>{
+      if(gamerOn) spawnSparkle();
+      if(gamerOn) scheduleSparkle();
+    }, 1400 + Math.random() * 1800);
   }
-  function startGlitch(){
+  function startSparkle(){
     if(reduceMotion) return;
-    stopGlitch();
-    scheduleGlitch();
+    stopSparkle();
+    scheduleSparkle();
   }
-  function stopGlitch(){
-    if(glitchTimer){ clearTimeout(glitchTimer); glitchTimer = null; }
+  function stopSparkle(){
+    if(sparkleTimer){ clearTimeout(sparkleTimer); sparkleTimer = null; }
   }
 
   const setMode = (mode)=>{
@@ -1267,16 +1258,16 @@
       btn.classList.toggle('active', on);
       btn.setAttribute('aria-pressed', String(on));
     });
-    if(gamerOn !== wasGamer) modeGlitchBurst();
+    if(gamerOn !== wasGamer) modePowerFlash();
     if(gamerOn){
       fitStack();
       startStack();
       startTrail();
-      startGlitch();
+      startSparkle();
     } else {
       stopStack();
       stopTrail();
-      stopGlitch();
+      stopSparkle();
     }
   };
   modeButtons.forEach(btn=>{
@@ -1330,13 +1321,13 @@
   // fading out, which is what makes it read as solid/milky instead of a
   // stack of translucent strokes.
   const TRAIL_STOPS = [
-    [0.00, 'rgba(255,122,26,0)'],
-    [0.12, 'rgba(255,122,26,1)'],
-    [0.40, 'rgba(255,32,121,1)'],
-    [0.68, 'rgba(190,50,220,1)'],
-    [1.00, 'rgba(0,229,255,1)']
+    [0.00, 'rgba(255,47,79,0)'],
+    [0.12, 'rgba(255,47,79,1)'],
+    [0.45, 'rgba(255,207,63,1)'],
+    [0.72, 'rgba(120,180,255,1)'],
+    [1.00, 'rgba(47,155,255,1)']
   ];
-  const SPARK_COLORS = ['255,122,26', '255,32,121', '0,229,255'];
+  const SPARK_COLORS = ['255,47,79', '255,207,63', '47,155,255'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
   let pointer = null, head = null, lastMoveTs = 0;
   let lastScrollY = 0;
@@ -1524,7 +1515,7 @@
       for(let i = n - 1; i >= 0; i--) trailCtx.lineTo(rightEdge[i].x, rightEdge[i].y);
       trailCtx.closePath();
       trailCtx.fillStyle = grad;
-      trailCtx.shadowColor = 'rgba(255,122,26,0.35)';
+      trailCtx.shadowColor = 'rgba(255,47,79,0.35)';
       trailCtx.shadowBlur = 5;
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
@@ -1736,7 +1727,7 @@
     // Each tower floor cycles through one of these flat colors (indexed
     // by its position), so the tower reads as distinct arcade blocks
     // rather than a single gradient-painted column.
-    const BLOCK_COLORS = ['#ff7a1a', '#ff2079', '#00e5ff', '#ffd426'];
+    const BLOCK_COLORS = ['#ff2f4f', '#ffcf3f', '#2f9bff'];
     let W = 0, viewH = 0;
     let blocks = [], current = null, score = 0, best = 0, over = false, raf = null, lastTs = null;
     let falling = [];   // sliced-off pieces tumbling out of frame
