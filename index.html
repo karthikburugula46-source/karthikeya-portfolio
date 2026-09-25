@@ -1218,16 +1218,16 @@
     setTimeout(()=> flash.remove(), 500);
   }
 
-  // Ambient sparkle: every second or so while idle in gamer mode, a small
-  // flat-color pixel drifts up and fades (smooth ease-out, no jitter) -
-  // the "background is moving" signal for this pass, replacing the
-  // stepped glitch bars. User liked this one and asked for it more often,
-  // so the interval is shorter than the first cut, and it occasionally
-  // spawns a pair instead of always just one.
+  // Ambient sparkle: a small flat-color pixel drifts up and fades (smooth
+  // ease-out, no jitter) - the "background is moving" signal for this
+  // pass, replacing the stepped glitch bars. User liked this one and
+  // asked for it more often twice now - shorter interval and a bigger
+  // chance of spawning more than one each tick, again.
   const SPARKLE_COLORS = ['255,47,79', '255,207,63', '47,155,255'];
   let sparkleTimer = null;
   function spawnSparkle(){
-    const n = Math.random() < 0.35 ? 2 : 1;
+    const r = Math.random();
+    const n = r < 0.15 ? 3 : (r < 0.55 ? 2 : 1);
     for(let i = 0; i < n; i++){
       const s = document.createElement('div');
       s.className = 'arcade-sparkle';
@@ -1243,7 +1243,7 @@
     sparkleTimer = setTimeout(()=>{
       if(gamerOn) spawnSparkle();
       if(gamerOn) scheduleSparkle();
-    }, 650 + Math.random() * 750);
+    }, 300 + Math.random() * 400);
   }
   function startSparkle(){
     if(reduceMotion) return;
