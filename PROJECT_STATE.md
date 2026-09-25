@@ -2,7 +2,7 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-09-22 · HEAD `552145f`
+Last updated: 2026-09-25 · HEAD `pending`
 
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. Now has a **PM mode / Gamer mode** toggle that re-themes the whole site.
@@ -97,25 +97,26 @@ body.gamer-mode .mode-slider{transform:translateX(100%);}
 ```
 **`min-width:84px`, not `flex:1`** — flex items have `min-width:auto`, so "PM" and "GAMER" have different content floors and the slider misaligns.
 
-Gamer theme — **"Combat Terminal"** (rebuilt from scratch a second time — the RGB battle-station attempt above was rejected outright: *"the entire theme is really bad... this looks more like Canva now... I don't want any gradient kind of feel on this... The only gradient that is there is the cursor"*). Current design is a single flat accent, no blended color anywhere in the UI chrome:
+Gamer theme — **"Signal Glitch"**, third full reskin. History: cyan→blue→violet (original) → pink/violet/cyan "RGB battle-station" (rejected: *"looks more like Canva... I don't want any gradient kind of feel"*) → flat toxic-green "Combat Terminal" (rejected: *"that green color... doesn't look really good"*) → **current**. This pass's brief was broader than a recolor: *"come up with a new theme with extremely good animations, and it should affect all the aspects of it, not just the theme... the cursor's animation trail also should change. Even the game blocks... Everything should change apart from my photo."*
 ```css
-body.gamer-mode{--bg:#05070b;--bg-2:#0a0d14;--bg-3:#10141d;
-  --border:rgba(198,255,46,.18);--border-hi:rgba(198,255,46,.5);
-  --text:#e7ffe2;--text-dim:#798c78;--a1:#c6ff2e;--a2:#c6ff2e;--a3:#c6ff2e;
-  --grad:#c6ff2e;}
+body.gamer-mode{--bg:#07050a;--bg-2:#0f0912;--bg-3:#160d1c;
+  --border:rgba(255,122,26,.2);--border-hi:rgba(255,122,26,.55);
+  --text:#fff2e6;--text-dim:#8a7c8f;--a1:#ff7a1a;--a2:#ff2079;--a3:#00e5ff;
+  --grad:#ff7a1a;}
 ```
-**`--grad` is a flat hex, not a `linear-gradient()`, on purpose.** Every consumer of `var(--grad)` (`.grad-text` hero name, `.mode-slider`, `.btn-primary`, `.mini-btn.primary`, `.game-target`, the `.hero-photo-card` padding-trick border) turns into a solid fill automatically just by changing this one variable — no other markup/JS touched. `--a1/--a2/--a3` are all the same green (no trio, no "gradient contrast" between accents) since a multi-hue scheme was itself part of what got rejected. Bright-green fills need dark text for contrast: `body.gamer-mode .btn-primary{color:#04140a}` and same for `.mini-btn.primary`.
+Amber (primary) / hot magenta (secondary) / cyan (tertiary) — **discrete flat colors on different elements**, never blended within one fill. `--grad` stays a flat hex (still "no gradient except the cursor trail" — that rule wasn't retracted this round, so richness comes from motion/color *variety*, not blending). Unlike the green attempt, `--a2`/`--a3` are genuinely different hues this time (not all-one-color) — likely part of why flat-green read as monotonous.
 
-Plus:
-- **Ambient bg**: back to an orthogonal grid (single green hue, `gridDrift 9s`, faster/more opaque than either earlier attempt so the drift actually reads). `::after` is CRT scanlines only, **static, no animation** — the earlier version's sweeping scan beam was the specific thing the user called "distracting... in the foreground," so it's gone outright, not just recolored.
-- **No RGB hue-cycle anywhere.** `rgbCycle`/`hue-rotate` was deleted entirely (was on `.mode-slider` and `.btn-primary:hover`) — cycling through hues is exactly the "gradient contrast going up and down" the user rejected, even though it's a `filter`, not a literal CSS gradient.
-- **Cards**: flat `#070c07` background, flat border, no top strip, `border-radius:0`. Corner-bracket accents kept (bumped 13px→15px since nothing else decorates the card now), auto-inherit `var(--a1)`.
-- **Sharp corners everywhere** (`border-radius:0` on cards, pills, buttons, mode-toggle, hero-photo-card) — a shape-language signal, not just color, for "polar opposite of PM's rounded cards."
-- Neon flicker on the `> ` heading prefix kept (a flat-color opacity blink, not a moving/blended element — wasn't part of either complaint).
-- Cursors (crosshair + sniper scope) recolored to flat green + a white center dot, dropped the old two/three-tone rings.
-- `SPARK_COLORS` (site-wide click confetti) cut down to `['198,255,46','255,255,255']` — two flat hues, still not a gradient since each spark is one solid color.
+**What's new/different from the green attempt, item by item:**
+- **The photo lost its permanent frame.** `body.gamer-mode .hero-photo-card{padding:0;background:none;box-shadow:none;}` — the old padding+`var(--grad)` trick put a solid colored border around the photo in every past version; gamer mode now renders it with zero extra layer, per explicit instruction. This is the one element that does *not* re-theme.
+- **Chromatic-aberration reveal**, replacing `powerOn`: `@keyframes glitchIn` animates `text-shadow` (two flat-color offsets, `var(--a2)`/`var(--a3)`, snapping toward 0 via `steps(6,end)`) instead of opacity. Deliberately NOT on opacity/transform/filter — `.reveal`/`.orbit-card` already transition those, and double-controlling one property is exactly what caused the original orbit-card "break" a few rounds back. Because this uses a property neither element already animates, it's finally safe to put on **both** `.reveal.visible` and `.orbit-card.visible` (previously orbit-card got no gamer-mode flourish at all).
+- **Ambient glitch bars** (`spawnGlitchBar()`, index.html ~1230): every ~3.2–6.8s while idle in gamer mode, a magenta+cyan bar pair flickers across a random row — two flat-color solids offset a few px (chromatic-aberration illusion, not a blended gradient), self-removing. Scheduled via recursive `setTimeout` gated on `gamerOn`, started/stopped alongside the trail/Stack in `setMode()`. This is the actual answer to "the background is not moving anymore."
+- **Mode-switch glitch burst** (`modeGlitchBurst()`): 5 amber bars flicker across the full viewport for ~450ms on every PM↔Gamer toggle (both directions). One-shot, JS-created/removed, `z-index:10000`.
+- **Cursor trail recolored** — `TRAIL_STOPS` (index.html ~1272) now sweeps amber→magenta→violet→cyan; `SPARK_COLORS` is `['255,122,26','255,32,121','0,229,255']`. Only the color stops changed — the trail's hard-won mechanics (Catmull-Rom, one-fill ribbon, mobile momentum handling, `IDLE_MS`/`DRAIN_PER_FRAME`) are untouched, per the trail's standing "don't regress" constraints below.
+- **Stack's tower blocks recolored** (`BLOCK_COLORS = ['#ff7a1a','#ff2079','#00e5ff','#ffd426']`, index.html ~1675) — each floor cycles through one flat discrete color by index (`i % BLOCK_COLORS.length`), arcade-block variety instead of one gradient-painted column. This explicitly supersedes the older "Stack is perfect, don't touch" instruction — the user has now separately asked for the game blocks to change too. Only fill color changed; physics/scoring/perfect-detection/crumble untouched. The "perfect stack" burst (white flash + cyan outline/beams/label) is unchanged, still cyan-accented.
+- Sharp corners (`border-radius:0`) carried over from the green attempt — wasn't part of either rejection, kept as-is.
+- Corner-bracket hover accent now shows `var(--a2)` (magenta) instead of `var(--a1)`, a small two-tone touch.
 
-**Cursors are gamer-only** — PM mode stays `auto` (explicit user requirement). Crosshair 31×31 hotspot 15 15; sniper scope 57×57 hotspot 28 28 scoped to `#shootBoard`.
+**Cursors are gamer-only** — PM mode stays `auto` (explicit user requirement). Crosshair 31×31 hotspot 15 15; sniper scope 57×57 hotspot 28 28 scoped to `#shootBoard`. Recolored amber/magenta rings + white center dot.
 
 Mode does **not** persist across reloads — always loads PM. Offered but never requested.
 
@@ -190,15 +191,24 @@ git push
 ---
 
 ## Most recent completed request
+*"That green color doesn't look really good. Come up with a new theme with extremely good animations, and it should affect all the aspects of it, not just the theme... the cursor's animation trail also should change. Even the game blocks... Everything should change apart from my photo. There should not be any layer on my photo that stays constant."* Third full gamer-mode reskin (see "Signal Glitch" in the Gamer theme section above for the complete design). Unlike the previous two passes, this request explicitly widened scope beyond CSS colors:
+
+1. **New palette + shape**: amber/magenta/cyan discrete flat colors (not a monochrome trio like the green attempt) on the same sharp-corner "Combat Terminal" bones (kept — wasn't part of the complaint).
+2. **New animation layer, genuinely additive, not just recolored**: a chromatic-aberration `text-shadow` reveal (finally safe on `.orbit-card` too, using a property neither `.reveal` nor `.orbit-card` already transitions — see the note in the Gamer theme section), periodic ambient glitch bars (`spawnGlitchBar()`, answers "the background is not moving anymore"), and a one-shot glitch burst on every PM↔Gamer toggle (`modeGlitchBurst()`) — none of this existed in either earlier attempt.
+3. **Cursor trail recolored** (`TRAIL_STOPS`, `SPARK_COLORS`) to match, mechanics untouched.
+4. **Stack's tower blocks recolored** to a discrete-per-floor palette (`BLOCK_COLORS`) — this explicitly supersedes the earlier "don't touch Stack" instruction, since the user separately asked for the blocks to change this time. Physics/scoring/crumble/perfect-detection untouched.
+5. **The hero photo's permanent colored frame was removed in gamer mode** — `padding:0;background:none;box-shadow:none` on `.hero-photo-card` — per explicit instruction that the photo is the one thing that should *not* re-theme with each pass.
+
+Verified: zero JS errors toggling PM↔gamer↔PM repeatedly with Ship It/Stack interactions in between; tags/braces balanced; old green-theme identifiers (`c6ff2e`, `198,255,46`, "Combat Terminal") confirmed fully gone, not just shadowed. Screenshots: hero with the photo now frame-free, the mode-switch glitch burst frozen mid-flicker, and a multi-drop Stack tower showing genuinely distinct amber/magenta/cyan floors (plus, incidentally, confirmation the untouched "perfect stack" white-flash/cyan-beam effect still fires correctly on the recolored blocks). **Same caveat as every past round:** the ambient glitch cadence, the mode-switch burst's exact feel, and the reveal's stepped jitter are all real motion that headless `--virtual-time-budget` can't render — verified via forced/paused animation states and JS-level checks (element counts, z-index math), not by watching it play. Please look at it live.
+
+## Previous completed request
 *The "RGB battle-station" theme was rejected wholesale — "looks more like Canva now... I don't want any gradient kind of feel... no more gradient contrast on the theme side... the background is not moving anymore... don't add anything like what you added" — plus a real bug report: "you again fucked up the animation on Ship It... when I am clicking on it, I don't get any effects."* Did actual web research (see Sources) before rebuilding, rather than iterating blind a third time. Two things landed in the same pass:
 
 1. **Full gamer-mode re-theme #2 — "Combat Terminal.".** Single flat toxic-green accent on black, `--grad` changed from a `linear-gradient()` to a flat hex so every consumer becomes a solid fill for free, all RGB hue-cycling deleted, the distracting scan-beam deleted (reverted `::after` to plain static scanlines), ambient grid restored to a single-hue orthogonal drift (faster/more visible), sharp `border-radius:0` everywhere for a real shape-level "opposite of PM" signal, cards flattened to a solid color (no top-strip gradient). Full rationale and diff of what changed vs. the rejected version is in the Gamer theme section above.
 2. **Ship It hit effect — found and fixed the real bug, rebuilt as a proper FPS hit-marker.** Root cause of "no effects": a stacking-context/z-index bug (site-wide click-burst at `z-index:9997` masked the hit-specific effect, which had no explicit z-index) — a pure CSS bug a JS-error check can't catch. Rebuilt per real hit-marker/damage-number conventions researched online: white X hit-marker + "+1" damage number (drifts up, fades ~0.7s) + a flat ring + a short `translate()`-based board shake, all rendered `position:fixed` straight on `<body>` at `z-index:9999` so they can never be masked again.
-3. **Stack was explicitly left untouched** — "Stack It is perfect. Don't change anything in that" — including its own gradient fills, which is a deliberate, disclosed exception to the "no gradient" rule everywhere else.
+3. **Stack was explicitly left untouched at the time** — "Stack It is perfect. Don't change anything in that" — a since-superseded instruction (see Most recent completed request above).
 
-Verified: zero JS errors toggling PM↔gamer↔PM repeatedly; tags balanced; a harness confirmed `.hit-marker`'s computed `z-index` (9999) beats `.click-ring`'s (9997) — `markerBeatsClick=true` — which is the actual mechanical fix, not just "we changed some CSS and hoped." Stack re-screenshotted pixel-identical to before (same pink/violet/cyan gradient tower, same crumble) to prove zero collateral changes. Old classes (`hit-flash`, `hit-plus`, `board-hit`, `hit-droplet`, `hit-ring-2`, `rgbCycle`, `scanSweep`) confirmed fully removed, not just superseded. Screenshots confirm the new black/green look and the button-contrast fix (dark text on bright green). **Caveat carried over from every past attempt:** motion (grid drift, neon flicker, hit-marker/shake timing) isn't visible under headless `--virtual-time-budget` and hasn't been eyeballed live by either of us — please look at it live before judging.
-
-### Sources (read before this pass, informed the design)
+### Sources (read before the Combat Terminal pass, informed that design)
 - [Esports/HUD typography: Bebas Neue, angular condensed type](https://fontalternatives.com/blog/gaming-fonts-hud-esports-branding/)
 - [2026 UI trends: grids as foreground elements, monospace-as-identity](https://tubikstudio.com/blog/ui-design-trends-2026/)
 - [FPS damage indicator UX analysis](https://medium.com/@jasper.stephenson/a-ux-analysis-of-first-person-shooter-damage-indicators-59ac9d41caf8)
@@ -206,7 +216,7 @@ Verified: zero JS errors toggling PM↔gamer↔PM repeatedly; tags balanced; a h
 - [Game feel on the web: screen shake via `transform`/`translate3d`, hitstop](https://valdemird.com/blog/game-feel-on-the-web/)
 - [Gaming portfolio/dark-UI inspiration](https://www.sitebuilderreport.com/inspiration/game-developer-portfolios)
 
-## Previous completed request
+## Earlier completed request
 *"It should work on the normal scrolling also… irrespective of the time pool and everything."* → Mobile trail now survives flick + momentum scroll. Three mobile-only changes (momentum following, longer idle grace, half drain rate) plus the push/drain cancellation fix. Verified: `flick=3027, mom3=1845, mom8=1066, idle600=0, idle1500=0`; desktop unchanged at `mousePainted=14046, opaqueRatio=0.52, afterIdle=0`. Zero JS errors, tags balanced. Commit `07af968`, pushed, Pages build `built`.
 
 ## Pending / open

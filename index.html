@@ -426,28 +426,34 @@
   body.gamer-mode #arcade{display:block;}
   body.gamer-mode .arcade-link{display:inline;}
 
-  /* ---------- Gamer theme: "Combat Terminal" ----------
-     Single accent (toxic lime green) on black, no blended color gradients
-     anywhere except the cursor trail canvas - flat fills, flat borders,
-     flat glows only. Sharp corners everywhere (border-radius:0) so the
-     shape language itself reads as the opposite of PM mode's soft rounded
-     cards, on top of the color swap. Ambient grid drift is the only
-     backdrop motion; nothing moves in the foreground/overlay layer. */
+  /* ---------- Gamer theme: "Signal Glitch" ----------
+     Third full reskin. Palette: amber (primary), hot magenta (secondary),
+     cyan (tertiary) - discrete flat colors used on different elements,
+     never blended together in one fill (still "no gradient except the
+     cursor trail" - the rule from two redesigns ago still holds; the
+     richness here comes from motion and color VARIETY, not blending).
+     New this pass: a stepped chromatic-aberration reveal (text-shadow
+     jitter, not opacity/transform - see the note by .orbit-card below for
+     why that property choice matters), periodic ambient glitch bars, and
+     a glitch burst on every PM<->Gamer switch. Cursor trail and the Stack
+     tower recolor to match. The hero photo drops its permanent colored
+     frame entirely in gamer mode - it's the one thing that does NOT
+     change with the theme. */
   body.gamer-mode{
-    --bg:#05070b;
-    --bg-2:#0a0d14;
-    --bg-3:#10141d;
-    --border:rgba(198,255,46,0.18);
-    --border-hi:rgba(198,255,46,0.5);
-    --text:#e7ffe2;
-    --text-dim:#798c78;
-    --a1:#c6ff2e;
-    --a2:#c6ff2e;
-    --a3:#c6ff2e;
-    --grad:#c6ff2e;
+    --bg:#07050a;
+    --bg-2:#0f0912;
+    --bg-3:#160d1c;
+    --border:rgba(255,122,26,0.2);
+    --border-hi:rgba(255,122,26,0.55);
+    --text:#fff2e6;
+    --text-dim:#8a7c8f;
+    --a1:#ff7a1a;
+    --a2:#ff2079;
+    --a3:#00e5ff;
+    --grad:#ff7a1a;
   }
-  body.gamer-mode nav{background:rgba(5,7,11,0.72);}
-  body.gamer-mode nav.scrolled{background:rgba(5,7,11,0.9);}
+  body.gamer-mode nav{background:rgba(7,5,10,0.72);}
+  body.gamer-mode nav.scrolled{background:rgba(7,5,10,0.9);}
   /* Mono type + terminal prefix give the whole page the HUD feel */
   body.gamer-mode .section-head h2,
   body.gamer-mode .hero h1,
@@ -470,13 +476,18 @@
   }
   body.gamer-mode .hero h1{letter-spacing:-2px;}
   body.gamer-mode .eyebrow-pill .dot{background:var(--a1);box-shadow:0 0 8px var(--a1);}
-  body.gamer-mode .p-card:hover{box-shadow:0 24px 50px -20px rgba(198,255,46,0.3);}
+  body.gamer-mode .p-card:hover{box-shadow:0 24px 50px -20px rgba(255,122,26,0.3);}
   /* btn-primary/mini-btn.primary fill solid with --grad (a flat color in
-     gamer mode, not a gradient) - dark text keeps it legible on bright lime. */
-  body.gamer-mode .btn-primary{color:#04140a;font-weight:800;}
-  body.gamer-mode .btn-primary:hover{box-shadow:0 10px 30px rgba(198,255,46,0.4);}
-  body.gamer-mode .mini-btn.primary{color:#04140a;}
-  body.gamer-mode ::selection{background:var(--a1);color:#04140a;}
+     gamer mode, not a gradient) - dark text keeps it legible on bright amber. */
+  body.gamer-mode .btn-primary{color:#180a00;font-weight:800;}
+  body.gamer-mode .btn-primary:hover{box-shadow:0 10px 30px rgba(255,122,26,0.4);}
+  body.gamer-mode .mini-btn.primary{color:#180a00;}
+  body.gamer-mode ::selection{background:var(--a2);color:#fff;}
+
+  /* The hero photo is the one thing that does NOT re-theme - no colored
+     frame, no glow, no border layer sitting on it in gamer mode. */
+  body.gamer-mode .hero-photo-card{padding:0;background:none;box-shadow:none;}
+  body.gamer-mode .hero-photo-card .inner{border-radius:0;}
 
   /* Gamer-only cursor. Scoped so PM mode keeps the normal system pointer. */
   body.gamer-mode .p-card,
@@ -489,7 +500,7 @@
   body.gamer-mode .mode-option,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23c6ff2e' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%23c6ff2e' stroke-width='1' opacity='.4'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23c6ff2e' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23ff7a1a' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%23ff2079' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23ff7a1a' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
   }
 
   /* ---------- Arcade ---------- */
@@ -516,23 +527,23 @@
     padding:7px 14px;cursor:pointer;
     transition:background .2s ease, color .2s ease, transform .2s ease;
   }
-  .mini-btn:hover{background:rgba(198,255,46,0.14);transform:translateY(-1px);}
+  .mini-btn:hover{background:rgba(255,122,26,0.14);transform:translateY(-1px);}
   .mini-btn.primary{background:var(--grad);border-color:transparent;color:#fff;}
 
   .game-board{
     position:relative;width:100%;height:300px;
     border-radius:0;border:1px solid var(--border);
-    background:#070a0f;
+    background:#0a0609;
     overflow:hidden;touch-action:manipulation;
   }
   /* Sniper scope reticle, only over the shooting board */
   #shootBoard, #shootBoard .game-target{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%23c6ff2e' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%23c6ff2e' stroke-width='1' opacity='.4'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%23c6ff2e' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%23c6ff2e' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%23ffffff' stroke-width='1' opacity='.8'/%3E%3C/svg%3E") 28 28, crosshair;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%23ff7a1a' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%23ff2079' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%2300e5ff' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%23ff7a1a' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%23ffffff' stroke-width='1' opacity='.8'/%3E%3C/svg%3E") 28 28, crosshair;
   }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
     background:var(--grad);
-    box-shadow:0 0 16px rgba(198,255,46,0.6);
+    box-shadow:0 0 16px rgba(255,122,26,0.6);
     border:0;padding:0;
     transform:scale(0);
     animation:targetPop .16s cubic-bezier(0.16,1,0.3,1) forwards;
@@ -541,7 +552,7 @@
   .game-overlay{
     position:absolute;inset:0;display:flex;flex-direction:column;
     align-items:center;justify-content:center;gap:12px;text-align:center;
-    background:rgba(5,7,11,0.78);
+    background:rgba(7,5,10,0.8);
   }
   .game-overlay p{
     margin:0;font-size:12.5px;color:var(--text-dim);
@@ -555,13 +566,13 @@
   .game-bar b{color:var(--text);font-size:13px;}
 
   /* ---------- Stack game ---------- */
-  /* Untouched, per explicit instruction - "Stack It is perfect. Don't
-     change anything in that." Its own gradient fill is left exactly as is
-     even though the rest of the theme drops gradients. */
+  /* The board frame is generic chrome (recolored with everything else);
+     the tower's own block colors are set per-block in JS - see
+     BLOCK_COLORS by the Stack game code. */
   .stack-canvas{
     width:100%;height:300px;display:block;
     border-radius:14px;border:1px solid var(--border);
-    background:linear-gradient(180deg,#070a0f 0%,#0a1018 100%);
+    background:#0a0609;
     touch-action:manipulation;
   }
 
@@ -586,13 +597,12 @@
      GAMER MODE - full UI treatment
      ====================================================================== */
 
-  /* Animated HUD grid behind everything, faded out toward the edges - the
-     only backdrop motion, confined to z-index:0, never in the foreground. */
+  /* Animated HUD grid behind everything, faded out toward the edges. */
   body.gamer-mode::before{
     content:"";position:fixed;inset:-50px;z-index:0;pointer-events:none;
     background-image:
-      linear-gradient(rgba(198,255,46,0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(198,255,46,0.1) 1px, transparent 1px);
+      linear-gradient(rgba(255,122,26,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,122,26,0.1) 1px, transparent 1px);
     background-size:42px 42px;
     -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
     mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
@@ -600,8 +610,7 @@
   }
   @keyframes gridDrift{to{background-position:42px 42px, 42px 42px;}}
 
-  /* Static CRT scanlines over the whole page (under the cursor trail) -
-     no motion here, nothing sweeping through the foreground. */
+  /* Static CRT scanlines over the whole page (under the cursor trail). */
   body.gamer-mode::after{
     content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
     background:repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px);
@@ -610,14 +619,14 @@
   body.gamer-mode section, body.gamer-mode .hero, body.gamer-mode footer{position:relative;z-index:1;}
 
   /* Cards: flat solid panels, sharp corners, bracketed corner accents on
-     hover. No background gradient, no gradient border trick, no top strip. */
+     hover. No background gradient. */
   body.gamer-mode .p-card,
   body.gamer-mode .skill-card,
   body.gamer-mode .edu-card,
   body.gamer-mode .arcade-card{
     border-radius:0;
     border-color:var(--border);
-    background:#070c07;
+    background:#0d090f;
   }
   body.gamer-mode .p-card::before,
   body.gamer-mode .skill-card::before,
@@ -644,48 +653,50 @@
   body.gamer-mode .edu-card:hover::before,
   body.gamer-mode .p-card:hover::after,
   body.gamer-mode .skill-card:hover::after,
-  body.gamer-mode .edu-card:hover::after{opacity:1;width:24px;height:24px;}
+  body.gamer-mode .edu-card:hover::after{opacity:1;width:24px;height:24px;border-color:var(--a2);}
   body.gamer-mode .p-card:hover,
   body.gamer-mode .skill-card:hover,
   body.gamer-mode .edu-card:hover{
     border-color:var(--a1);
-    box-shadow:0 0 0 1px rgba(198,255,46,0.3), 0 20px 48px -22px rgba(198,255,46,0.45);
+    box-shadow:0 0 0 1px rgba(255,122,26,0.3), 0 20px 48px -22px rgba(255,122,26,0.45);
   }
   body.gamer-mode .skill-card:hover{transform:translateY(-4px) scale(1.01);}
 
   /* Pills/tags read like HUD chips */
   body.gamer-mode .pill{
-    border-radius:0;border-color:rgba(198,255,46,0.3);
-    background:rgba(198,255,46,0.07);
+    border-radius:0;border-color:rgba(255,122,26,0.32);
+    background:rgba(255,122,26,0.07);
     transition:background .2s ease, border-color .2s ease, color .2s ease;
   }
-  body.gamer-mode .pill:hover{background:rgba(198,255,46,0.18);border-color:var(--a1);color:#fff;}
+  body.gamer-mode .pill:hover{background:rgba(255,122,26,0.18);border-color:var(--a1);color:#fff;}
   body.gamer-mode .tag{border-radius:0;}
-  body.gamer-mode .eyebrow-pill{border-radius:0;border-color:rgba(198,255,46,0.32);}
+  body.gamer-mode .eyebrow-pill{border-radius:0;border-color:rgba(255,122,26,0.34);}
   body.gamer-mode .mode-toggle{border-radius:0;}
   body.gamer-mode .mode-slider,
   body.gamer-mode .mode-option{border-radius:0;}
   body.gamer-mode .btn,
   body.gamer-mode nav .cta,
   body.gamer-mode .mini-btn{border-radius:0;}
-  body.gamer-mode .hero-photo-card{border-radius:0;}
-  body.gamer-mode .hero-photo-card .inner{border-radius:0;}
 
-  /* Reveals get a quick power-on flicker instead of a soft fade */
+  /* Reveal: a stepped chromatic-aberration flicker (two flat-color
+     text-shadow offsets snapping toward 0) instead of a soft fade. Uses
+     text-shadow deliberately - NOT opacity/transform/filter, which
+     .reveal/.orbit-card already animate via transition. Two controllers
+     fighting the same property is what caused the old orbit-card "break"
+     the user caught; text-shadow has zero overlap with either transition,
+     so this is safe on both .reveal AND .orbit-card. */
   body.gamer-mode .reveal,
   body.gamer-mode .orbit-card{
     transition-duration:.55s,.55s,.55s;
     transition-timing-function:cubic-bezier(0.2,1.4,0.35,1);
   }
-  body.gamer-mode .reveal.visible{animation:powerOn .42s steps(1,end);}
-  /* Orbit cards (Recent Work) do NOT get the powerOn flicker - it fights
-     the arc reveal's own opacity transition on the same property and
-     causes a visible snap partway through the swing-in. */
-  @keyframes powerOn{
-    0%{opacity:0.25;}
-    18%{opacity:1;}
-    30%{opacity:0.45;}
-    46%{opacity:1;}
+  body.gamer-mode .reveal.visible,
+  body.gamer-mode .orbit-card.visible{animation:glitchIn .4s steps(6,end);}
+  @keyframes glitchIn{
+    0%{text-shadow:-3px 0 var(--a2), 3px 0 var(--a3);}
+    30%{text-shadow:2px 0 var(--a2), -2px 0 var(--a3);}
+    60%{text-shadow:-1px 0 var(--a2), 1px 0 var(--a3);}
+    100%{text-shadow:0 0 transparent;}
   }
 
   /* Timeline + arc take the neon treatment */
@@ -695,7 +706,7 @@
   .click-ring{
     position:fixed;z-index:9997;pointer-events:none;
     width:26px;height:26px;border-radius:50%;
-    border:2px solid rgba(198,255,46,0.9);
+    border:2px solid rgba(255,122,26,0.9);
     transform:translate(-50%,-50%) scale(0.3);
     animation:clickRing .5s cubic-bezier(0.16,1,0.3,1) forwards;
   }
@@ -713,6 +724,42 @@
     to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0.2);opacity:0;}
   }
 
+  /* ---------- Ambient glitch bars ----------
+     A short-lived pair of flat-color bars (magenta + cyan, offset a few
+     px from each other - a chromatic-aberration illusion made of two
+     solid layers, not a blended gradient) flickers across the page every
+     few seconds while idle in gamer mode. This is the "background is
+     moving" signal - continuous, JS-scheduled, and confined to a low
+     z-index so it never sits on top of content. */
+  .ambient-glitch{
+    position:fixed;left:0;width:100%;pointer-events:none;z-index:2;
+    mix-blend-mode:screen;
+    animation:glitchBar .3s steps(5,end) forwards;
+  }
+  .ambient-glitch.g-a{background:rgba(255,32,121,0.4);}
+  .ambient-glitch.g-b{background:rgba(0,229,255,0.35);}
+  @keyframes glitchBar{
+    0%{transform:translateX(var(--gx));opacity:0.85;}
+    45%{transform:translateX(calc(var(--gx) * -0.5));opacity:0.55;}
+    100%{transform:translateX(0);opacity:0;}
+  }
+
+  /* ---------- Mode-switch glitch burst ----------
+     A quick flicker of amber bars across the full viewport on every
+     PM<->Gamer toggle - a deliberate transition moment instead of a flat
+     class swap. Cleaned up by JS ~450ms after it fires. */
+  .mode-glitch{position:fixed;inset:0;z-index:10000;pointer-events:none;}
+  .mg-bar{
+    position:absolute;left:0;width:100%;opacity:0;
+    background:var(--a1);
+    animation:mgBar .32s steps(4,end) forwards;
+  }
+  @keyframes mgBar{
+    0%{transform:translateX(var(--gx));opacity:0.5;}
+    55%{transform:translateX(calc(var(--gx) * -0.4));opacity:0.28;}
+    100%{transform:translateX(0);opacity:0;}
+  }
+
   /* ---------- Ship It hit feedback: FPS-style hit marker ----------
      A classic shooter hit-marker (white X) + a floating damage number +
      a single flat impact ring + a short board shake. Instant on impact,
@@ -720,7 +767,7 @@
      does damage feedback). Rendered as position:fixed at the click's
      VIEWPORT coordinates, appended to <body> - same layer as the
      site-wide click burst - with a higher z-index, so it can never be
-     masked underneath that click ripple the way the old effect was. */
+     masked underneath that click ripple the way an earlier version was. */
   .hit-marker{
     position:fixed;pointer-events:none;z-index:9999;
     width:26px;height:26px;
@@ -774,7 +821,8 @@
 
   @media (prefers-reduced-motion: reduce){
     body.gamer-mode::before{animation:none;}
-    body.gamer-mode .reveal.visible{animation:none;}
+    body.gamer-mode .reveal.visible,
+    body.gamer-mode .orbit-card.visible{animation:none;}
     body.gamer-mode .section-head h2::before{animation:none;}
     .board-shake{animation:none;}
   }
@@ -1154,7 +1202,64 @@
   // ---------------------------------------------------------------------
   const modeButtons = Array.from(document.querySelectorAll('.mode-option'));
   let gamerOn = false;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // A quick flicker of flat-colored bars across the whole viewport on
+  // every PM<->Gamer toggle, so switching feels like an intentional
+  // transition rather than a flat class swap. Self-cleans after ~450ms.
+  function modeGlitchBurst(){
+    if(reduceMotion) return;
+    const layer = document.createElement('div');
+    layer.className = 'mode-glitch';
+    for(let i = 0; i < 5; i++){
+      const bar = document.createElement('div');
+      bar.className = 'mg-bar';
+      bar.style.top = (8 + Math.random() * 84) + '%';
+      bar.style.height = (3 + Math.random() * 14) + 'px';
+      bar.style.animationDelay = (i * 18) + 'ms';
+      bar.style.setProperty('--gx', (Math.random() < 0.5 ? -1 : 1) * (20 + Math.random() * 60) + 'px');
+      layer.appendChild(bar);
+    }
+    document.body.appendChild(layer);
+    setTimeout(()=> layer.remove(), 450);
+  }
+
+  // Ambient glitch: every few seconds while idle in gamer mode, a pair of
+  // flat-color bars (magenta + cyan, offset a couple px - a chromatic
+  // aberration made of two solid layers, not a blended gradient) flickers
+  // across the page. This is the "background is moving" signal.
+  let glitchTimer = null;
+  function spawnGlitchBar(){
+    const y = Math.random() * 100;
+    const h = 2 + Math.random() * 8;
+    ['g-a', 'g-b'].forEach((cls, i)=>{
+      const bar = document.createElement('div');
+      bar.className = 'ambient-glitch ' + cls;
+      bar.style.top = (y + i * 0.15) + 'vh';
+      bar.style.height = h + 'px';
+      bar.style.setProperty('--gx', (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 22) + 'px');
+      document.body.appendChild(bar);
+      bar.addEventListener('animationend', ()=> bar.remove());
+      setTimeout(()=> bar.remove(), 500);
+    });
+  }
+  function scheduleGlitch(){
+    glitchTimer = setTimeout(()=>{
+      if(gamerOn) spawnGlitchBar();
+      if(gamerOn) scheduleGlitch();
+    }, 3200 + Math.random() * 3600);
+  }
+  function startGlitch(){
+    if(reduceMotion) return;
+    stopGlitch();
+    scheduleGlitch();
+  }
+  function stopGlitch(){
+    if(glitchTimer){ clearTimeout(glitchTimer); glitchTimer = null; }
+  }
+
   const setMode = (mode)=>{
+    const wasGamer = gamerOn;
     gamerOn = mode === 'gamer';
     document.body.classList.toggle('gamer-mode', gamerOn);
     modeButtons.forEach(btn=>{
@@ -1162,13 +1267,16 @@
       btn.classList.toggle('active', on);
       btn.setAttribute('aria-pressed', String(on));
     });
+    if(gamerOn !== wasGamer) modeGlitchBurst();
     if(gamerOn){
       fitStack();
       startStack();
       startTrail();
+      startGlitch();
     } else {
       stopStack();
       stopTrail();
+      stopGlitch();
     }
   };
   modeButtons.forEach(btn=>{
@@ -1222,14 +1330,13 @@
   // fading out, which is what makes it read as solid/milky instead of a
   // stack of translucent strokes.
   const TRAIL_STOPS = [
-    [0.00, 'rgba(255,47,138,0)'],
-    [0.10, 'rgba(255,47,138,1)'],
-    [0.32, 'rgba(168,85,247,1)'],
-    [0.54, 'rgba(99,102,241,1)'],
-    [0.76, 'rgba(59,157,255,1)'],
-    [1.00, 'rgba(120,240,255,1)']
+    [0.00, 'rgba(255,122,26,0)'],
+    [0.12, 'rgba(255,122,26,1)'],
+    [0.40, 'rgba(255,32,121,1)'],
+    [0.68, 'rgba(190,50,220,1)'],
+    [1.00, 'rgba(0,229,255,1)']
   ];
-  const SPARK_COLORS = ['198,255,46', '255,255,255'];
+  const SPARK_COLORS = ['255,122,26', '255,32,121', '0,229,255'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
   let pointer = null, head = null, lastMoveTs = 0;
   let lastScrollY = 0;
@@ -1417,7 +1524,7 @@
       for(let i = n - 1; i >= 0; i--) trailCtx.lineTo(rightEdge[i].x, rightEdge[i].y);
       trailCtx.closePath();
       trailCtx.fillStyle = grad;
-      trailCtx.shadowColor = 'rgba(0,229,255,0.35)';
+      trailCtx.shadowColor = 'rgba(255,122,26,0.35)';
       trailCtx.shadowBlur = 5;
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
@@ -1626,6 +1733,10 @@
     const bestEl = document.getElementById('stackBest');
     const resetBtn = document.getElementById('stackReset');
     const H = 18;                 // block height in css px
+    // Each tower floor cycles through one of these flat colors (indexed
+    // by its position), so the tower reads as distinct arcade blocks
+    // rather than a single gradient-painted column.
+    const BLOCK_COLORS = ['#ff7a1a', '#ff2079', '#00e5ff', '#ffd426'];
     let W = 0, viewH = 0;
     let blocks = [], current = null, score = 0, best = 0, over = false, raf = null, lastTs = null;
     let falling = [];   // sliced-off pieces tumbling out of frame
@@ -1756,15 +1867,13 @@
       const stackH = blocks.length * H;
       const camera = Math.max(0, stackH + H * 3 - viewH);
 
-      const grad = ctx.createLinearGradient(0, 0, W, 0);
-      grad.addColorStop(0, '#ff2fb0');
-      grad.addColorStop(0.5, '#7c3aff');
-      grad.addColorStop(1, '#00e5ff');
-
+      // Each floor is one flat, discrete color from the cycle - no blend
+      // between them, just arcade-style block variety (Jenga/Tetris, not
+      // a gradient tower).
       blocks.forEach((b, i)=>{
         const y = viewH - (i + 1) * H + camera;
         if(y < -H || y > viewH) return;
-        ctx.fillStyle = grad;
+        ctx.fillStyle = BLOCK_COLORS[i % BLOCK_COLORS.length];
         ctx.globalAlpha = blocks.length > 1 ? 0.6 + 0.4 * (i / (blocks.length - 1)) : 1;
         ctx.fillRect(b.x, y, b.w, H - 2);
       });
@@ -1772,7 +1881,7 @@
 
       if(current){
         const y = viewH - (blocks.length + 1) * H + camera;
-        ctx.fillStyle = grad;
+        ctx.fillStyle = BLOCK_COLORS[blocks.length % BLOCK_COLORS.length];
         ctx.fillRect(current.x, y, current.w, H - 2);
         ctx.strokeStyle = 'rgba(255,255,255,0.75)';
         ctx.lineWidth = 1;
@@ -1859,10 +1968,7 @@
           ctx.fillStyle = 'rgba(255,255,255,' + f.shade + ')';
           ctx.fillRect(-f.w / 2, -f.w / 2, f.w, f.w);
         }else{
-          const g2 = ctx.createLinearGradient(-f.w / 2, 0, f.w / 2, 0);
-          g2.addColorStop(0, '#ff2fb0');
-          g2.addColorStop(1, '#00e5ff');
-          ctx.fillStyle = g2;
+          ctx.fillStyle = BLOCK_COLORS[f.level % BLOCK_COLORS.length];
           ctx.fillRect(-f.w / 2, -H / 2, f.w, H - 2);
         }
         ctx.restore();
