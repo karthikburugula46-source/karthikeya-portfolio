@@ -2,7 +2,7 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-09-25 · HEAD `pending`
+Last updated: 2026-09-25 · HEAD `b170c0a`
 
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. Now has a **PM mode / Gamer mode** toggle that re-themes the whole site.
@@ -52,7 +52,7 @@ Section-by-section:
 
 **Global reveal:** `.reveal` starts hidden; `revealObserver` (index.html:1016) toggles `.visible` bidirectionally on `entry.isIntersecting`, so scrolling back up reverses it.
 
-**Orbit reveal — Recent Work only** (replicates the revolving-card entrance from a reference recording of ultrahuman.com). This must NOT be applied to any other section. **Gamer mode must never animate `opacity`/`transform`/`filter` on `.orbit-card` via a separate `animation`** — an animation always wins over a transition on the same property while it plays, so when a shorter animation ended before the orbit card's own .55s transition did, opacity snapped to whatever the transition had reached mid-swing — a visible break the user caught early on. That's why gamer mode's current reveal flourish (`glitchIn`, see PM/Gamer mode section below) is built on `text-shadow` instead — a property neither `.reveal` nor `.orbit-card` transitions on their own, so it's safe on both and finally gives orbit cards a gamer-mode flourish too (the original `powerOn` fix just excluded them; this one doesn't need to).
+**Orbit reveal — Recent Work only** (replicates the revolving-card entrance from a reference recording of ultrahuman.com). This must NOT be applied to any other section. **Gamer mode must never animate `opacity`/`transform`/`filter` on `.orbit-card` via a separate `animation`** — an animation always wins over a transition on the same property while it plays, so when a shorter animation ended before the orbit card's own .55s transition did, opacity snapped to whatever the transition had reached mid-swing — a visible break the user caught early on, and the root cause of "stucky" motion a couple of rounds later too (`steps()`-based animations layered on top of transitions). Current gamer mode (see PM/Gamer mode section below) sidesteps the whole hazard class: no separate `animation` on `.reveal`/`.orbit-card` at all any more, just a bouncier `transition-timing-function` on the same transition PM already runs.
 ```css
 .orbit-card{
   opacity:0; transform-origin:center center;
