@@ -384,47 +384,18 @@
   }
 
   /* ======================================================================
-     MODE SYSTEM - PM (default) / GAMER
-     Everything gamer-specific is scoped under body.gamer-mode, so PM mode
-     renders exactly as it did before this block existed.
+     THEME - GAMER (the only mode)
+     body carries .gamer-mode from markup; every gamer rule below stays
+     scoped to it so the base styles above remain the plain foundation the
+     theme overrides. The PM/Gamer toggle was removed on request.
      ====================================================================== */
-  /* Toggle lives in the hero next to the "Open to Product roles" pill, so
-     it's reachable on mobile where the nav links collapse. */
+  /* Row holding the "Open to Product roles" pill. */
   .hero-top-row{
     position:relative;z-index:1;
     display:flex;align-items:center;justify-content:center;
     gap:12px;flex-wrap:wrap;margin-bottom:28px;
   }
   .hero-top-row .eyebrow-pill{margin-bottom:0;}
-  .mode-toggle{
-    position:relative;display:flex;padding:4px;
-    border-radius:980px;background:rgba(255,255,255,0.06);
-    border:1px solid var(--border);
-  }
-  .mode-slider{
-    position:absolute;top:4px;left:4px;z-index:0;
-    height:calc(100% - 8px);width:calc(50% - 4px);
-    border-radius:980px;background:var(--grad);
-    transition:transform .34s cubic-bezier(0.16,1,0.3,1), background .34s ease;
-  }
-  /* A fixed min-width (not flex:1) is what makes the two halves identical,
-     so the 50%-wide slider lands exactly under each label - "PM" and
-     "GAMER" have very different text widths otherwise. */
-  .mode-option{
-    position:relative;z-index:1;min-width:84px;
-    border:0;background:none;font-family:inherit;white-space:nowrap;
-    font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
-    color:var(--text-dim);padding:7px 12px;border-radius:980px;cursor:pointer;
-    text-align:center;transition:color .25s ease;
-  }
-  .mode-option.active{color:#fff;}
-  body.gamer-mode .mode-slider{transform:translateX(100%);}
-
-  /* Arcade + its nav link only exist in gamer mode */
-  #arcade{display:none;}
-  .arcade-link{display:none;}
-  body.gamer-mode #arcade{display:block;}
-  body.gamer-mode .arcade-link{display:inline;}
 
   /* ---------- Gamer theme: "Arcade Cabinet" ----------
      Fourth pass. Every earlier version - cyan/blue/violet, pink/violet/
@@ -464,8 +435,7 @@
   body.gamer-mode .section-eyebrow,
   body.gamer-mode .c-date,
   body.gamer-mode .tag,
-  body.gamer-mode .pill,
-  body.gamer-mode .mode-option{
+  body.gamer-mode .pill{
     font-family:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',Menlo,Consolas,monospace;
   }
   body.gamer-mode .section-head h2{letter-spacing:-0.5px;}
@@ -527,7 +497,6 @@
   body.gamer-mode .btn,
   body.gamer-mode .pill,
   body.gamer-mode nav a,
-  body.gamer-mode .mode-option,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
     cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23ff2f4f' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%232f9bff' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffcf3f'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23ff2f4f' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
@@ -615,12 +584,10 @@
   body.gamer-mode #trailCanvas{display:block;}
 
   @media (max-width:640px){
-    .mode-option{min-width:74px;padding:7px 10px;font-size:10.5px;}
     .stack-canvas,.game-board{height:250px;}
     .arcade-card{padding:18px;}
   }
   @media (max-width:400px){
-    .mode-option{min-width:66px;padding:7px 8px;letter-spacing:0.5px;}
     .hero-top-row{gap:10px;}
   }
 
@@ -691,9 +658,6 @@
   body.gamer-mode .pill:hover{background:var(--a1);color:#fff;transform:translateY(-2px);}
   body.gamer-mode .tag{border-radius:6px;}
   body.gamer-mode .eyebrow-pill{border-radius:8px;border:2px solid #000;}
-  body.gamer-mode .mode-toggle{border-radius:8px;border:2px solid #000;}
-  body.gamer-mode .mode-slider,
-  body.gamer-mode .mode-option{border-radius:6px;}
   body.gamer-mode .btn,
   body.gamer-mode nav .cta,
   body.gamer-mode .mini-btn{border-radius:8px;}
@@ -746,21 +710,6 @@
   @keyframes sparkleDrift{
     0%{transform:translateY(0) scale(1);opacity:0.85;}
     100%{transform:translateY(-100px) scale(0.3);opacity:0;}
-  }
-
-  /* ---------- Mode-switch power flash ----------
-     A single smooth opacity pulse across the full viewport on every
-     PM<->Gamer toggle - a deliberate transition moment, but a calm one
-     (ease-out, one property, no offset bars) instead of the jittery
-     glitch burst an earlier pass used. */
-  .mode-flash{
-    position:fixed;inset:0;z-index:10000;pointer-events:none;
-    background:var(--a1);
-    animation:modeFlash .4s ease-out forwards;
-  }
-  @keyframes modeFlash{
-    0%{opacity:0.3;}
-    100%{opacity:0;}
   }
 
   /* ---------- Ship It hit feedback: FPS-style hit marker ----------
@@ -829,7 +778,7 @@
   }
 </style>
 </head>
-<body>
+<body class="gamer-mode">
 
 <nav>
   <div class="wrap">
@@ -850,11 +799,6 @@
 
   <div class="hero-top-row">
     <div class="eyebrow-pill"><span class="dot"></span>Open to Product roles</div>
-    <div class="mode-toggle" role="group" aria-label="Site mode">
-      <div class="mode-slider" aria-hidden="true"></div>
-      <button type="button" class="mode-option active" data-mode="pm" aria-pressed="true">PM</button>
-      <button type="button" class="mode-option" data-mode="gamer" aria-pressed="false">Gamer</button>
-    </div>
   </div>
   <h1>Karthikeya<br><span class="grad-text">Burugula</span></h1>
   <p class="sub">
@@ -1024,7 +968,7 @@
   <div class="wrap">
     <div class="section-head reveal">
       <h2>Career</h2>
-      <p>4 years across Fintech and B2B SaaS product management.</p>
+      <p>4.5 years across Fintech and B2B SaaS product management.</p>
     </div>
 
     <div class="career-arc-wrap">
@@ -1075,7 +1019,7 @@
       <div class="c-item" data-i="3" style="top:79.32%; --dot-color:#8b5cf6">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">BI Developer</div></div>
         <div class="c-company">Infometry Inc. · <span>BI Consultancy</span></div>
-        <div class="c-date">Feb 2022 - Aug 2022</div>
+        <div class="c-date">Feb 2022 - Mar 2023</div>
         <p class="c-line">Optimized reporting dashboards and managed ETL pipelines.</p>
       </div>
     </div>
@@ -1198,25 +1142,12 @@
   }
 
   // ---------------------------------------------------------------------
-  // Mode switch: PM (default) / Gamer. Everything gamer-specific hangs off
-  // the body class, so PM mode behaves exactly as it did before.
+  // Gamer mode is the only mode. The body carries .gamer-mode straight from
+  // the markup, so gamerOn is simply always true - it is kept as a flag
+  // because the click bursts, trail and sparkles all read it.
   // ---------------------------------------------------------------------
-  const modeButtons = Array.from(document.querySelectorAll('.mode-option'));
-  let gamerOn = false;
+  const gamerOn = true;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // A single smooth opacity flash across the whole viewport on every
-  // PM<->Gamer toggle, so switching feels like an intentional transition
-  // rather than a flat class swap - calm (one property, ease-out) rather
-  // than the jittery multi-bar burst an earlier pass used.
-  function modePowerFlash(){
-    if(reduceMotion) return;
-    const flash = document.createElement('div');
-    flash.className = 'mode-flash';
-    document.body.appendChild(flash);
-    flash.addEventListener('animationend', ()=> flash.remove());
-    setTimeout(()=> flash.remove(), 500);
-  }
 
   // Ambient sparkle: a small flat-color pixel drifts up and fades (smooth
   // ease-out, no jitter) - the "background is moving" signal for this
@@ -1227,7 +1158,7 @@
   let sparkleTimer = null;
   function spawnSparkle(){
     const r = Math.random();
-    const n = r < 0.15 ? 3 : (r < 0.55 ? 2 : 1);
+    const n = r < 0.20 ? 3 : (r < 0.62 ? 2 : 1);
     for(let i = 0; i < n; i++){
       const s = document.createElement('div');
       s.className = 'arcade-sparkle';
@@ -1243,7 +1174,7 @@
     sparkleTimer = setTimeout(()=>{
       if(gamerOn) spawnSparkle();
       if(gamerOn) scheduleSparkle();
-    }, 300 + Math.random() * 400);
+    }, 250 + Math.random() * 340);
   }
   function startSparkle(){
     if(reduceMotion) return;
@@ -1253,31 +1184,6 @@
   function stopSparkle(){
     if(sparkleTimer){ clearTimeout(sparkleTimer); sparkleTimer = null; }
   }
-
-  const setMode = (mode)=>{
-    const wasGamer = gamerOn;
-    gamerOn = mode === 'gamer';
-    document.body.classList.toggle('gamer-mode', gamerOn);
-    modeButtons.forEach(btn=>{
-      const on = btn.dataset.mode === mode;
-      btn.classList.toggle('active', on);
-      btn.setAttribute('aria-pressed', String(on));
-    });
-    if(gamerOn !== wasGamer) modePowerFlash();
-    if(gamerOn){
-      fitStack();
-      startStack();
-      startTrail();
-      startSparkle();
-    } else {
-      stopStack();
-      stopTrail();
-      stopSparkle();
-    }
-  };
-  modeButtons.forEach(btn=>{
-    btn.addEventListener('click', ()=> setMode(btn.dataset.mode));
-  });
 
   // Every click anywhere fires a ring + shrapnel, but only in gamer mode.
   document.addEventListener('pointerdown', (e)=>{
@@ -2029,6 +1935,17 @@
     resetBtn.addEventListener('click', reset);
     window.addEventListener('resize', fitStack);
   }
+
+  // ---------------------------------------------------------------------
+  // Boot. This used to run off the PM->Gamer toggle click; with gamer mode
+  // always on it runs once here instead. It has to sit at the very end of
+  // the script because fitStack/startStack are assigned (not hoisted
+  // declarations) inside the Stack block above.
+  // ---------------------------------------------------------------------
+  fitStack();
+  startStack();
+  startTrail();
+  startSparkle();
 </script>
 
 </body>

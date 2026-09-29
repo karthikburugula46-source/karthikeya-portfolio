@@ -2,10 +2,10 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-09-25 · HEAD `564c963`
+Last updated: 2026-09-29 · HEAD `(see git log)`
 
 ## What this is
-Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. Now has a **PM mode / Gamer mode** toggle that re-themes the whole site.
+Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
 
 - **File:** `/Users/karthikeya/projects/portfolio/index.html` (the entire site)
 - **Live URL:** https://karthikburugula46-source.github.io/karthikeya-portfolio/
@@ -86,9 +86,9 @@ Items are absolutely positioned and **anchored to the job title line** (`transla
 
 ---
 
-## PM / Gamer mode
+## Gamer theme (the only mode)
 
-Toggle markup lives in `.hero-top-row`; `body.gamer-mode` drives everything.
+`body.gamer-mode` is set in the markup and drives everything. There is no toggle any more; the block below is kept only because the geometry note explains a class of bug worth remembering.
 ```css
 .mode-option{position:relative;z-index:1;min-width:84px;padding:7px 12px;text-align:center;}
 .mode-slider{position:absolute;top:4px;left:4px;height:calc(100% - 8px);width:calc(50% - 4px);
@@ -198,9 +198,18 @@ git push
 ---
 
 ## Most recent completed request
-Sparkle frequency turned up again — "reduce the timer more and increase the frequency and quantity more," a follow-up to the previous round's first bump, with everything else confirmed good. Interval cut from ~0.65–1.4s to ~0.3–0.7s, and the spawn count per tick went from a flat 1-or-2 to a weighted 1/2/3 (15% triple, 40% double, 45% single). Measured 14 sparkles in 5s post-change vs. 5 in 5s before — landed, not just relabeled. No other changes.
+Three things in one pass:
+1. **PM mode and the toggle removed** — gamer is now the only mode. `<body class="gamer-mode">` is hardcoded in the markup, the `.mode-toggle`/`.mode-slider`/`.mode-option` markup + CSS + media-query overrides are gone, and `setMode`/`modeButtons`/`modePowerFlash` + the `.mode-flash` CSS went with them. `gamerOn` survives as `const gamerOn = true` because the click bursts, trail and sparkles all read it. **The base (non-`.gamer-mode`) CSS above the theme block must stay** — it is the foundation the theme overrides, not dead PM code. The boot calls (`fitStack/startStack/startTrail/startSparkle`) used to fire on the toggle click; they now run once at the **very end** of the script, because `fitStack`/`startStack` are `let`-assigned inside the Stack block, not hoisted declarations.
+2. **BI Developer at Infometry: Feb 2022 – Aug 2022 → Feb 2022 – Mar 2023**, which closes the gap that used to sit between it and the Product Internships (Mar 2023).
+3. **Career subtitle 4 → 4.5 years.** The old "4 years" equalled total months actually worked excluding that gap (6 + 43 = 49mo ≈ 4.08y). With the gap closed it is a continuous Feb 2022 → present span = 55mo ≈ 4.58y, hence 4.5. Same arithmetic if this needs redoing later.
+4. **Ambient sparkle frequency up ~30%** (interval 300–700ms → 250–590ms, weights 15/40/45 → 20/42/38 for 3/2/1 per tick). Measured 14 → 16 in a matched 4s window.
+
+Verified: zero JS errors; gamer mode active on load with `toggleEls=0`; element counts unchanged (11 reveal, 4 orbit-card, 4 p-slot, 1 arc-path, 4 c-dot, 4 c-item); tags and CSS braces balanced; A/B against the pre-change file with `.gamer-mode` force-applied showed identical computed cursor/text-shadow on `.p-card`/`.pill`/`nav a` and the hero row only 1px shorter (the toggle was the taller element in that flex row). Boot proof: rAF calls after load with zero interaction went 0 (old, PM default) → 1252 (new), with 9 sparkles already in the DOM.
 
 ## Second most recent completed request
+Sparkle frequency turned up again — "reduce the timer more and increase the frequency and quantity more," a follow-up to the previous round's first bump, with everything else confirmed good. Interval cut from ~0.65–1.4s to ~0.3–0.7s, and the spawn count per tick went from a flat 1-or-2 to a weighted 1/2/3 (15% triple, 40% double, 45% single). Measured 14 sparkles in 5s post-change vs. 5 in 5s before — landed, not just relabeled. No other changes.
+
+## Third most recent completed request
 Three small, targeted refinements to "Arcade Cabinet" (no new redesign that round — first time in a while the feedback was "keep this, adjust that" instead of "start over"):
 1. **Ambient sparkle frequency increased** (first bump — see above for the follow-up) — the user liked `spawnSparkle()` specifically and asked for it more often; interval roughly halved (1.4–3.2s → ~0.65–1.4s) plus an occasional double-spawn.
 2. **CTA text reverted to white** — was briefly dark (`#1a0006`) for contrast on the bright red fill; user pointed out the Recent Work tag already uses white on the accent color, so `.btn-primary`/`.mini-btn.primary` now match that convention.
@@ -208,7 +217,7 @@ Three small, targeted refinements to "Arcade Cabinet" (no new redesign that roun
 
 Verified: zero JS errors; `getComputedStyle` confirmed the photo wrap's transform is now a pure `matrix(1,0,0,1,0,-26)` (translation only, no rotation) and the CTA's computed color is `rgb(255,255,255)`; a 5-second mutation-observer count on a fresh gamer-mode session showed 5 sparkles (~1/s), consistent with the new interval and roughly 2–2.5× the old rate.
 
-## Third most recent completed request
+## Previous completed request
 *"You are just changing colors in the theme... I asked you to come up with a new theme itself... don't just change colors and try something like that. Try something extremely new."* Plus: motion felt "stucky" (stuttery), and the photo's frame should come back (adaptive to the theme, just not an overlay on the image itself). Fourth full gamer-mode reskin — "Arcade Cabinet," full design in the Gamer theme section above. This was the first pass to touch **shape/structure**, not just CSS custom-property values:
 
 1. **Replaced the visual vocabulary**: hard unblurred offset drop-shadows instead of glow, thick solid borders instead of thin translucent ones, a physical button-press interaction instead of hover-glow, corner-bracket HUD accents retired outright (survived 3 straight redesigns unchanged — that persistence was itself the "just changing colors" tell).
@@ -219,7 +228,7 @@ Verified: zero JS errors; `getComputedStyle` confirmed the photo wrap's transfor
 
 Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/Stack interactions in between; tags/braces balanced; confirmed via `getComputedStyle` that the alternating card tilt actually renders (differing `matrix3d` per card, not just written and unused). Screenshots: hero showing the photo's frame restored *and* visibly rotated/repositioned, comic-shadow cards with visible tilt. **Same standing caveat:** the *feel* of the smoothed motion — whether it actually reads as fluid now — can't be judged from a static screenshot or a JS check; only a live look settles that, and it's the one thing most worth confirming given this round's specific complaint.
 
-## Previous completed request
+## Fourth most recent completed request
 *The "RGB battle-station" theme was rejected wholesale — "looks more like Canva now... I don't want any gradient kind of feel... no more gradient contrast on the theme side... the background is not moving anymore... don't add anything like what you added" — plus a real bug report: "you again fucked up the animation on Ship It... when I am clicking on it, I don't get any effects."* Did actual web research (see Sources) before rebuilding, rather than iterating blind a third time. Two things landed in the same pass:
 
 1. **Full gamer-mode re-theme #2 — "Combat Terminal.".** Single flat toxic-green accent on black, `--grad` changed from a `linear-gradient()` to a flat hex so every consumer becomes a solid fill for free, all RGB hue-cycling deleted, the distracting scan-beam deleted (reverted `::after` to plain static scanlines), ambient grid restored to a single-hue orthogonal drift (faster/more visible), sharp `border-radius:0` everywhere for a real shape-level "opposite of PM" signal, cards flattened to a solid color (no top-strip gradient). Full rationale and diff of what changed vs. the rejected version is in the Gamer theme section above.
