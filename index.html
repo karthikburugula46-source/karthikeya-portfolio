@@ -13,8 +13,8 @@
     --border-hi:rgba(255,255,255,0.22);
     --text:#f5f5f7;
     --text-dim:#9a9aa2;
-    --a1:#ff5f3a;
-    --a2:#ff2f8a;
+    --a1:#7c5cff;
+    --a2:#2be8c8;
     --a3:#8b5cf6;
     --grad:linear-gradient(120deg,var(--a1) 0%,var(--a2) 55%,var(--a3) 100%);
     --radius:26px;
@@ -73,11 +73,18 @@
     background:var(--text);color:#000;
     flex-shrink:0;
   }
-  /* The availability pill sits beside Contact rather than in the hero. */
-  .nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  /* The availability pill sits beside Contact rather than in the hero.
+     Both get the same explicit height and box-sizing so they match - the
+     pill's border and smaller type made it visibly shorter otherwise. */
+  .nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
+  nav .nav-pill,
+  nav .cta{
+    height:34px;box-sizing:border-box;
+    display:inline-flex;align-items:center;justify-content:center;
+  }
   nav .nav-pill{
     margin-bottom:0;flex-shrink:0;
-    font-size:10.5px;letter-spacing:0.8px;padding:7px 14px;gap:7px;
+    font-size:10.5px;letter-spacing:0.8px;padding:0 14px;gap:7px;
   }
   .pill-short{display:none;}
   @media (max-width:760px){ nav .links{display:none;} }
@@ -87,38 +94,44 @@
   @media (max-width:860px){
     .pill-long{display:none;}
     .pill-short{display:inline;}
-    nav .nav-pill{font-size:10px;padding:6px 12px;}
+    nav .nav-pill{font-size:10px;padding:0 12px;}
   }
   @media (max-width:400px){
     .brand{font-size:12.5px;gap:8px;}
     .brand .mark{width:26px;height:26px;}
-    nav .cta{font-size:11px;padding:8px 14px;}
+    nav .cta{font-size:11px;padding:0 14px;height:30px;}
+    nav .nav-pill{height:30px;}
   }
   /* Phone: the avatar alone carries the brand so the pill and Contact
      both keep their full labels. */
-  @media (max-width:430px){
+  @media (max-width:560px){
     .brand-name{display:none;}
     .nav-right{gap:8px;}
-    nav .nav-pill{font-size:9.5px;padding:6px 10px;gap:6px;letter-spacing:0.5px;}
+    nav .nav-pill{font-size:9.5px;padding:0 10px;gap:6px;letter-spacing:0.5px;}
   }
 
   /* ---------- Hero ---------- */
   .hero{
     position:relative;
-    padding:84px 0 44px;
+    padding:72px 0 64px;
     overflow:hidden;
+    display:flex;align-items:center;
+    /* Capped: a viewport-height hero keeps #highlights below the fold so
+       its orbit entrance still plays on scroll, but on very tall or
+       portrait displays an uncapped 100vh leaves a huge empty band. */
+    min-height:min(calc(100vh - 64px), 1000px);
   }
   /* Photo left, name + title + intro right. The photo is sized by the
      column, not by the image, so it never dominates the fold the way the
      old full-width portrait below the copy did. */
   .hero-inner{
-    position:relative;z-index:1;
+    position:relative;z-index:1;width:100%;
     /* same box as .wrap so the photo lines up with the sections below */
     max-width:1180px;margin:0 auto;padding:0 32px;
     display:flex;align-items:center;
     gap:clamp(26px,4.4vw,60px);
   }
-  .hero-photo-wrap{flex:0 0 auto;width:clamp(186px,20vw,250px);}
+  .hero-photo-wrap{flex:0 0 auto;width:clamp(230px,26vw,340px);}
   .hero-copy{flex:1 1 auto;min-width:0;}
   .hero .blob-a{width:520px;height:520px;top:-220px;left:-160px;background:var(--a1);opacity:0.28;}
   .hero .blob-b{width:460px;height:460px;top:-140px;right:-160px;background:var(--a3);opacity:0.28;}
@@ -136,11 +149,13 @@
 
   .hero h1{
     position:relative;z-index:1;
-    font-size:clamp(40px,6.1vw,82px);
+    /* Sized to keep "Karthikeya Burugula" on one line next to the photo.
+       No hard <br> any more, so it wraps on its own on narrow phones. */
+    font-size:clamp(26px,4.3vw,56px);
     font-weight:800;
-    letter-spacing:-2.5px;
-    margin:0 0 12px;
-    line-height:0.98;
+    letter-spacing:-1.5px;
+    margin:0 0 10px;
+    line-height:1.02;
     text-transform:uppercase;
   }
   .hero-role{
@@ -164,13 +179,13 @@
     transition:transform .2s, box-shadow .2s, opacity .2s;
   }
   .btn-primary{background:var(--grad);color:#fff;}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,47,138,0.35);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(124,92,255,0.35);}
   .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-hi);}
   .btn-ghost:hover{background:rgba(255,255,255,0.06);transform:translateY(-2px);}
 
   .hero-photo-card{
     border-radius:36px;padding:3px;background:var(--grad);
-    box-shadow:0 40px 80px -30px rgba(255,47,138,0.3);
+    box-shadow:0 40px 80px -30px rgba(124,92,255,0.3);
   }
   .hero-photo-card .inner{
     border-radius:34px;overflow:hidden;background:#000;position:relative;
@@ -270,7 +285,7 @@
     .bento > .p-slot:nth-child(3){--orbit-dist:90px;}
     .bento > .p-slot:nth-child(4){--orbit-dist:120px;}
   }
-  .p-card:hover{transform:translateY(-8px) scale(1.015);border-color:var(--border-hi);background:var(--bg-3);box-shadow:0 24px 50px -20px rgba(255,47,138,0.22);}
+  .p-card:hover{transform:translateY(-8px) scale(1.015);border-color:var(--border-hi);background:var(--bg-3);box-shadow:0 24px 50px -20px rgba(124,92,255,0.22);}
   .p-card.big{display:flex;align-items:center;gap:40px;flex-wrap:wrap;}
   .p-card .stat{font-size:50px;font-weight:800;letter-spacing:-1.5px;margin-bottom:6px;}
   .p-card.big .stat{font-size:60px;}
@@ -334,7 +349,7 @@
     .arc-svg-desktop{display:none;}
     .arc-line-mobile{
       display:block;position:absolute;top:7px;bottom:7px;left:7px;width:2px;
-      background:linear-gradient(180deg,#ff5f3a,#ff4570,#ff2f8a,#d13bb8,#8b5cf6);
+      background:linear-gradient(180deg,#8b5cf6,#7c5cff,#5b8cf0,#3fc4dc,#2be8c8);
       transform-origin:top;transform:scaleY(0);
       transition:transform 1.2s cubic-bezier(0.16,1,0.3,1);
     }
@@ -399,8 +414,8 @@
       flex-direction:column;align-items:center;text-align:center;
       gap:26px;
     }
-    .hero-photo-wrap{width:min(178px,42vw);}
-    .hero h1{font-size:clamp(38px,10vw,62px);}
+    .hero-photo-wrap{width:min(250px,54vw);}
+    .hero h1{font-size:clamp(29px,7.4vw,46px);}
     .hero .sub{margin-left:auto;margin-right:auto;font-size:15.5px;}
     .cta-row{justify-content:center;}
   }
@@ -412,7 +427,7 @@
     .hero{padding:52px 0 34px;}
     .hero-inner{padding:0 20px;}
     .hero h1{letter-spacing:-1.5px;}
-    .hero-photo-wrap{width:min(150px,38vw);}
+    .hero-photo-wrap{width:min(210px,52vw);}
     .hero-role{margin-bottom:16px;}
     .hero .sub{margin-bottom:28px;font-size:15px;}
     .cta-row{gap:10px;}
@@ -435,8 +450,8 @@
   }
 
   @media (max-width:380px){
-    .hero h1{font-size:38px;}
-    .hero-photo-wrap{width:132px;}
+    .hero h1{font-size:29px;}
+    .hero-photo-wrap{width:180px;}
   }
 
   /* ======================================================================
@@ -469,10 +484,10 @@
     --border-hi:#000;
     --text:#fff9e8;
     --text-dim:#9a93a6;
-    --a1:#ff2f4f;
-    --a2:#ffcf3f;
-    --a3:#2f9bff;
-    --grad:#ff2f4f;
+    --a1:#7c5cff;
+    --a2:#ffc23d;
+    --a3:#2be8c8;
+    --grad:#7c5cff;
   }
   body.gamer-mode nav{background:rgba(11,11,16,0.72);}
   body.gamer-mode nav.scrolled{background:rgba(11,11,16,0.92);}
@@ -549,7 +564,7 @@
   body.gamer-mode nav a,
   body.gamer-mode .mini-btn,
   body.gamer-mode .swatch{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%23ff2f4f' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%232f9bff' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffcf3f'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%23ff2f4f' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31' height='31' viewBox='0 0 31 31'%3E%3Ccircle cx='15.5' cy='15.5' r='9.4' fill='none' stroke='%237c5cff' stroke-width='1.7'/%3E%3Ccircle cx='15.5' cy='15.5' r='13.3' fill='none' stroke='%232be8c8' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='15.5' cy='15.5' r='2' fill='%23ffc23d'/%3E%3Cpath d='M15.5 1.4v5.5M15.5 24.1v5.5M1.4 15.5h5.5M24.1 15.5h5.5' stroke='%237c5cff' stroke-width='1.7' stroke-linecap='round'/%3E%3C/svg%3E") 15 15, pointer;
   }
 
   /* ---------- Arcade ---------- */
@@ -576,7 +591,7 @@
     padding:7px 14px;cursor:pointer;
     transition:background .2s ease, color .2s ease, transform .2s ease;
   }
-  .mini-btn:hover{background:rgba(255,47,79,0.14);transform:translateY(-1px);}
+  .mini-btn:hover{background:rgba(124,92,255,0.18);transform:translateY(-1px);}
   .mini-btn.primary{background:var(--grad);border-color:transparent;color:#fff;}
 
   .game-board{
@@ -587,7 +602,7 @@
   }
   /* Sniper scope reticle, only over the shooting board */
   #shootBoard, #shootBoard .game-target{
-    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%23ff2f4f' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%232f9bff' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%23ffcf3f' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%23ff2f4f' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%23ffffff' stroke-width='1' opacity='.8'/%3E%3C/svg%3E") 28 28, crosshair;
+    cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='57' height='57' viewBox='0 0 57 57'%3E%3Ccircle cx='28.5' cy='28.5' r='21.5' fill='none' stroke='%237c5cff' stroke-width='1.6' opacity='.95'/%3E%3Ccircle cx='28.5' cy='28.5' r='26.7' fill='none' stroke='%232be8c8' stroke-width='1' opacity='.5'/%3E%3Ccircle cx='28.5' cy='28.5' r='12.9' fill='none' stroke='%23ffc23d' stroke-width='1' opacity='.55'/%3E%3Ccircle cx='28.5' cy='28.5' r='2' fill='%23ffffff'/%3E%3Cpath d='M28.5 1.7v13M28.5 42.3v13M1.7 28.5h13M42.3 28.5h13' stroke='%237c5cff' stroke-width='1.6' stroke-linecap='round'/%3E%3Cpath d='M22.5 28.5h3M31.5 28.5h3M28.5 22.5v3M28.5 31.5v3' stroke='%23ffffff' stroke-width='1' opacity='.8'/%3E%3C/svg%3E") 28 28, crosshair;
   }
   .game-target{
     position:absolute;width:46px;height:46px;border-radius:50%;
@@ -645,8 +660,8 @@
   body.gamer-mode::before{
     content:"";position:fixed;inset:-50px;z-index:0;pointer-events:none;
     background-image:
-      linear-gradient(rgba(255,47,79,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,47,79,0.08) 1px, transparent 1px);
+      linear-gradient(rgba(124,92,255,0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,92,255,0.09) 1px, transparent 1px);
     background-size:42px 42px;
     -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
     mask-image:radial-gradient(ellipse 90% 70% at 50% 40%, #000 30%, transparent 80%);
@@ -698,7 +713,7 @@
   /* Pills/tags: thick border, flat fill, no glow */
   body.gamer-mode .pill{
     border-radius:8px;border:2px solid #000;
-    background:rgba(255,47,79,0.12);
+    background:rgba(124,92,255,0.16);
     transition:background .2s ease, transform .15s ease;
   }
   body.gamer-mode .pill:hover{background:var(--a1);color:#fff;transform:translateY(-2px);}
@@ -726,7 +741,7 @@
   .click-ring{
     position:fixed;z-index:9997;pointer-events:none;
     width:26px;height:26px;border-radius:50%;
-    border:2px solid rgba(255,47,79,0.9);
+    border:2px solid rgba(124,92,255,0.9);
     transform:translate(-50%,-50%) scale(0.3);
     animation:clickRing .5s cubic-bezier(0.16,1,0.3,1) forwards;
   }
@@ -856,11 +871,11 @@
     </div>
 
     <div class="hero-copy">
-      <h1>Karthikeya<br><span class="grad-text">Burugula</span></h1>
+      <h1>Karthikeya <span class="grad-text">Burugula</span></h1>
       <p class="hero-role">Product Manager at AssetPlus</p>
       <p class="sub">
-        PM by day and game by night, with a lazy streak I've learned to put to work.
-        Four years into product, my rule is simple: if a task is routine, I'd rather
+        PM by day, gamer and builder by night, with a lazy streak I've learned to
+        put to work. 4 years into product, my rule is simple: if a task is routine, I'd rather
         spend the weekend building something to automate it than do it more than once.
         Welcome to my corner of the internet, where every &ldquo;ugh, not this
         again&rdquo; turns into something I build.
@@ -929,7 +944,7 @@
   <div class="wrap">
     <div class="section-head">
       <h2>Arcade</h2>
-      <p>You switched to gamer mode. Two ways to waste a minute here.</p>
+      <p>Two ways to waste a minute here.</p>
     </div>
 
     <div class="arcade-grid">
@@ -1029,36 +1044,36 @@
       <svg class="arc-svg arc-svg-desktop" viewBox="0 0 280 700" preserveAspectRatio="none">
         <defs>
           <linearGradient id="arcGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ff5f3a"/>
-            <stop offset="25%" stop-color="#ff4570"/>
-            <stop offset="50%" stop-color="#ff2f8a"/>
-            <stop offset="75%" stop-color="#d13bb8"/>
-            <stop offset="100%" stop-color="#8b5cf6"/>
+            <stop offset="0%" stop-color="#8b5cf6"/>
+            <stop offset="25%" stop-color="#7c5cff"/>
+            <stop offset="50%" stop-color="#5b8cf0"/>
+            <stop offset="75%" stop-color="#3fc4dc"/>
+            <stop offset="100%" stop-color="#2be8c8"/>
           </linearGradient>
         </defs>
         <path class="arc-path" d="M242.9,19.37 A272.47,272.47 0 0,0 20,287.29 A272.47,272.47 0 0,0 242.9,555.22"
               fill="none" stroke="url(#arcGrad)" stroke-width="4" stroke-linecap="round"/>
-        <circle class="arc-node" data-i="0" cx="242.9" cy="19.37"  r="9" style="color:#ff5f3a" fill="#ff5f3a"/>
-        <circle class="arc-node" data-i="1" cx="47.02" cy="169.00" r="9" style="color:#ff4570" fill="#ff4570"/>
-        <circle class="arc-node" data-i="2" cx="21.81" cy="318.62" r="9" style="color:#d13bb8" fill="#d13bb8"/>
-        <circle class="arc-node" data-i="3" cx="242.9" cy="555.22" r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
+        <circle class="arc-node" data-i="0" cx="242.9" cy="19.37"  r="9" style="color:#8b5cf6" fill="#8b5cf6"/>
+        <circle class="arc-node" data-i="1" cx="47.02" cy="169.00" r="9" style="color:#7c5cff" fill="#7c5cff"/>
+        <circle class="arc-node" data-i="2" cx="21.81" cy="318.62" r="9" style="color:#3fc4dc" fill="#3fc4dc"/>
+        <circle class="arc-node" data-i="3" cx="242.9" cy="555.22" r="9" style="color:#2be8c8" fill="#2be8c8"/>
       </svg>
 
       <div class="arc-line-mobile"></div>
 
-      <div class="c-item" data-i="0" style="top:2.77%; --dot-color:#ff5f3a">
+      <div class="c-item" data-i="0" style="top:2.77%; --dot-color:#8b5cf6">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Manager</div></div>
         <div class="c-company">AssetPlus · <span>Mutual fund distribution platform</span></div>
         <div class="c-date">Jun 2024 - Present</div>
         <p class="c-line">Leading 0-to-1 PMS launches and onboarding growth for a 200K+ user fintech platform.</p>
       </div>
-      <div class="c-item" data-i="1" style="top:24.14%; --dot-color:#ff4570">
+      <div class="c-item" data-i="1" style="top:24.14%; --dot-color:#7c5cff">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Associate Product Manager</div></div>
         <div class="c-company">Sprink.Online · <span>B2B Meals Supply</span></div>
         <div class="c-date">Oct 2023 - Jun 2024</div>
         <p class="c-line">Launched a 0-to-1 B2B mobile ordering and collections platform.</p>
       </div>
-      <div class="c-item" data-i="2" style="top:45.52%; --dot-color:#d13bb8">
+      <div class="c-item" data-i="2" style="top:45.52%; --dot-color:#3fc4dc">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">Product Internships</div></div>
         <div class="c-date">Mar 2023 - Oct 2023</div>
         <div class="c-sub">
@@ -1070,7 +1085,7 @@
           <p class="c-line">Built and scaled a ~600-member product learning community.</p>
         </div>
       </div>
-      <div class="c-item" data-i="3" style="top:79.32%; --dot-color:#8b5cf6">
+      <div class="c-item" data-i="3" style="top:79.32%; --dot-color:#2be8c8">
         <div class="c-title-row"><span class="c-dot"></span><div class="c-role">BI Developer</div></div>
         <div class="c-company">Infometry Inc. · <span>BI Consultancy</span></div>
         <div class="c-date">Feb 2022 - Mar 2023</div>
@@ -1208,7 +1223,7 @@
   // pass, replacing the stepped glitch bars. User liked this one and
   // asked for it more often twice now - shorter interval and a bigger
   // chance of spawning more than one each tick, again.
-  const SPARKLE_COLORS = ['255,47,79', '255,207,63', '47,155,255'];
+  const SPARKLE_COLORS = ['124,92,255', '43,232,200', '255,194,61'];
   let sparkleTimer = null;
   function spawnSparkle(){
     const r = Math.random();
@@ -1280,19 +1295,19 @@
   const sparks = [];
   const TRAIL_LEN = 40;
   const HEAD_W = 15;
-  const SUB = coarsePointer ? 9 : 14;   // spline samples per source point
+  const SUB = coarsePointer ? 12 : 20;  // spline samples per source point
   const SPARK_CAP = coarsePointer ? 70 : 140;
   // Tail -> head. Opaque all the way: the ribbon thins out rather than
   // fading out, which is what makes it read as solid/milky instead of a
   // stack of translucent strokes.
   const TRAIL_STOPS = [
-    [0.00, 'rgba(255,47,79,0)'],
-    [0.12, 'rgba(255,47,79,1)'],
-    [0.45, 'rgba(255,207,63,1)'],
-    [0.72, 'rgba(120,180,255,1)'],
-    [1.00, 'rgba(47,155,255,1)']
+    [0.00, 'rgba(124,92,255,0)'],
+    [0.12, 'rgba(124,92,255,1)'],
+    [0.45, 'rgba(110,140,255,1)'],
+    [0.72, 'rgba(70,200,225,1)'],
+    [1.00, 'rgba(43,232,200,1)']
   ];
-  const SPARK_COLORS = ['255,47,79', '255,207,63', '47,155,255'];
+  const SPARK_COLORS = ['124,92,255', '43,232,200', '255,194,61'];
   let trailRAF = null, trailCtx = null, trailLastTs = null;
   let pointer = null, head = null, lastMoveTs = 0;
   let lastScrollY = 0;
@@ -1426,9 +1441,10 @@
       // 1) Soften the raw polyline first. The spline passes exactly through
       //    its inputs, so a hard corner in the source stays a hard corner -
       //    averaging each point with its neighbours rounds the turn before
-      //    the curve is fitted. Two passes kills the visible flat runs.
+      //    the curve is fitted. Four passes: two still left a faint
+      //    faceting on fast direction changes.
       let base = pts;
-      for(let pass = 0; pass < 2; pass++){
+      for(let pass = 0; pass < 4; pass++){
         const sm = [];
         for(let i = 0; i < base.length; i++){
           const p = base[i];
@@ -1480,7 +1496,7 @@
       for(let i = n - 1; i >= 0; i--) trailCtx.lineTo(rightEdge[i].x, rightEdge[i].y);
       trailCtx.closePath();
       trailCtx.fillStyle = grad;
-      trailCtx.shadowColor = 'rgba(255,47,79,0.35)';
+      trailCtx.shadowColor = 'rgba(124,92,255,0.35)';
       trailCtx.shadowBlur = 5;
       trailCtx.fill();
       trailCtx.shadowBlur = 0;
@@ -1692,7 +1708,7 @@
     // Each tower floor cycles through one of these flat colors (indexed
     // by its position), so the tower reads as distinct arcade blocks
     // rather than a single gradient-painted column.
-    const BLOCK_COLORS = ['#ff2f4f', '#ffcf3f', '#2f9bff'];
+    const BLOCK_COLORS = ['#7c5cff', '#2be8c8', '#ffc23d'];
     let W = 0, viewH = 0;
     let blocks = [], current = null, score = 0, best = 0, over = false, raf = null, lastTs = null;
     let falling = [];   // sliced-off pieces tumbling out of frame
@@ -1863,7 +1879,7 @@
         ctx.globalAlpha = Math.max(0, 1 - a);
         ctx.strokeStyle = '#8df3ff';
         ctx.lineWidth = 2;
-        ctx.shadowColor = 'rgba(0,229,255,0.9)';
+        ctx.shadowColor = 'rgba(43,232,200,0.9)';
         ctx.shadowBlur = 14;
         ctx.strokeRect(f.x - grow, y - grow * 0.55, f.w + grow * 2, (H - 2) + grow * 1.1);
 
@@ -1893,7 +1909,7 @@
         ctx.textAlign = 'center';
         ctx.font = '700 13px ui-monospace, SFMono-Regular, Menlo, monospace';
         ctx.fillStyle = '#ffffff';
-        ctx.shadowColor = 'rgba(0,229,255,1)';
+        ctx.shadowColor = 'rgba(43,232,200,1)';
         ctx.shadowBlur = 16;
         ctx.fillText('PERFECT' + (f.combo > 1 ? ' x' + f.combo : ''),
                      f.x + f.w / 2, y - 10 - ease * 26);
