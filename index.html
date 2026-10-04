@@ -76,7 +76,9 @@
   /* The availability pill sits beside Contact rather than in the hero.
      Both get the same explicit height and box-sizing so they match - the
      pill's border and smaller type made it visibly shorter otherwise. */
-  .nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
+  /* A one-row grid with equal columns: the pill and Contact are always the
+     same width as well as the same height. */
+  .nav-right{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
   nav .nav-pill,
   nav .cta{
     height:34px;box-sizing:border-box;
@@ -114,7 +116,8 @@
   .hero{
     position:relative;
     padding:56px 0 24px;
-    overflow:hidden;
+    overflow:hidden;              /* fallback for browsers without overflow-x:clip */
+    overflow-x:clip;overflow-y:visible; /* sideways only: the blur glow below the hero is no longer cut by a straight line */
     display:flex;align-items:center;
   }
   /* Photo left, name + title + intro right. The photo is sized by the
@@ -195,7 +198,14 @@
   /* Recent Work sits right under the hero, so it does not need the full
      between-sections gap above it as well as the hero's bottom padding. */
   #highlights{padding-top:40px;}
-  @media (min-width:821px){#highlights{padding-top:62px;}}
+  /* Web only: the first screen is the hero (name, intro, Get in Touch) and
+     the "Recent Work" heading, and nothing more. The hero is as tall as the
+     viewport minus the heading block, so the first card starts just below
+     the fold and plays its entrance when the visitor scrolls. */
+  @media (min-width:821px){
+    #highlights{padding-top:62px;}
+    .hero{min-height:calc(100vh - 255px);}
+  }
   .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
   .section-eyebrow{
     color:var(--text-dim);font-weight:700;font-size:12px;margin-bottom:14px;
@@ -505,7 +515,7 @@
   /* A select-cursor prefix instead of a terminal prompt, breathing gently
      (one smooth ease-in-out pulse, not an intermittent flicker). */
   body.gamer-mode .section-head h2::before{
-    content:"\25B8";margin-right:0.72em;color:var(--a1);
+    content:"\25B8";margin-right:0.55em;color:var(--a1);
     animation:selectPulse 2.4s ease-in-out infinite;
   }
   @keyframes selectPulse{
@@ -895,8 +905,7 @@
         again&rdquo; turns into something I build.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#highlights">See Recent Work</a>
-        <a class="btn btn-ghost" href="tel:+918296114865" aria-label="Call +91 8296114865">Get in Touch</a>
+        <a class="btn btn-primary" href="tel:+918296114865" aria-label="Call +91 8296114865">Get in Touch</a>
       </div>
     </div>
   </div>
