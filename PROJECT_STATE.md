@@ -2,7 +2,7 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-09-29 · HEAD `(see git log)`
+Last updated: 2026-10-04 · HEAD `(see git log)`
 
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
@@ -197,7 +197,28 @@ git push
 
 ---
 
-## Most recent completed request
+## Most recent completed request (2026-10-04)
+Hero rebuilt around user-supplied intro copy; availability pill moved into the nav.
+
+**Layout.** The hero was a centered stack (pill → name → one-line sub → CTAs → full-width 460px portrait underneath). It is now two columns: photo left, name + title + intro + CTAs right, inside `.hero-inner` (`display:flex; align-items:center`). The photo is sized by its column — `width:clamp(186px,20vw,250px)` — so it cannot dominate the fold again ("the image itself is taking a lot of space, which I don't want"). New `.hero-role` element carries **"Product Manager at AssetPlus."** `.hero h1` dropped from `clamp(48px,9vw,108px)` to `clamp(40px,6.1vw,82px)` to share the row.
+
+**Gutters.** `.hero` lost its horizontal padding; `.hero-inner` took `max-width:1180px;padding:0 32px` (20px under 640) so it is the same box as `.wrap`. Without this the photo's left edge sat 32px outside the Recent Work cards below it.
+
+**Responsive.** Columns stack at **820px**, not 640 — the copy column gets too narrow for the headline well before the phone break. Stacked = photo on top, everything centered. Photo 178px → 150px (≤640) → 132px (≤380). Verified at 1440/1280/1024/900/860/820/640/500 and at a true 390: no horizontal scroll anywhere.
+
+**Nav pill.** "Open to Product roles" moved out of the hero into a new `.nav-right` beside Contact. Label shortens to "Open to work" at ≤860px; at ≤430px the brand drops to the avatar alone (`.brand-name` hidden) so the pill and Contact both keep full labels on a phone.
+
+**Two bugs caught by measuring, not by looking:**
+1. **CSS specificity.** `.eyebrow-pill` is defined *after* the nav block, so at equal specificity it beat every `.nav-pill` rule — the pill rendered at full hero size and its `margin-bottom:28px` pushed it exactly 14px above the nav's centre line (measured top `-1`, height `38`). Fixed by scoping to `nav .nav-pill`. **Nav CSS sits before hero CSS in this file; anything overriding `.eyebrow-pill` from the nav must be scoped under `nav`.**
+2. **`assets/profile.png` was missing from the working tree** (`git status` showed ` D`) while still present in HEAD and on the live site. A `git add -A` would have deleted the user's photo from the deployed site. Restored with `git checkout --` before committing; added a `.gitignore` for `.DS_Store`. **Check `git status` for unexpected deletions before every `git add -A` in this repo.**
+
+**Headless technique worth reusing:** `--dump-dom` floors the viewport at ~500px wide, so phone widths cannot be measured directly. Load the page in a **fixed-size iframe** inside a wrapper document and read `contentDocument` — needs `--allow-file-access-from-files` or `contentDocument` is null. That gives a genuine 390px viewport.
+
+Verified: zero JS errors at every width; element counts unchanged (11 reveal, 4 orbit-card, 4 p-slot, 1 arc-path, 4 c-dot); trail canvas still `display:block`; tags and CSS braces balanced; desktop and 390px screenshots reviewed.
+
+**Flagged to the user, unresolved:** their copy says "Four years into product" while the Career subtitle reads 4.5 years. Their wording was kept verbatim.
+
+## 2026-09-29 completed request
 Three things in one pass:
 1. **PM mode and the toggle removed** — gamer is now the only mode. `<body class="gamer-mode">` is hardcoded in the markup, the `.mode-toggle`/`.mode-slider`/`.mode-option` markup + CSS + media-query overrides are gone, and `setMode`/`modeButtons`/`modePowerFlash` + the `.mode-flash` CSS went with them. `gamerOn` survives as `const gamerOn = true` because the click bursts, trail and sparkles all read it. **The base (non-`.gamer-mode`) CSS above the theme block must stay** — it is the foundation the theme overrides, not dead PM code. The boot calls (`fitStack/startStack/startTrail/startSparkle`) used to fire on the toggle click; they now run once at the **very end** of the script, because `fitStack`/`startStack` are `let`-assigned inside the Stack block, not hoisted declarations.
 2. **BI Developer at Infometry: Feb 2022 – Aug 2022 → Feb 2022 – Mar 2023**, which closes the gap that used to sit between it and the Product Internships (Mar 2023).
