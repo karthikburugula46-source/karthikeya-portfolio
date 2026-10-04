@@ -79,7 +79,7 @@
   .nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
   nav .nav-pill,
   nav .cta{
-    height:34px;box-sizing:border-box;
+    height:30px;box-sizing:border-box;
     display:inline-flex;align-items:center;justify-content:center;
   }
   nav .nav-pill{
@@ -100,8 +100,8 @@
   @media (max-width:400px){
     .brand{font-size:12.5px;gap:8px;}
     .brand .mark{width:26px;height:26px;}
-    nav .cta{font-size:11px;padding:0 14px;height:30px;}
-    nav .nav-pill{font-size:11px;padding:0 14px;height:30px;}
+    nav .cta{font-size:11px;padding:0 14px;height:27px;}
+    nav .nav-pill{font-size:11px;padding:0 14px;height:27px;}
   }
   /* Phone: the avatar alone carries the brand so the pill and Contact
      both keep their full labels. */
@@ -159,7 +159,7 @@
     position:relative;z-index:1;
     font-size:clamp(12px,1.15vw,13.5px);font-weight:700;
     letter-spacing:1.4px;text-transform:uppercase;
-    color:var(--a1);margin:0 0 20px;
+    color:#a994ff;margin:0 0 20px;
   }
   .hero .sub{
     position:relative;z-index:1;
@@ -531,7 +531,7 @@
     text-shadow:3px 3px 0 #3d2a99;
   }
   body.gamer-mode .grad-text{text-shadow:3px 3px 0 var(--a3);}
-  body.gamer-mode .eyebrow-pill .dot{background:var(--a1);}
+  body.gamer-mode .eyebrow-pill .dot{background:#39ff14;box-shadow:0 0 6px #39ff14, 0 0 14px rgba(57,255,20,0.75);}
   /* btn-primary/mini-btn.primary fill solid with --grad (a flat color,
      not a gradient) - white text is the same convention the Recent Work
      CTA/tag already uses (.p-card .tag{color:#fff}), and a hard offset
@@ -911,6 +911,8 @@
       </p>
       <div class="cta-row">
         <a class="btn btn-primary" href="tel:+918296114865" aria-label="Call +91 8296114865">Get in Touch</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer" aria-label="Karthikeya Burugula on LinkedIn">LinkedIn
+          <svg class="li-icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
       </div>
     </div>
   </div>
