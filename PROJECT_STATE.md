@@ -2,7 +2,7 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-10-04 · HEAD `(see git log)`
+Last updated: 2026-10-04 (second pass) · HEAD `83ac064`
 
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
@@ -197,7 +197,24 @@ git push
 
 ---
 
-## Most recent completed request (2026-10-04)
+## Most recent completed request (2026-10-04, second pass)
+A batch of requests that arrived mid-turn, so they are logged together.
+
+1. **New portrait.** The old `assets/profile.png` had a filter baked into the *image file* — there was never a CSS filter on it, so this was an asset swap, not a style change. New shot resized to 800px (830KB, down from 1.28MB). Frame untouched, as asked.
+2. **Name on one line.** Hard `<br>` removed; `.hero h1` → `clamp(26px,4.3vw,56px)`. It still wraps naturally on very narrow phones, and fits one line at 390px.
+3. **Bigger photo:** `clamp(230px,26vw,340px)`, up from `clamp(186px,20vw,250px)`; mobile steps 250/210/180.
+4. **"You lost the animations" — diagnosed and fixed.** Nothing was removed: `.reveal`/`.orbit-card` counts and the observers were untouched (confirmed by diffing against the session-start commit). The real cause was **the shorter hero pulled `#highlights` above the fold**, so its orbit/reveal entrance fired at load and looked like no animation at all. Measured `headTop=774` against a 813px viewport. Fix: `.hero{min-height:min(calc(100vh - 64px), 1000px); display:flex; align-items:center;}`. Now `headTop=962` — below the fold at every width tested. **The cap matters**: uncapped `100vh` leaves a huge empty band on portrait/ultra-tall displays.
+5. **Nav pill vs Contact sized differently** → both now share an explicit `height:34px` (30px ≤400px) with `box-sizing:border-box` and `display:inline-flex`. The pill's border plus smaller type made it visibly shorter before.
+6. **Mobile crowding** → `.brand-name` now hides below **560px** (was 430px).
+7. **Theme off red → "Violet & Mint"** (user picked from three offered options): `--a1:#7c5cff`, `--a2:#ffc23d`, `--a3:#2be8c8`, `--grad:#7c5cff`. Red was baked into **far more than the tokens** — card/button/photo glows, the HUD grid lines, the career arc gradient + 4 node colors + 4 `--dot-color` values, both cursor SVGs (URL-encoded `%23ff2f4f`), `SPARKLE_COLORS`, `SPARK_COLORS`, `TRAIL_STOPS`, the trail's `shadowColor`, `BLOCK_COLORS` and the Stack glow. `grep` for the old hexes now returns 0.
+8. **Trail smoothness**: smoothing passes 2 → 4, `SUB` 14 → 20 (coarse 9 → 12). On a replayed synthetic flick the sharpest turn halved (4.35° → 2.05°), average turn −33%, 43% more samples along the curve.
+9. **Copy**: intro now "PM by day, gamer and builder by night… 4 years into product" (wording confirmed by the user). Arcade subtitle dropped its stale "You switched to gamer mode" line.
+
+**Still inconsistent, flagged to the user:** the intro says "4 years" (their explicit instruction) while the Career subtitle says "4.5 years".
+
+**Headless gotcha hit again:** running several `--headless` Chrome invocations in a tight shell loop makes them reuse one window, so every width reports identical numbers. Give each its own `--user-data-dir` (slow) or just run them as separate commands.
+
+## Earlier on 2026-10-04
 Hero rebuilt around user-supplied intro copy; availability pill moved into the nav.
 
 **Layout.** The hero was a centered stack (pill → name → one-line sub → CTAs → full-width 460px portrait underneath). It is now two columns: photo left, name + title + intro + CTAs right, inside `.hero-inner` (`display:flex; align-items:center`). The photo is sized by its column — `width:clamp(186px,20vw,250px)` — so it cannot dominate the fold again ("the image itself is taking a lot of space, which I don't want"). New `.hero-role` element carries **"Product Manager at AssetPlus."** `.hero h1` dropped from `clamp(48px,9vw,108px)` to `clamp(40px,6.1vw,82px)` to share the row.
