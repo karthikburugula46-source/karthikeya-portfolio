@@ -76,9 +76,7 @@
   /* The availability pill sits beside Contact rather than in the hero.
      Both get the same explicit height and box-sizing so they match - the
      pill's border and smaller type made it visibly shorter otherwise. */
-  /* A one-row grid with equal columns: the pill and Contact are always the
-     same width as well as the same height. */
-  .nav-right{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
+  .nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:0;}
   nav .nav-pill,
   nav .cta{
     height:34px;box-sizing:border-box;
@@ -204,7 +202,10 @@
      the fold and plays its entrance when the visitor scrolls. */
   @media (min-width:821px){
     #highlights{padding-top:62px;}
-    .hero{min-height:calc(100vh - 255px);}
+    /* 90vh so the first card's top lands just under the reveal trigger line
+       (the observer's -10% bottom margin): hidden on landing, animating in
+       on the first small scroll. */
+    .hero{min-height:calc(90vh - 283px);}
   }
   .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
   .section-eyebrow{
@@ -743,6 +744,10 @@
   body.gamer-mode .pill:hover{background:var(--a1);color:#fff;transform:translateY(-2px);}
   body.gamer-mode .tag{border-radius:6px;}
   body.gamer-mode .eyebrow-pill{border-radius:8px;border:2px solid #000;}
+  /* In the nav the pill has no border: a black one is invisible on the dark
+     bar, which made the visible pill ~4px shorter than Contact. A filled
+     background across the full box makes it the same height. */
+  body.gamer-mode nav .nav-pill{border:0;background:rgba(255,255,255,0.12);color:#fff;}
   body.gamer-mode .btn,
   body.gamer-mode nav .cta,
   body.gamer-mode .mini-btn{border-radius:8px;}
