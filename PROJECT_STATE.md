@@ -2,10 +2,10 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-10-04 (second pass) · HEAD `83ac064`
+Last updated: 2026-10-04 (third pass) · HEAD `3fbaafe`
 
 ## What this is
-Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~1,730 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
+Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~2,030 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
 
 - **File:** `/Users/karthikeya/projects/portfolio/index.html` (the entire site)
 - **Live URL:** https://karthikburugula46-source.github.io/karthikeya-portfolio/
@@ -25,6 +25,8 @@ Single-file static portfolio website for Karthikeya Burugula (Product Manager). 
    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
    ```
 7. **Vercel is abandoned** — "Skip Vercel, GitHub Pages is enough. Do not revisit unless asked."
+8. **Attach IntersectionObservers after two `requestAnimationFrame`s, never synchronously.** See Animation architecture.
+9. **Don't ship the first plausible diagnosis.** Two animation bugs in a row were "fixed" from a story that was never A/B-tested against an alternative, costing the user extra rounds. Isolate one variable and measure both states of it before editing.
 
 ## Critical incident (why rule #3 exists)
 User reported: "You screwed up the entire portfolio page... You removed the skill section... top highlights..." Root cause: GSAP/ScrollTrigger (CDN-loaded, plus complex 3D transforms and custom `toggleActions`) silently failed on the user's device, leaving `.reveal` elements stuck at `opacity:0` — looked exactly like deleted content, but the HTML was intact. Fix: removed GSAP, replaced with vanilla `IntersectionObserver` toggling a `.visible` class driving plain CSS transitions. Permanent architecture.
@@ -51,6 +53,15 @@ Section-by-section:
 ## Animation architecture
 
 **Global reveal:** `.reveal` starts hidden; `revealObserver` (index.html:1016) toggles `.visible` bidirectionally on `entry.isIntersecting`, so scrolling back up reverses it.
+
+**Observer attach timing is load-bearing — never make `observe()` synchronous again.** Both `revealObserver` and `orbitObserver` are attached inside **two nested `requestAnimationFrame` calls** at the end of the script:
+```js
+requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+  document.querySelectorAll('#highlights .p-slot').forEach(el=>orbitObserver.observe(el));
+}));
+```
+Attached inline during script parse, anything already on screen at load goes from *never rendered* straight to `.visible` inside a single style pass — there is no painted start frame to interpolate from, so the transition never runs and the entrance just pops. Two frames guarantee the hidden state is painted first. **This, not hero height or fold position, is why entrances looked "completely gone."** A/B on the same file: sync attach → `raf2(paintedHidden):vis=4`; deferred attach → `raf2(paintedHidden):vis=0`, then `+80ms:vis=4`.
 
 **Orbit reveal — Recent Work only** (replicates the revolving-card entrance from a reference recording of ultrahuman.com). This must NOT be applied to any other section. **Gamer mode must never animate `opacity`/`transform`/`filter` on `.orbit-card` via a separate `animation`** — an animation always wins over a transition on the same property while it plays, so when a shorter animation ended before the orbit card's own .55s transition did, opacity snapped to whatever the transition had reached mid-swing — a visible break the user caught early on, and the root cause of "stucky" motion a couple of rounds later too (`steps()`-based animations layered on top of transitions). Current gamer mode (see PM/Gamer mode section below) sidesteps the whole hazard class: no separate `animation` on `.reveal`/`.orbit-card` at all any more, just a bouncier `transition-timing-function` on the same transition PM already runs.
 ```css
@@ -197,13 +208,24 @@ git push
 
 ---
 
-## Most recent completed request (2026-10-04, second pass)
+## Most recent completed request (2026-10-04, third pass) — commit `3fbaafe`
+Four complaints in one message: *"fix the padding issue between my profile and the recent work. Such a huge padding issue is not allowed. Remove that lined foreground layer on my image. My image should be clear. You didn't use the image I gave you. How are you making such mistakes, man? And the animation is not yet fixed again. It's completely gone. How? Fix it."*
+
+1. **Animation — the real fix, after a wrong one.** See **Observer attach timing** under Animation architecture. Method that found it: diff `.reveal`/`.orbit-card` CSS against the last user-confirmed-good commit (`5a77701`) — byte-identical, so nothing was deleted; rule out `prefers-reduced-motion`; then isolate the one remaining variable (when `observe()` runs) and A/B it on the same file. **Lesson: the previous round's fold-based theory was never tested against an alternative — it was the first plausible story, and it cost the user an extra round.**
+2. **Padding.** Because hero height no longer governs whether the entrance plays, `min-height` was removed outright. `.hero{padding:56px 0 24px}`, new `#highlights{padding-top:40px}`, mobile `.hero{padding:44px 0 18px}`. Measured heroH **1000 → 414**, gap CTA→"Recent Work" heading **204 → 142**.
+3. **"Lined foreground layer" / "you didn't use my image."** The file on disk *is* the supplied image — verified by opening `assets/profile.png` directly. What read as a baked-in filter was `body.gamer-mode::after`: a full-viewport `repeating-linear-gradient` CRT scanline overlay at `z-index:9998`, sitting on top of the portrait. **Removed entirely.** The user had objected to a foreground layer on the photo once before — that earlier round only removed the frame, not this overlay, which is why it came back.
+
+Verified: tags and CSS braces balanced (289/289); `ERR=[] reveal=11 orbit=4 slots=4 arc=1 cdot=4 citem=4 sparkles=true trail=block`; desktop and true-390px screenshots reviewed; pushed `4279171..3fbaafe`, Pages build polled to `built`, and a `curl` of the live site grepping `requestAnimationFrame(()=>requestAnimationFrame` returned 1 — fix confirmed live.
+
+**Caveat disclosed to the user:** `window.scrollTo` does not scroll in this headless environment (every step reports `@y0`), so the fix was verified by frame-timing A/B, not by watching a real scroll.
+
+## Second most recent completed request (2026-10-04, second pass)
 A batch of requests that arrived mid-turn, so they are logged together.
 
 1. **New portrait.** The old `assets/profile.png` had a filter baked into the *image file* — there was never a CSS filter on it, so this was an asset swap, not a style change. New shot resized to 800px (830KB, down from 1.28MB). Frame untouched, as asked.
 2. **Name on one line.** Hard `<br>` removed; `.hero h1` → `clamp(26px,4.3vw,56px)`. It still wraps naturally on very narrow phones, and fits one line at 390px.
 3. **Bigger photo:** `clamp(230px,26vw,340px)`, up from `clamp(186px,20vw,250px)`; mobile steps 250/210/180.
-4. **"You lost the animations" — diagnosed and fixed.** Nothing was removed: `.reveal`/`.orbit-card` counts and the observers were untouched (confirmed by diffing against the session-start commit). The real cause was **the shorter hero pulled `#highlights` above the fold**, so its orbit/reveal entrance fired at load and looked like no animation at all. Measured `headTop=774` against a 813px viewport. Fix: `.hero{min-height:min(calc(100vh - 64px), 1000px); display:flex; align-items:center;}`. Now `headTop=962` — below the fold at every width tested. **The cap matters**: uncapped `100vh` leaves a huge empty band on portrait/ultra-tall displays.
+4. **"You lost the animations" — ~~diagnosed and fixed~~ MISDIAGNOSED.** Nothing was removed (`.reveal`/`.orbit-card` counts and the observers diffed clean against the session-start commit), but the cause was *not* the fold. I blamed the shorter hero pulling `#highlights` above the fold and added `.hero{min-height:min(calc(100vh - 64px), 1000px)}`. That fixed nothing, and the 1000px cap meant Recent Work still landed above the fold on a large monitor. It also created the padding complaint that followed. **Superseded by the third pass above — the real cause was observer attach timing.** The `min-height` is now gone entirely.
 5. **Nav pill vs Contact sized differently** → both now share an explicit `height:34px` (30px ≤400px) with `box-sizing:border-box` and `display:inline-flex`. The pill's border plus smaller type made it visibly shorter before.
 6. **Mobile crowding** → `.brand-name` now hides below **560px** (was 430px).
 7. **Theme off red → "Violet & Mint"** (user picked from three offered options): `--a1:#7c5cff`, `--a2:#ffc23d`, `--a3:#2be8c8`, `--grad:#7c5cff`. Red was baked into **far more than the tokens** — card/button/photo glows, the HUD grid lines, the career arc gradient + 4 node colors + 4 `--dot-color` values, both cursor SVGs (URL-encoded `%23ff2f4f`), `SPARKLE_COLORS`, `SPARK_COLORS`, `TRAIL_STOPS`, the trail's `shadowColor`, `BLOCK_COLORS` and the Stack glow. `grep` for the old hexes now returns 0.
@@ -244,7 +266,7 @@ Three things in one pass:
 
 Verified: zero JS errors; gamer mode active on load with `toggleEls=0`; element counts unchanged (11 reveal, 4 orbit-card, 4 p-slot, 1 arc-path, 4 c-dot, 4 c-item); tags and CSS braces balanced; A/B against the pre-change file with `.gamer-mode` force-applied showed identical computed cursor/text-shadow on `.p-card`/`.pill`/`nav a` and the hero row only 1px shorter (the toggle was the taller element in that flex row). Boot proof: rAF calls after load with zero interaction went 0 (old, PM default) → 1252 (new), with 9 sparkles already in the DOM.
 
-## Second most recent completed request
+## Sparkle frequency, round 2
 Sparkle frequency turned up again — "reduce the timer more and increase the frequency and quantity more," a follow-up to the previous round's first bump, with everything else confirmed good. Interval cut from ~0.65–1.4s to ~0.3–0.7s, and the spawn count per tick went from a flat 1-or-2 to a weighted 1/2/3 (15% triple, 40% double, 45% single). Measured 14 sparkles in 5s post-change vs. 5 in 5s before — landed, not just relabeled. No other changes.
 
 ## Third most recent completed request
@@ -269,7 +291,7 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 ## Fourth most recent completed request
 *The "RGB battle-station" theme was rejected wholesale — "looks more like Canva now... I don't want any gradient kind of feel... no more gradient contrast on the theme side... the background is not moving anymore... don't add anything like what you added" — plus a real bug report: "you again fucked up the animation on Ship It... when I am clicking on it, I don't get any effects."* Did actual web research (see Sources) before rebuilding, rather than iterating blind a third time. Two things landed in the same pass:
 
-1. **Full gamer-mode re-theme #2 — "Combat Terminal.".** Single flat toxic-green accent on black, `--grad` changed from a `linear-gradient()` to a flat hex so every consumer becomes a solid fill for free, all RGB hue-cycling deleted, the distracting scan-beam deleted (reverted `::after` to plain static scanlines), ambient grid restored to a single-hue orthogonal drift (faster/more visible), sharp `border-radius:0` everywhere for a real shape-level "opposite of PM" signal, cards flattened to a solid color (no top-strip gradient). Full rationale and diff of what changed vs. the rejected version is in the Gamer theme section above.
+1. **Full gamer-mode re-theme #2 — "Combat Terminal.".** Single flat toxic-green accent on black, `--grad` changed from a `linear-gradient()` to a flat hex so every consumer becomes a solid fill for free, all RGB hue-cycling deleted, the distracting scan-beam deleted (reverted `::after` to plain static scanlines — that scanline `::after` was itself removed in the third pass, see above), ambient grid restored to a single-hue orthogonal drift (faster/more visible), sharp `border-radius:0` everywhere for a real shape-level "opposite of PM" signal, cards flattened to a solid color (no top-strip gradient). Full rationale and diff of what changed vs. the rejected version is in the Gamer theme section above.
 2. **Ship It hit effect — found and fixed the real bug, rebuilt as a proper FPS hit-marker.** Root cause of "no effects": a stacking-context/z-index bug (site-wide click-burst at `z-index:9997` masked the hit-specific effect, which had no explicit z-index) — a pure CSS bug a JS-error check can't catch. Rebuilt per real hit-marker/damage-number conventions researched online: white X hit-marker + "+1" damage number (drifts up, fades ~0.7s) + a flat ring + a short `translate()`-based board shake, all rendered `position:fixed` straight on `<body>` at `z-index:9999` so they can never be masked again.
 3. **Stack was explicitly left untouched at the time** — "Stack It is perfect. Don't change anything in that" — a since-superseded instruction (see Most recent completed request above).
 
