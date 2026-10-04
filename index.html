@@ -113,13 +113,9 @@
   /* ---------- Hero ---------- */
   .hero{
     position:relative;
-    padding:72px 0 64px;
+    padding:56px 0 24px;
     overflow:hidden;
     display:flex;align-items:center;
-    /* Capped: a viewport-height hero keeps #highlights below the fold so
-       its orbit entrance still plays on scroll, but on very tall or
-       portrait displays an uncapped 100vh leaves a huge empty band. */
-    min-height:min(calc(100vh - 64px), 1000px);
   }
   /* Photo left, name + title + intro right. The photo is sized by the
      column, not by the image, so it never dominates the fold the way the
@@ -196,6 +192,9 @@
 
   /* ---------- Sections ---------- */
   section{padding:70px 0;position:relative;perspective:1000px;}
+  /* Recent Work sits right under the hero, so it does not need the full
+     between-sections gap above it as well as the hero's bottom padding. */
+  #highlights{padding-top:40px;}
   .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
   .section-eyebrow{
     color:var(--text-dim);font-weight:700;font-size:12px;margin-bottom:14px;
@@ -424,7 +423,7 @@
     .wrap{padding:0 20px;}
     nav .wrap{padding:0 20px;}
 
-    .hero{padding:52px 0 34px;}
+    .hero{padding:44px 0 18px;}
     .hero-inner{padding:0 20px;}
     .hero h1{letter-spacing:-1.5px;}
     .hero-photo-wrap{width:min(210px,52vw);}
@@ -671,11 +670,6 @@
 
   /* Static CRT scanlines - arcade cabinets ran on CRTs too, so this still
      fits the new identity, not a leftover. */
-  body.gamer-mode::after{
-    content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px);
-    opacity:0.28;
-  }
   body.gamer-mode section, body.gamer-mode .hero, body.gamer-mode footer{position:relative;z-index:1;}
 
   /* Cards: thick black border + hard, unblurred offset shadow (comic
@@ -1147,7 +1141,6 @@
       entry.target.classList.toggle('visible', entry.isIntersecting);
     });
   }, {threshold:0.15, rootMargin:'0px 0px -10% 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
 
   // Highlights orbit cards: observe the stable, never-transformed .p-slot
   // wrapper instead of the animating .p-card - if the card itself were
@@ -1160,7 +1153,19 @@
       if(card) card.classList.toggle('visible', entry.isIntersecting);
     });
   }, {threshold:0.15, rootMargin:'0px 0px -10% 0px'});
-  document.querySelectorAll('#highlights .p-slot').forEach(el=>orbitObserver.observe(el));
+
+  // Both observers are attached only after the browser has painted a frame
+  // with everything still in its hidden state. Attaching them inline meant
+  // that anything already on screen at load went from "never rendered" to
+  // .visible inside a single style pass - no start frame to interpolate
+  // from, so the transition never ran and the entrance just popped. Two
+  // frames guarantees the hidden state is on screen first. This is why the
+  // entrance looked "gone" whenever a section sat above the fold; it was
+  // never about how tall the hero is.
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+    document.querySelectorAll('#highlights .p-slot').forEach(el=>orbitObserver.observe(el));
+  }));
 
   // Career arc: draws in the moment the section arrives, reverses if you scroll
   // back above it. Uses the same visible-class + CSS-transition approach as
