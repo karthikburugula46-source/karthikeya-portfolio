@@ -84,7 +84,9 @@
   }
   nav .nav-pill{
     margin-bottom:0;flex-shrink:0;
-    font-size:10.5px;letter-spacing:0.8px;padding:0 14px;gap:7px;
+    /* same type size, weight and side padding as the Contact CTA so the
+       two read as one matched pair */
+    font-size:12px;font-weight:700;letter-spacing:0.3px;padding:0 18px;gap:8px;
   }
   .pill-short{display:none;}
   @media (max-width:760px){ nav .links{display:none;} }
@@ -94,20 +96,18 @@
   @media (max-width:860px){
     .pill-long{display:none;}
     .pill-short{display:inline;}
-    nav .nav-pill{font-size:10px;padding:0 12px;}
   }
   @media (max-width:400px){
     .brand{font-size:12.5px;gap:8px;}
     .brand .mark{width:26px;height:26px;}
     nav .cta{font-size:11px;padding:0 14px;height:30px;}
-    nav .nav-pill{height:30px;}
+    nav .nav-pill{font-size:11px;padding:0 14px;height:30px;}
   }
   /* Phone: the avatar alone carries the brand so the pill and Contact
      both keep their full labels. */
   @media (max-width:560px){
     .brand-name{display:none;}
     .nav-right{gap:8px;}
-    nav .nav-pill{font-size:9.5px;padding:0 10px;gap:6px;letter-spacing:0.5px;}
   }
 
   /* ---------- Hero ---------- */
@@ -163,7 +163,7 @@
   .hero .sub{
     position:relative;z-index:1;
     font-size:clamp(15px,1.35vw,17px);
-    color:var(--text-dim);
+    color:#fff;
     max-width:620px;margin:0 0 30px;
     font-weight:400;line-height:1.68;
   }
@@ -195,6 +195,7 @@
   /* Recent Work sits right under the hero, so it does not need the full
      between-sections gap above it as well as the hero's bottom padding. */
   #highlights{padding-top:40px;}
+  @media (min-width:821px){#highlights{padding-top:62px;}}
   .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
   .section-eyebrow{
     color:var(--text-dim);font-weight:700;font-size:12px;margin-bottom:14px;
@@ -504,7 +505,7 @@
   /* A select-cursor prefix instead of a terminal prompt, breathing gently
      (one smooth ease-in-out pulse, not an intermittent flicker). */
   body.gamer-mode .section-head h2::before{
-    content:"\25B8 ";color:var(--a1);
+    content:"\25B8";margin-right:0.72em;color:var(--a1);
     animation:selectPulse 2.4s ease-in-out infinite;
   }
   @keyframes selectPulse{
@@ -513,7 +514,10 @@
   }
   body.gamer-mode .hero h1{
     letter-spacing:-2px;
-    text-shadow:3px 3px 0 var(--a3);
+    /* A deep violet instead of the bright mint: it still lifts the white
+       off the background without glaring. "Burugula" keeps its own
+       .grad-text shadow below. */
+    text-shadow:3px 3px 0 #3d2a99;
   }
   body.gamer-mode .grad-text{text-shadow:3px 3px 0 var(--a3);}
   body.gamer-mode .eyebrow-pill .dot{background:var(--a1);}
@@ -687,8 +691,20 @@
     border:3px solid #000;
     background:#15121a;
     box-shadow:7px 7px 0 #000;
-    transform:rotate(var(--tilt,0deg));
-    transition:transform .25s cubic-bezier(0.34,1.56,0.64,1), box-shadow .25s ease;
+    /* The tilt is the individual `rotate` property, NOT part of `transform`,
+       so it composes with the reveal/orbit entrance transform instead of
+       replacing it. (It used to be `transform:rotate(...)` plus a
+       transition list of only transform + box-shadow, which silently
+       dropped the cards' opacity/blur/entrance - they just popped.) */
+    rotate:var(--tilt,0deg);
+    transition:
+      opacity .6s cubic-bezier(0.34,1.56,0.64,1),
+      transform .6s cubic-bezier(0.34,1.56,0.64,1),
+      filter .6s cubic-bezier(0.34,1.56,0.64,1),
+      rotate .25s cubic-bezier(0.34,1.56,0.64,1),
+      box-shadow .25s ease,
+      border-color .25s ease;
+    transition-delay:var(--delay,0s), var(--delay,0s), var(--delay,0s), 0s, 0s, 0s;
   }
   body.gamer-mode .bento > .p-slot:nth-child(odd) .p-card{--tilt:-1.6deg;}
   body.gamer-mode .bento > .p-slot:nth-child(even) .p-card{--tilt:1.6deg;}
@@ -696,12 +712,16 @@
   body.gamer-mode .edu-grid .edu-card:nth-child(odd){--tilt:-1.6deg;}
   body.gamer-mode .skills-grid .skill-card:nth-child(even),
   body.gamer-mode .edu-grid .edu-card:nth-child(even){--tilt:1.6deg;}
-  body.gamer-mode .p-card:hover,
-  body.gamer-mode .skill-card:hover,
-  body.gamer-mode .edu-card:hover{
-    transform:rotate(0deg) translate(-3px,-3px);
+  /* Hover only once revealed, so it can never overwrite the hidden state */
+  body.gamer-mode .p-card.visible:hover,
+  body.gamer-mode .skill-card.visible:hover,
+  body.gamer-mode .edu-card.visible:hover{
+    rotate:0deg;
+    transform:translate(-3px,-3px);
     box-shadow:11px 11px 0 #000;
     border-color:var(--a1);
+    transition-delay:0s;
+    transition-duration:.25s;
   }
 
   /* Pills/tags: thick border, flat fill, no glow */
@@ -936,13 +956,13 @@
 
 <section id="arcade">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <h2>Arcade</h2>
       <p>Two ways to waste a minute here.</p>
     </div>
 
-    <div class="arcade-grid">
-      <div class="arcade-card">
+    <div class="arcade-grid stagger">
+      <div class="arcade-card reveal">
         <div class="arcade-head">
           <h3>Ship It</h3>
           <span class="hint">Targets get faster</span>
@@ -960,7 +980,7 @@
         </div>
       </div>
 
-      <div class="arcade-card">
+      <div class="arcade-card reveal">
         <div class="arcade-head">
           <h3>Stack</h3>
           <span class="hint">Tap to drop</span>
@@ -1654,9 +1674,9 @@
       target.setAttribute('aria-label', 'Ship it');
       target.style.width = size + 'px';
       target.style.height = size + 'px';
-      const rect = shootBoard.getBoundingClientRect();
-      target.style.left = Math.random() * Math.max(0, rect.width - size) + 'px';
-      target.style.top = Math.random() * Math.max(0, rect.height - size) + 'px';
+      const bw = shootBoard.offsetWidth, bh = shootBoard.offsetHeight;
+      target.style.left = Math.random() * Math.max(0, bw - size) + 'px';
+      target.style.top = Math.random() * Math.max(0, bh - size) + 'px';
       target.addEventListener('pointerdown', (e)=>{
         e.preventDefault();
         popAt(parseFloat(target.style.left) + size / 2, parseFloat(target.style.top) + size / 2, size);
@@ -1992,13 +2012,16 @@
     stopStack = function(){ if(raf){ cancelAnimationFrame(raf); raf = null; } };
 
     fitStack = function(){
-      const rect = stack.getBoundingClientRect();
-      if(!rect.width || !rect.height) return;
+      // offsetWidth/Height are layout sizes - unlike getBoundingClientRect
+      // they ignore the card's reveal transform, so sizing is the same
+      // whether or not the card has scrolled into view yet.
+      const cw = stack.offsetWidth, ch = stack.offsetHeight;
+      if(!cw || !ch) return;
       const dpr = window.devicePixelRatio || 1;
-      stack.width = Math.round(rect.width * dpr);
-      stack.height = Math.round(rect.height * dpr);
+      stack.width = Math.round(cw * dpr);
+      stack.height = Math.round(ch * dpr);
       stack.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
-      W = rect.width; viewH = rect.height;
+      W = cw; viewH = ch;
       if(!blocks.length) reset();
       render();
     };
