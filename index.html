@@ -1363,6 +1363,12 @@
   // Touch gestures are short - a scroll flick is often under 300ms of
   // contact - so on mobile the ribbon is given longer before it starts
   // retracting, and it drains at half the rate. Desktop keeps its old feel.
+  // How hard the ribbon head chases the pointer each frame. At 0.22 the glowing
+  // tip sat ~46px behind the real cursor on a normal swipe (up to ~75px), which
+  // read as the cursor lagging; 0.75 keeps it within a few px, i.e. attached.
+  // The 4 smoothing passes + spline below keep the ribbon round either way.
+  // Touch keeps the old, softer chase.
+  const HEAD_EASE = coarsePointer ? 0.22 : 0.75;
   const IDLE_MS = coarsePointer ? 190 : 70;
   const DRAIN_PER_FRAME = coarsePointer ? 1 : 2;
 
@@ -1450,7 +1456,7 @@
     trailCtx.clearRect(0, 0, W, H);
 
     if(pointer && head){
-      const ease = 1 - Math.pow(1 - 0.22, dt);
+      const ease = 1 - Math.pow(1 - HEAD_EASE, dt);
       const dx = pointer.x - head.x, dy = pointer.y - head.y;
       head.x += dx * ease;
       head.y += dy * ease;
