@@ -265,7 +265,7 @@ ul{padding:0;list-style:none}
 .h-in{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1fr);gap:20px 40px;padding:0 6px 26px;align-items:center}
 .h-in p{grid-column:2;grid-row:1;color:var(--dim);max-width:520px;font-size:16px;margin:0}
 .h-in p b{color:var(--text);font-weight:600}
-.vz{grid-column:3;grid-row:1;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.vz{min-width:0;grid-column:3;grid-row:1;display:flex;flex-direction:column;gap:12px;justify-content:center}
 .bar{position:relative;display:flex;flex-direction:column;gap:7px;padding:0;min-height:0;background:none;border:0;border-radius:0;overflow:visible}
 .bar::before{content:"";display:block;height:14px;border-radius:7px;background:var(--surface-2)}
 .bar i{position:absolute;left:0;right:0;bottom:0;height:14px;transform-origin:left;transform:scaleX(0);transition:transform 1.1s var(--ease) .15s;border-radius:7px}
@@ -394,7 +394,7 @@ html.cx-on .ch{opacity:1}
   .h-rank{grid-row:1}
   .h-metric{grid-column:2;grid-row:2;align-items:flex-start;text-align:left;flex-direction:row;align-items:baseline;gap:10px}
   .h-plus{grid-column:3;grid-row:1/span 2}
-  .h-in{grid-template-columns:1fr;padding:0 2px 28px}
+  .h-in{grid-template-columns:minmax(0,1fr);padding:0 2px 28px}
   .h-in p,.vz{grid-column:1}
   .vz{grid-row:auto}
   .hint-d{display:none}.hint-m{display:inline}
@@ -450,7 +450,7 @@ html.cx-on .ch{opacity:1}
 @keyframes nbob{50%{translate:0 6px}}
 ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 ::view-transition-old(root){z-index:1}
-::view-transition-new(root){z-index:2}
+::view-transition-new(root){z-index:2;clip-path:circle(0px at var(--vx,50%) var(--vy,0px))}
 
 /* ---------- hero sun (day only) ---------- */
 @keyframes cmspin{to{rotate:360deg}}
@@ -948,11 +948,11 @@ themeBtn.addEventListener('click',()=>{
   if(document.startViewTransition&&!reduce){
     const end=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
     try{
-      root.classList.add('tswitch');
+      root.classList.add('tswitch'); root.style.setProperty('--vx',x+'px'); root.style.setProperty('--vy',y+'px');
       const vt=document.startViewTransition(()=>applyTheme(next));
       const done=()=>setTimeout(()=>root.classList.remove('tswitch'),80);
       vt.finished.then(done,done);
-      vt.ready.then(()=>{ root.animate({clipPath:['circle(0px at '+x+'px '+y+'px)','circle('+end+'px at '+x+'px '+y+'px)']},{duration:800,easing:'cubic-bezier(.5,0,.2,1)',pseudoElement:'::view-transition-new(root)'}); }).catch(()=>{});
+      vt.ready.then(()=>{ root.animate({clipPath:['circle(0px at '+x+'px '+y+'px)','circle('+end+'px at '+x+'px '+y+'px)']},{duration:800,easing:'cubic-bezier(.5,0,.2,1)',fill:'forwards',pseudoElement:'::view-transition-new(root)'}); }).catch(()=>{});
     }catch(e){ applyTheme(next); root.classList.remove('tswitch'); }
   }else{ root.classList.add('tswitch'); applyTheme(next); requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.remove('tswitch'))); }
 });
