@@ -67,6 +67,15 @@ Tag + brace balance; zero JS errors; counts 14 reveal / 4 orbit-card / 4 p-slot 
 
 ---
 
+## Reimagined site ("The Factsheet") — 2026-10-07, lives at `/v2/` (NOT promoted to root)
+User asked for a complete reimagining using prashanthnimmagadda.vercel.app only as a reference for technique/UX/positioning. Built as `v2/index.html` (single file) so the approved root site is untouched. Promote by copying `v2/index.html` over `index.html` and changing `../assets/` to `assets/` (assets already live in root `assets/`).
+- **Concept:** mutual-fund factsheet / market terminal (fits AssetPlus MF/PMS/SIF work). Dark default + light toggle (`data-theme`, `kb-theme` in localStorage). Fonts: Bricolage Grotesque / Figtree / JetBrains Mono via Google Fonts.
+- **Sections:** hero (live NAV chart behind, count-up stats) → ticker → 01 Overview (objective, fund details, riskometer) → 02 Performance (scrubbable career chart, role tabs + panels) → 03 Holdings (accordion w/ before/after bars) → 04 Toolkit (heatmap tiles; tile sizes are Claude's guess) → 05 Credentials → 06 Arcade (Ship It + Stack ported unchanged apart from colours) → 07 Contact + CV card.
+- **Cursor:** candlestick trail (green up / red hollow down) on a fixed canvas + ring follower (mouse only). Touch uses passive touch events + scroll-momentum candles (same lesson as before: no pointer events for touch).
+- **Rules kept:** no animation libs; reveal = IntersectionObserver attached after two rAFs, bidirectional, using the `translate` property (not `transform`); photo is straight with nothing over it.
+- **Resume:** `assets/Karthikeya_Burugula_CV.pdf` is a copy of `~/Downloads/Karthikeya_CV_AB.pdf` (user said ONLY use the AB file; V0 was used briefly by mistake and replaced). `assets/cv-preview.jpg` is its page-1 render. All numbers on v2 come from that CV or the previously approved site copy. The chart's y-axis is an *illustrative* "scope index", labelled as such.
+- **Verified:** CDP driver at 1440 and 390 (touch emulation): zero JS errors, no horizontal overflow, scrub/tabs/accordion/theme/menu/games all exercised.
+
 ## What this is
 Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~2,080 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
 
