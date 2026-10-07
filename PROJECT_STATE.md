@@ -2,10 +2,73 @@
 
 Resume file for continuing work in a new chat. Attach this file and say **"continue from here."**
 
-Last updated: 2026-10-04 (third pass) · HEAD `3fbaafe`
+Last updated: 2026-10-07 · HEAD `c74191e` (live on GitHub Pages)
+
+**Read "Latest session" (below) first — it supersedes older sections wherever they disagree.**
+
+## Latest session (2026-10-05 → 2026-10-07) — commits `7fa34fc` … `c74191e`
+Many small, tightly scoped rounds. Mid-session user verdict: *"the animations and everything look perfect now."* Everything below is **live** and user-approved unless marked.
+
+### 1. Cards had no entrance animation — fixed (`7fa34fc`)
+Cards now replay the Skills/Recent Work reveal, both scroll directions. **Root cause was a CSS specificity trap**, confirmed by measuring computed styles: `body.gamer-mode .p-card, .skill-card, .edu-card, .arcade-card` set `transform` for the tilt and its own `transition`, overriding `.reveal`'s. Fix: the tilt moved to the individual **`rotate:var(--tilt,0deg)`** property (independent of `transform`), plus an explicit transition list so opacity/transform/filter use `var(--delay)` while `rotate`/shadow/border don't:
+```css
+body.gamer-mode .p-card, … .arcade-card{
+  rotate:var(--tilt,0deg);
+  transition: opacity .6s cubic-bezier(0.34,1.56,0.64,1), transform .6s …, filter .6s …,
+              rotate .25s …, box-shadow .25s ease, border-color .25s ease;
+  transition-delay:var(--delay,0s), var(--delay,0s), var(--delay,0s), 0s, 0s, 0s;
+}
+body.gamer-mode .p-card.visible:hover, .skill-card.visible:hover, .edu-card.visible:hover{
+  rotate:0deg; transform:translate(-3px,-3px); box-shadow:11px 11px 0 #000; border-color:var(--a1); …
+}
+```
+(each selector is prefixed `body.gamer-mode`.) **Never put the tilt back on `transform`.** Arcade also got `.reveal`: `<div class="section-head reveal">`, `.arcade-grid.stagger`, both `.arcade-card.reveal` (now **14** `.reveal` elements, 4 `.orbit-card`, 4 `.p-slot`).
+
+### 2. Landing screen (web, ≥821px) — what the fold shows
+On load the user sees only: name, intro, **Get in Touch** + **LinkedIn** CTAs, and the "Recent Work" heading + subtitle. The first card stays hidden until the first small scroll so its entrance plays (animations work both ways). Implemented as `.hero{min-height:calc(90vh - 283px)}` + `#highlights{padding-top:62px}` inside `@media (min-width:821px)`. The 283 was found by **measuring with `.visible` forced and transitions off** — a hidden `.reveal` section-head's transform skews `getBoundingClientRect` (constant went 250 → 318 → 255 → 283). Mobile unchanged (`#highlights{padding-top:40px}`, `.hero{padding:44px 0 18px}` ≤640).
+- This **supersedes** the third-pass note that `min-height` was removed — it is back, but only ≥821px and only to position the fold; the real entrance fix is still the two-rAF observer attach.
+
+### 3. Hero / copy / colour changes
+- Name shadow softened: `body.gamer-mode .hero h1{text-shadow:3px 3px 0 #3d2a99}`. "Burugula" and the violet theme kept.
+- `.hero .sub{color:#fff}` (intro white). `.hero-role{color:#a994ff}` ("Product Manager at AssetPlus", lightened).
+- Intro copy: "PM by day" → **"Product Manager by day"**. (Still says "4 years" vs Career "4.5 years" — flagged, unresolved.)
+- **Glow cut fixed**: `.hero{overflow:hidden; overflow-x:clip; overflow-y:visible}` (the `hidden` is a fallback for old browsers) — the left/right purple hues no longer end in a straight vertical line. `body` keeps `overflow-x:hidden`.
+- Section-title triangle (▸) gap: `body.gamer-mode .section-head h2::before{margin-right:0.55em}` — user-tuned (0.9 too big → 0.72 → **0.55em final**). Applies to every title.
+
+### 4. CTAs
+- **"See Recent Work" removed.** Hero CTA row is now **Get in Touch** (`btn btn-primary`, violet, tactile press, `tel:+918296114865`) + **LinkedIn** (`btn btn-ghost btn-li`).
+- **LinkedIn CTA**: mixed-case label (`.btn-li{text-transform:none}`), inline LinkedIn glyph SVG (`.li-icon`, `fill=currentColor`) inside the button, links to https://www.linkedin.com/in/karthikeyaburugula/ (`target=_blank rel="noopener noreferrer"`). Style: `body.gamer-mode .btn-ghost.btn-li{border-color:var(--a1);background:#3a3845}` — violet border, **solid** gray fill (an 8% white tint still read as transparent and was rejected). The user's "use this format" had no attachment; mixed-case "LinkedIn" was assumed and disclosed.
+
+### 5. Nav pair (Open-to-roles pill + Contact) — final state
+Applies to mobile **and** web.
+```css
+nav .nav-pill, nav .cta{height:30px;box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;}
+nav .cta{height:28px; text-transform:uppercase; …}      /* CONTACT, all caps, slightly shorter */
+nav .nav-pill{margin-bottom:0;flex-shrink:0;font-size:12px;font-weight:700;letter-spacing:0.3px;padding:0 18px;gap:8px;}
+@media (max-width:400px){ nav .cta{font-size:11px;padding:0 14px;height:25px;} nav .nav-pill{font-size:11px;padding:0 14px;height:27px;} }
+body.gamer-mode nav .nav-pill{border:0;background:rgba(255,255,255,0.12);color:#fff;}
+body.gamer-mode .eyebrow-pill .dot{background:#39ff14;box-shadow:0 0 6px #39ff14, 0 0 14px rgba(57,255,20,0.75);} /* fluorescent green */
+```
+**Root cause of "pill still not the same size"** (equal height/font weren't enough): the gamer `.eyebrow-pill{border:2px solid #000}` is invisible on the dark nav but still eats 4px, so the visible fill looked smaller. Fix = remove the border in the nav and fill the background. Don't "fix" this with equal widths — that was tried (grid) and **rejected**; the Contact CTA's own width stays normal. This supersedes the 34px/30px note in the 2nd-pass section.
+
+### 6. Cursor "lagging" — fixed (`c74191e`)
+Not a perf problem: page holds ~60fps with every suspect (grid, nav blur, glow, sparkles) disabled one at a time; trail JS costs ~0.12ms/frame. Real cause: the ribbon head eased toward the pointer at 0.22/frame, leaving the glowing tip **~46px behind the real cursor** (up to ~75px) on a normal swipe. Fix: `const HEAD_EASE = coarsePointer ? 0.22 : 0.75;` — **desktop only**; touch is unchanged. Measured gap on a synthetic swipe: avg 4.5px, p95 6.9px, max 9px; ribbon turn angle ~12° (unchanged). If it feels too tight/loose, `HEAD_EASE` is the single knob (higher = tighter). Whether it *feels* right is only judgeable live.
+
+### 7. Sizing rule that bit us
+`getBoundingClientRect` returns **transformed** boxes → use `offsetWidth/offsetHeight` for canvas/board sizing. `fitStack` now uses `stack.offsetWidth/offsetHeight`; Ship It `spawn()` uses `shootBoard.offsetWidth/offsetHeight`, so a not-yet-revealed (scaled/rotated) Arcade card no longer corrupts the games.
+
+### Verification done each round (and still the checklist)
+Tag + brace balance; zero JS errors; counts 14 reveal / 4 orbit-card / 4 p-slot / 1 arc-path; trail canvas `display:block`; no horizontal overflow at 390 and 360 (fixed-width iframe wrapper); desktop + mobile screenshots read; then push, poll Pages `built`, `curl` the live URL for a changed string. **A Node CDP (Chrome DevTools Protocol) driver is the tool for real-time checks** (fps, cursor gap) — `--virtual-time-budget` can't do those. Headless can't scroll for real; feel of animation/cursor needs a live look.
+
+### Other lessons from this session
+- `sed -i` on macOS needs `-i ''` — use Python for edits.
+- A `rm -f …/*.html` cleanup in the scratchpad was blocked by the safety check; it blocks the *whole* compound command, so keep checks and cleanup in separate calls.
+- Scratchpad (`/private/tmp/claude-501/-Users-karthikeya/…/scratchpad/`) still holds temp test files; harmless.
+
+---
 
 ## What this is
-Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~2,030 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
+Single-file static portfolio website for Karthikeya Burugula (Product Manager). No build tooling, no frameworks — HTML, inline `<style>`, inline `<script>`, all in one file (~2,080 lines). Dark/gradient brand aesthetic inspired by ultrahuman.com/in. Scroll-triggered reveal animations throughout. The whole site runs in a single **Gamer** theme — the PM/Gamer toggle was removed on 2026-09-29 and `<body class="gamer-mode">` is now hardcoded.
 
 - **File:** `/Users/karthikeya/projects/portfolio/index.html` (the entire site)
 - **Live URL:** https://karthikburugula46-source.github.io/karthikeya-portfolio/
@@ -22,11 +85,13 @@ Single-file static portfolio website for Karthikeya Burugula (Product Manager). 
 5. **Don't blame caching for a bug.** Measure first. This was a real mistake once: a mobile misalignment was attributed to cache when in fact dot markup had only been reverted on 3 of 4 career items.
 6. Git commit trailer:
    ```
-   Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+   Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
    ```
-7. **Vercel is abandoned** — "Skip Vercel, GitHub Pages is enough. Do not revisit unless asked."
+7. **Vercel is abandoned** — "Skip Vercel, GitHub Pages is enough. Do not revisit unless asked." (On 2026-10-07 the user pasted `prashanthnimmagadda.vercel.app` — someone else's live portfolio, HTTP 200 — apparently as a reference; it is not this project and nothing was changed for it.)
 8. **Attach IntersectionObservers after two `requestAnimationFrame`s, never synchronously.** See Animation architecture.
 9. **Don't ship the first plausible diagnosis.** Two animation bugs in a row were "fixed" from a story that was never A/B-tested against an alternative, costing the user extra rounds. Isolate one variable and measure both states of it before editing.
+10. **Deploy without being asked.** After a verified change: commit, push, poll the Pages build to `built`, `curl` the live site for a changed string. The user once replied "nothing has changed on the output. Did you even deploy it?" — never just offer to push.
+11. **"Don't touch anything else" is literal.** The user repeats "make sure everything already fixed stays the same" every round. Change only the named thing; re-verify the reveal/orbit counts after.
 
 ## Critical incident (why rule #3 exists)
 User reported: "You screwed up the entire portfolio page... You removed the skill section... top highlights..." Root cause: GSAP/ScrollTrigger (CDN-loaded, plus complex 3D transforms and custom `toggleActions`) silently failed on the user's device, leaving `.reveal` elements stuck at `opacity:0` — looked exactly like deleted content, but the HTML was intact. Fix: removed GSAP, replaced with vanilla `IntersectionObserver` toggling a `.visible` class driving plain CSS transitions. Permanent architecture.
@@ -38,7 +103,7 @@ Hero → `#highlights` (Recent Work) → `#arcade` (games) → `#skills` → `#c
 
 Section-by-section:
 - **Nav "Contact" CTA and hero "Get in Touch" both `href="tel:+918296114865"`** — they dial directly instead of scrolling to the footer (works in PM and gamer mode, mobile and desktop). The footer `#contact` section still exists with the mail + phone row.
-- **Hero** — `.hero-top-row` holds the "Open to Product roles" eyebrow pill **and** the PM/Gamer mode toggle side by side (toggle was moved here from the nav specifically so it's reachable on mobile).
+- **Hero** — two columns (photo left; name, "Product Manager at AssetPlus", intro, CTA row right; stacks at 820px). CTA row = **Get in Touch** + **LinkedIn**. The availability pill lives in the **nav** (`.nav-right`, next to CONTACT), not the hero; the PM/Gamer toggle no longer exists.
 - **`#highlights`** — titled **"Recent Work"** (the "Impact" eyebrow was removed). 4 cards in a `.bento` grid. Cards are **purely informational**: no CTA, no click target, no hover pop-up. Content is placeholder — **the user will supply a PRD with the real copy.**
 - **`#arcade`** — two games: **Ship It** (`#shootBoard`) and **Stack** (`#stackCanvas`). Stack replaced an earlier doodle-pad idea.
 - **`#skills`** — 3 cards only: Product Management, Analytics & Data, Prototyping & Tools. New AI tool pills go inside "Prototyping & Tools" only, formatted "Tool (Purpose)". Skills sits **above** Career (deliberate reorder).
@@ -52,7 +117,7 @@ Section-by-section:
 
 ## Animation architecture
 
-**Global reveal:** `.reveal` starts hidden; `revealObserver` (index.html:1016) toggles `.visible` bidirectionally on `entry.isIntersecting`, so scrolling back up reverses it.
+**Global reveal:** `.reveal` starts hidden; `revealObserver` (index.html:~1183) toggles `.visible` bidirectionally on `entry.isIntersecting`, so scrolling back up reverses it.
 
 **Observer attach timing is load-bearing — never make `observe()` synchronous again.** Both `revealObserver` and `orbitObserver` are attached inside **two nested `requestAnimationFrame` calls** at the end of the script:
 ```js
@@ -89,7 +154,7 @@ const orbitObserver = new IntersectionObserver((entries)=>{
 document.querySelectorAll('#highlights .p-slot').forEach(el=>orbitObserver.observe(el));
 ```
 
-**Career arc timeline** — SVG path + `.arc-node` circles, animated via `getTotalLength()` + `stroke-dashoffset`, driven by a dedicated `arcObserver` (index.html:1066). Geometry was recomputed in Python for 4 unequal-height items: circle center (292.47, 287.292), R = 272.47. Item tops: 2.77%, 24.14%, 45.52%, 79.32%. Wrapper `height:723px`.
+**Career arc timeline** — SVG path + `.arc-node` circles, animated via `getTotalLength()` + `stroke-dashoffset`, driven by a dedicated `arcObserver` (index.html:~1244). Geometry was recomputed in Python for 4 unequal-height items: circle center (292.47, 287.292), R = 272.47. Item tops: 2.77%, 24.14%, 45.52%, 79.32%. Wrapper `height:723px`.
 ```html
 <path class="arc-path" d="M242.9,19.37 A272.47,272.47 0 0,0 20,287.29 A272.47,272.47 0 0,0 242.9,555.22"/>
 ```
@@ -136,30 +201,31 @@ Red/yellow/blue (arcade-marquee primaries) instead of any neon hue tried before.
 
 **Cursors are gamer-only** — PM mode stays `auto` (explicit user requirement). Crosshair 31×31 hotspot 15 15; sniper scope 57×57 hotspot 28 28 scoped to `#shootBoard`. Recolored red/blue rings + yellow center dot.
 
-Mode does **not** persist across reloads — always loads PM. Offered but never requested.
+There is no mode toggle any more (gamer is the only mode), so nothing persists or needs to.
 
 ---
 
 ## Cursor trail (the most iterated feature)
 
-Canvas ribbon that follows the pointer in gamer mode. Constants at index.html:1147-1173:
+Canvas ribbon that follows the pointer in gamer mode. Constants at index.html:~1343-1373 (values below updated to current, except `TRAIL_STOPS`, which is the old pink palette — the live stops are violet→mint, `rgba(124,92,255)` … `rgba(43,232,200)`):
 ```js
 const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
 const TRAIL_LEN = 40, HEAD_W = 15;
-const SUB = coarsePointer ? 9 : 14;          // spline samples per source point
+const SUB = coarsePointer ? 12 : 20;         // spline samples per source point
 const SPARK_CAP = coarsePointer ? 70 : 140;
+const HEAD_EASE = coarsePointer ? 0.22 : 0.75; // desktop 0.75 since 2026-10-07 (was 0.22 everywhere → tip ~46px behind cursor)
 const IDLE_MS = coarsePointer ? 190 : 70;
 const DRAIN_PER_FRAME = coarsePointer ? 1 : 2;
 const TRAIL_STOPS = [[0,'rgba(255,47,138,0)'],[0.10,'rgba(255,47,138,1)'],[0.32,'rgba(168,85,247,1)'],
                      [0.54,'rgba(99,102,241,1)'],[0.76,'rgba(59,157,255,1)'],[1.00,'rgba(120,240,255,1)']];
 ```
-**Draw pipeline (order matters):** ease head toward pointer (0.22) → push a point only if `performance.now() - lastMoveTs <= IDLE_MS` → 2 neighbor-averaging smoothing passes (head pinned) → Catmull-Rom resample at `SUB` → build left/right edges by perpendicular offset → **one `fill()`** with a linear gradient → solid tip circle at `HEAD_W*0.42` → depth-sorted sparks.
+**Draw pipeline (order matters):** ease head toward pointer (`HEAD_EASE`) → push a point only if `performance.now() - lastMoveTs <= IDLE_MS` → 4 neighbor-averaging smoothing passes (head pinned) → Catmull-Rom resample at `SUB` → build left/right edges by perpendicular offset → **one `fill()`** with a linear gradient → solid tip circle at `HEAD_W*0.42` → depth-sorted sparks.
 
 **Hard-won constraints — don't regress any of these:**
 - **One filled ribbon, not per-segment strokes.** Per-segment round-capped strokes stack alpha and read as "multiple cursors" / translucent beads. Width taper replaces alpha fade; gradient stops are fully opaque.
-- **Catmull-Rom passes *through* its inputs**, so raw corners survive as visible straight lines. The 2 pre-smoothing passes + `SUB` 14 are what fixed it (max turn 98.8° → 28.3°, avg 6.41° → 1.68°).
+- **Catmull-Rom passes *through* its inputs**, so raw corners survive as visible straight lines. The pre-smoothing passes (now 4) + `SUB` (now 20) are what fixed it (max turn 98.8° → 28.3°, avg 6.41° → 1.68°).
 - **Mobile uses passive touch events, not pointer events.** Browsers fire `pointercancel` when claiming a gesture for scroll, which the handler read as a finger-lift, so the trail died the instant you moved. A/B proof: old 0px vs new 3862px mid-drag.
-- **The trail follows momentum scrolling on mobile** (`onTrailScroll`, index.html:1225) — a flick is a very short gesture, so without this it only ever flashed. It bails once the position would leave the viewport (±8px), otherwise the ribbon pins to the screen edge and collapses.
+- **The trail follows momentum scrolling on mobile** (`onTrailScroll`, index.html:~1425) — a flick is a very short gesture, so without this it only ever flashed. It bails once the position would leave the viewport (±8px), otherwise the ribbon pins to the screen edge and collapses.
 - **Push and drain can cancel out.** At the slower mobile drain rate, pushing a point every frame left a permanent stub. Hence the `IDLE_MS` gate on pushing.
 - Desktop path is deliberately untouched: *"Web works absolutely fine. You don't have to touch the web on anything."*
 
@@ -308,5 +374,6 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 
 ## Pending / open
 1. **Recent Work card content** — the user is drafting a PRD with the real copy for the 4 cards: *"I'll draft those sections for my PRD, and I'll give you later what to do and what should not be there."* Current copy is placeholder. **This is the main thing to wait for.**
-2. Possible feedback on the trail's *visual feel* — it has only been verified numerically.
-3. Offered but never requested (do not build unprompted): mode persistence via `localStorage`, deeper gamification (XP bars, career-as-level-path, achievements).
+2. Feedback on the **cursor feel after `HEAD_EASE` 0.75** (just shipped, verified numerically only), and on the new landing fold / LinkedIn CTA on a real device.
+3. Known inconsistency: intro says "4 years", Career subtitle says "4.5 years" — user's wording kept verbatim; ask before changing.
+4. Offered but never requested (do not build unprompted): mode persistence via `localStorage`, deeper gamification (XP bars, career-as-level-path, achievements).
