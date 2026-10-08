@@ -52,10 +52,10 @@
 html{-webkit-text-size-adjust:100%;scroll-padding-top:96px}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:clip}
-body::before{ /* faint dot grid, the way a chart sits on graph paper */
+body::before{ /* night: blueprint sheet, fine grid with registration crosses every 160px */
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:radial-gradient(var(--line) 1px,transparent 1.2px);background-size:30px 30px;
-  opacity:.55;mask-image:linear-gradient(to bottom,#000,transparent 85%);-webkit-mask-image:linear-gradient(to bottom,#000,transparent 85%);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160' fill='none' stroke='%233be28f'%3E%3Cpath d='M40.5 0V160M80.5 0V160M120.5 0V160M0 40.5H160M0 80.5H160M0 120.5H160' stroke-opacity='.055'/%3E%3Cpath d='M.5 0V160M0 .5H160' stroke-opacity='.11'/%3E%3Cpath d='M-5 .5H6M.5 -5V6M155 .5H165M159.5 -5V6M-5 159.5H6M.5 155V165M155 159.5H165M159.5 155V165' stroke-opacity='.42'/%3E%3Cpath d='M72 84.5H88M80.5 76V93' stroke-opacity='.0'/%3E%3C/svg%3E");background-size:160px 160px;
+  mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 35%,rgba(0,0,0,.4) 100%);-webkit-mask-image:radial-gradient(ellipse 120% 90% at 50% 0%,#000 35%,rgba(0,0,0,.4) 100%);
 }
 main,footer{position:relative;z-index:1}
 a{color:inherit;text-decoration-color:var(--line-2);text-underline-offset:4px}
@@ -466,7 +466,9 @@ html.cx-on .ch{opacity:1}
 /* ================= DAY: "Sunrise Pop" ===================
    Deliberately not fintech: cream paper, ink outlines, hard shadows,
    a sun, sparkles and confetti. Night stays the market terminal. */
-html[data-theme=light] body::before{background-image:radial-gradient(rgba(29,23,71,.2) 1.5px,transparent 2px);background-size:24px 24px;opacity:.65;mask-image:linear-gradient(to bottom,#000,transparent 78%);-webkit-mask-image:linear-gradient(to bottom,#000,transparent 78%)}
+html[data-theme=light] body::before{ /* day: pop wrapping paper, little plus, ring, triangle, squiggle, star */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M30 24v18M21 33h18' stroke='%23e8451c' stroke-opacity='.28' stroke-width='3'/%3E%3Ccircle cx='122' cy='38' r='7' stroke='%236a3df0' stroke-opacity='.26' stroke-width='2.6'/%3E%3Cpath d='M66 108l8 14h-16z' fill='%23ffb000' fill-opacity='.5' stroke='%23ffb000' stroke-opacity='.5' stroke-width='2'/%3E%3Cpath d='M112 138q6-10 12 0t12 0t12 0' stroke='%231d1747' stroke-opacity='.2' stroke-width='2.6'/%3E%3Ccircle cx='162' cy='92' r='3.6' fill='%23e8451c' fill-opacity='.3'/%3E%3Ccircle cx='18' cy='112' r='3.2' fill='%236a3df0' fill-opacity='.3'/%3E%3Cpath d='M98 86l3 6 6 1-4.5 4 1.2 6-5.7-3.2-5.7 3.2 1.2-6-4.5-4 6-1z' fill='%231d1747' fill-opacity='.14'/%3E%3C/svg%3E");background-size:220px 220px;opacity:.6;
+  mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,.5));-webkit-mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,.45))}
 html[data-theme=light] .nav{border:2px solid var(--line-2);box-shadow:4px 4px 0 var(--line-2);backdrop-filter:none;-webkit-backdrop-filter:none;background:#fff8ea}
 html[data-theme=light] .mkt{background:#fff;border-color:var(--line-2);color:var(--text)}
 html[data-theme=light] .links a:hover,html[data-theme=light] .links a[aria-current=true]{background:#ffd23f;color:var(--text)}
@@ -602,9 +604,17 @@ html[data-theme=light] .hero .btn-ghost:not(:hover){background:#fff}
   .ct-row .ct-act{width:54px;font-size:11px}
 }
 .ct-list{max-width:760px}
-.ct-cv{padding:20px 0 0}
-.ct-cv .btn{width:100%;justify-content:center;font-weight:800;font-size:17px}
 .name+.lede{margin-top:18px}
+.ct-list{margin-inline:auto}
+.ct-dl{background:var(--gain);border-color:var(--gain);color:var(--on-gain);font-weight:700}
+.ct-dl:hover{background:var(--gain);border-color:var(--gain);color:var(--on-gain);filter:brightness(1.08)}
+html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:var(--gain);border-color:var(--line-2);color:#fff;box-shadow:inset 0 0 0 1px var(--line-2),2px 2px 0 var(--line-2)}
+@media (min-width:900px){
+  #contact .sec-head{align-items:center}
+  #contact .ct-title{text-align:center}
+}
+@media (max-width:640px){ .ct-row{grid-template-columns:58px minmax(0,1fr) auto} .ct-row .ct-act{width:auto;min-width:60px;padding:7px 12px} }
+@media (max-width:380px){ .ct-row{grid-template-columns:50px minmax(0,1fr) auto} .ct-row .ct-act{min-width:54px;padding:7px 8px} }
 </style>
 </head>
 <body>
@@ -893,7 +903,7 @@ html[data-theme=light] .hero .btn-ghost:not(:hover){background:#fff}
           <div class="ct-row"><span class="mono-l">Email</span><a class="v" href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a><button class="ct-act" type="button" id="copyMail">Copy</button></div>
           <div class="ct-row"><span class="mono-l">Phone</span><a class="v" href="tel:+918296114865">+91 82961 14865</a><a class="ct-act" href="tel:+918296114865">Call</a></div>
           <div class="ct-row"><span class="mono-l">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">/in/karthikeyaburugula</a><a class="ct-act" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">Open</a></div>
-          <div class="ct-cv"><a class="btn btn-primary" href="../assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download CV <svg viewBox="0 0 24 24"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></a></div>
+          <div class="ct-row"><span class="mono-l">Resume</span><span class="v">Karthikeya_CV.pdf</span><a class="ct-act ct-dl" href="../assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download</a></div>
         </div>
       </div>
     </div>
