@@ -79,13 +79,13 @@ ul{padding:0;list-style:none}
 .in .ln>span,.ln.in>span{translate:0 0}
 
 /* ---------- scroll progress + ambient ticks ---------- */
-.prog{position:fixed;left:0;top:0;height:5px;width:100%;z-index:70;pointer-events:none}
+.prog{position:fixed;left:0;top:0;height:4px;width:100%;z-index:70;pointer-events:none}
 .prog-fill{display:block;height:100%;border-radius:0 3px 3px 0;background:linear-gradient(90deg,var(--gain),color-mix(in srgb,var(--gain) 55%,#fff),var(--gain));background-size:200% 100%;animation:progflow 2.2s linear infinite;transform-origin:left;transform:scaleX(var(--p,0));box-shadow:0 0 12px color-mix(in srgb,var(--gain) 70%,transparent)}
-.prog-ico{position:absolute;top:0;left:calc(var(--p,0)*(100% - 26px));width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:var(--gain);color:var(--on-gain);box-shadow:0 0 0 3px var(--bg),0 4px 14px color-mix(in srgb,var(--gain) 65%,transparent)}
-.prog-ico::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--gain);animation:progping 1.8s ease-out infinite}
-.prog-ico svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;animation:progfwd 1.1s ease-in-out infinite}
+.prog-ico{position:absolute;top:0;left:calc(var(--p,0)*(100% - 16px));width:16px;height:16px;display:grid;place-items:center;border-radius:50%;background:var(--gain);color:var(--on-gain);box-shadow:0 0 0 1.5px var(--bg),0 2px 8px color-mix(in srgb,var(--gain) 65%,transparent)}
+.prog-ico::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--gain);animation:progping 1.8s ease-out infinite}
+.prog-ico svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;animation:progfwd 1.1s ease-in-out infinite}
 @keyframes progflow{to{background-position:-200% 0}}
-@keyframes progping{from{transform:scale(.8);opacity:.9}to{transform:scale(1.7);opacity:0}}
+@keyframes progping{from{transform:scale(.85);opacity:.9}to{transform:scale(1.35);opacity:0}}
 @keyframes progfwd{0%,100%{transform:translateX(-1.5px)}50%{transform:translateX(2px)}}
 #amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .amb{position:absolute;font:500 11px var(--f-mono);letter-spacing:.04em;opacity:0;animation:amb 2.8s ease-out forwards;white-space:nowrap}
@@ -93,7 +93,7 @@ ul{padding:0;list-style:none}
 @keyframes amb{0%{opacity:0;transform:translateY(0)}18%{opacity:.6}100%{opacity:0;transform:translateY(-96px)}}
 
 /* ---------- nav ---------- */
-.nav{position:fixed;z-index:50;top:14px;left:0;right:0;margin-inline:auto;width:min(1180px,calc(100% - 24px));height:56px;
+.nav{position:fixed;z-index:50;top:20px;left:0;right:0;margin-inline:auto;width:min(1180px,calc(100% - 24px));height:56px;
   display:flex;align-items:center;gap:6px;padding:0 8px 0 10px;border-radius:28px;
   background:color-mix(in srgb,var(--bg) 92%,transparent);border:1px solid var(--line)}
 .logo-name{white-space:nowrap}
@@ -123,8 +123,8 @@ ul{padding:0;list-style:none}
 .hero .cta-row .btn{font-weight:800;font-size:17px;height:48px;padding:0 22px;letter-spacing:-.005em}
 .btn-sm{height:36px;padding:0 16px;font-size:13.5px}
 .sheet{position:fixed;inset:0;z-index:45;background:var(--bg);padding:96px var(--gutter) 40px;display:flex;flex-direction:column;gap:6px;
-  clip-path:circle(0 at calc(100% - 38px) 42px);visibility:hidden;transition:clip-path .65s var(--ease),visibility 0s .65s}
-.menu-open .sheet{clip-path:circle(160% at calc(100% - 38px) 42px);visibility:visible;transition:clip-path .65s var(--ease),visibility 0s}
+  clip-path:circle(0 at calc(100% - 38px) 47px);visibility:hidden;transition:clip-path .65s var(--ease),visibility 0s .65s}
+.menu-open .sheet{clip-path:circle(160% at calc(100% - 38px) 47px);visibility:visible;transition:clip-path .65s var(--ease),visibility 0s}
 .sheet>a{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);font:700 clamp(30px,9vw,44px)/1.1 var(--f-display);letter-spacing:-.03em;text-decoration:none}
 .sheet>a span{font:500 12px var(--f-mono);color:var(--gain);letter-spacing:.1em}
 .sheet-foot{margin-top:auto;display:flex;gap:10px;flex-wrap:wrap}
@@ -407,7 +407,7 @@ html.cx-on .ch{opacity:1}
   .hint-d{display:none}.hint-m{display:inline}
 }
 @media (max-width:640px){
-  .nav{top:10px;height:52px}
+  .nav{top:20px;height:52px}
   .btn-sm.cv{display:none}
   .fact{grid-template-columns:104px minmax(0,1fr);padding:12px 16px}
   .ct-row{grid-template-columns:78px minmax(0,1fr);}
@@ -973,7 +973,6 @@ refreshPalette();
 /* ---------- theme (night / day) ---------- */
 const themeBtn=$('#themeBtn'), nudgeEl=$('#nudge');
 let themeTouched=false, nudgeT=0;
-try{ if(localStorage.getItem('kb-theme2')) themeTouched=true; }catch(e){}
 themeBtn.setAttribute('aria-checked',root.dataset.theme==='light');
 function applyTheme(t){
   root.dataset.theme=t; themeBtn.setAttribute('aria-checked',t==='light');
@@ -987,13 +986,14 @@ function showNudge(){
   nudgeEl.innerHTML='<span class="nh">\u261D</span><span><b>Click here</b><small>'+(root.dataset.theme==='light'?'to switch to night':'to switch to day')+'</small></span>';
   nudgeEl.classList.add('show'); themeBtn.classList.add('nudging');
 }
-/* first at 5s, visible for 10s, then back every 45s until the switch has been used once */
+/* every page load: first at 5s, visible 5s, hidden 10s, repeat, until the switch is used */
 function nudgeCycle(){
   if(themeTouched) return;
   showNudge();
-  nudgeT=setTimeout(()=>{ hideNudge(); nudgeT=setTimeout(nudgeCycle,45000); },10000);
+  nudgeT=setTimeout(()=>{ hideNudge(); nudgeT=setTimeout(nudgeCycle,NUDGE_OFF); },NUDGE_ON);
 }
-nudgeT=setTimeout(nudgeCycle,5000);
+const NUDGE_FIRST=5000, NUDGE_ON=5000, NUDGE_OFF=10000;
+nudgeT=setTimeout(nudgeCycle,NUDGE_FIRST);
 themeBtn.addEventListener('click',()=>{
   themeTouched=true; clearTimeout(nudgeT); hideNudge();
   const next=root.dataset.theme==='light'?'dark':'light';
