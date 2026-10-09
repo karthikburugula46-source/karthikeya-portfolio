@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Karthikeya Burugula · Product Manager</title>
 <meta name="description" content="Product Manager, 4+ years building fintech and B2B platforms. Currently at AssetPlus, owning onboarding and growth for a 200K+ user mutual fund platform. Read the factsheet.">
-<meta name="theme-color" content="#fafaf8">
+<meta name="theme-color" content="#ece8de">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Karthikeya Burugula · Product Manager">
 <meta property="og:description" content="Fintech & B2B product manager. PMS tracker, SIF growth, 22 → 12 minute activation. Read the factsheet.">
@@ -40,12 +40,12 @@
   color-scheme:dark;
 }
 :root[data-theme=light]{
-  --bg:#fafaf8; --bg-2:#f1f0ec; --surface:#ffffff; --surface-2:#f3f2ee;
-  --line:rgba(16,16,22,.08); --line-2:rgba(16,16,22,.14);
-  --text:#101014; --dim:#555560; --faint:#8b8b96;
-  --gain:#2447ff; --on-gain:#ffffff; --amber:#0f8f78; --cyan:#7c4dff; --loss:#e5484d;
-  --glass:rgba(250,250,248,.82);
-  --shadow:0 1px 2px rgba(16,16,22,.04),0 28px 56px -32px rgba(16,16,22,.28);
+  --bg:#ece8de; --bg-2:#e3dfd3; --surface:#f8f6f0; --surface-2:#efebe1;
+  --line:rgba(13,15,40,.1); --line-2:rgba(13,15,40,.18);
+  --text:#0d0f28; --dim:#4a4d6a; --faint:#82849c;
+  --gain:#2447ff; --on-gain:#ffffff; --amber:#9dc800; --cyan:#8b6cff; --loss:#ff5a3c;
+  --glass:rgba(248,246,240,.8);
+  --shadow:0 1px 2px rgba(13,15,40,.05),0 30px 60px -34px rgba(13,15,40,.35);
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -463,67 +463,92 @@ html.cx-on .ch{opacity:1}
 /* ---------- hero sun (day only) ---------- */
 @keyframes cmspin{to{rotate:360deg}}
 
-/* ================= DAY: "Product Spec" ===================
-   Modern, minimal, product-minded: paper-white canvas, hairlines, one cobalt
-   accent, and design-tool motifs (selection frame, named cursor, layer labels).
-   No ornament. Night stays the market terminal. */
-html[data-theme=light] body::before{ /* four layout-grid guides across the content column */
-  inset:0 auto 0 50%;width:min(var(--maxw),100vw);transform:translateX(-50%);padding-inline:var(--gutter);
-  background-clip:content-box;background-origin:content-box;
-  background-image:linear-gradient(90deg,rgba(16,16,22,.06) 1px,transparent 1px),linear-gradient(rgba(16,16,22,.06),rgba(16,16,22,.06));
-  background-size:25% 100%,1px 100%;background-position:0 0,100% 0;background-repeat:repeat-x,no-repeat;opacity:1;
-  mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.45));-webkit-mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.45))}
-html[data-theme=light] .nav{background:rgba(255,255,255,.94);border-color:var(--line-2);box-shadow:0 1px 2px rgba(16,16,22,.04),0 14px 32px -18px rgba(16,16,22,.22)}
-html[data-theme=light] .mkt{background:var(--surface-2);color:var(--text)}
-html[data-theme=light] .mkt.hire{--gain:#16a05a}
-html[data-theme=light] .tsw-track{border:1px solid rgba(16,16,22,.2)}
-html[data-theme=light] .btn-primary{background:#101014;color:#fff;border-color:#101014}
-html[data-theme=light] .btn-primary:hover{background:#000;box-shadow:0 16px 30px -16px rgba(16,16,22,.6);transform:translateY(-2px)}
+/* ================= DAY: "Studio" ===================
+   Art-directed light theme: warm stone canvas, big cobalt and ink colour blocks,
+   one acid-lime accent, the portrait cropped three ways, floating product metrics.
+   Night stays the market terminal. */
+.fx,.ib{display:none}
+html[data-theme=light] body::before{
+  background-image:radial-gradient(60vmax 50vmax at 0% 0%,rgba(36,71,255,.12),transparent 60%),radial-gradient(52vmax 42vmax at 100% 90%,rgba(190,238,30,.26),transparent 62%);
+  background-size:auto;mask-image:none;-webkit-mask-image:none}
+/* dark colour blocks share one set of scoped tokens */
+html[data-theme=light] .nav,html[data-theme=light] .chart-card,html[data-theme=light] .hero-grid,html[data-theme=light] #contact .wrap{
+  --bg:#0c1034;--bg-2:#141a4a;--surface:#121746;--surface-2:#1c2260;--line:rgba(255,255,255,.12);--line-2:rgba(255,255,255,.22);
+  --text:#ffffff;--dim:rgba(255,255,255,.78);--faint:rgba(255,255,255,.55);--gain:#d4ff3f;--on-gain:#0c1034;--loss:#ff7a59;--glass:rgba(12,16,52,.6);
+  --shadow:0 30px 60px -30px rgba(0,0,40,.6);color:var(--text)}
+html[data-theme=light] .hero-grid{--bg:#2447ff;--surface:#1f3be6;--surface-2:#2d4cff}
+html[data-theme=light] .nav{background:rgba(12,16,52,.96);border-color:rgba(255,255,255,.14);box-shadow:0 18px 40px -20px rgba(12,16,52,.6)}
+html[data-theme=light] .mkt.hire{--gain:#4ee08c}
+html[data-theme=light] .tsw-track{border:1px solid rgba(255,255,255,.3)}
+html[data-theme=light] .btn-primary{background:#0d0f28;color:#fff;border-color:#0d0f28}
+html[data-theme=light] .btn-primary:hover{background:#000;box-shadow:0 16px 30px -16px rgba(13,15,40,.6);transform:translateY(-2px)}
+html[data-theme=light] .nav .btn-primary,html[data-theme=light] .hero-grid .btn-primary,html[data-theme=light] #contact .btn-primary{background:var(--gain);color:var(--on-gain);border-color:var(--gain)}
+html[data-theme=light] .nav .btn-primary:hover,html[data-theme=light] .hero-grid .btn-primary:hover{background:#e4ff7a;border-color:#e4ff7a;box-shadow:0 16px 30px -14px rgba(0,0,60,.6)}
 html[data-theme=light] .btn-ghost{background:#fff;border-color:var(--line-2)}
-html[data-theme=light] .btn-ghost:hover{background:#fff;border-color:#101014}
+html[data-theme=light] .hero-grid .btn-ghost{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
+html[data-theme=light] .hero-grid .btn-ghost:hover{background:rgba(255,255,255,.14);border-color:#fff}
 html[data-theme=light] .hc{visibility:hidden}
-html[data-theme=light] .hero-bg::before{background:radial-gradient(circle,rgba(36,71,255,.08),transparent 62%)}
-/* hero name sits in a design-tool selection frame with a named collaborator cursor */
-html[data-theme=light] .name{position:relative;width:fit-content;max-width:100%}
-html[data-theme=light] .name::before{content:"";position:absolute;inset:-14px -18px -5px -18px;pointer-events:none;
-  background:
-   linear-gradient(#fff,#fff) 1px 1px/5px 5px no-repeat,
-   linear-gradient(#fff,#fff) calc(100% - 6px) 1px/5px 5px no-repeat,
-   linear-gradient(#fff,#fff) 1px calc(100% - 6px)/5px 5px no-repeat,
-   linear-gradient(#fff,#fff) calc(100% - 6px) calc(100% - 6px)/5px 5px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) 0 0/7px 7px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) calc(100% - 7px) 0/7px 7px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) 0 calc(100% - 7px)/7px 7px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) calc(100% - 7px) calc(100% - 7px)/7px 7px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) 3px 3px/calc(100% - 6px) 1px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) 3px calc(100% - 4px)/calc(100% - 6px) 1px no-repeat,
-   linear-gradient(var(--gain),var(--gain)) 3px 3px/1px calc(100% - 6px) no-repeat,
-   linear-gradient(var(--gain),var(--gain)) calc(100% - 4px) 3px/1px calc(100% - 6px) no-repeat}
-html[data-theme=light] .name::after{content:"Karthikeya";position:absolute;left:calc(100% + 30px);top:46%;padding:4px 11px 4px 26px;border-radius:0 9px 9px 9px;background:var(--gain) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3.2 2.4v15.2l3.8-3.5 2.6 6.1 2.6-1.1-2.5-5.9 5.1-.2z' fill='%232447ff' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat 7px 50%/13px 15px;color:#fff;font:600 12.5px/1.35 var(--f-body);letter-spacing:0;font-variation-settings:normal;white-space:nowrap;pointer-events:none}
-html[data-theme=light] .id-card{position:relative}
-html[data-theme=light] .id-card::before{content:"Portrait \00b7  800 \00d7  800";position:absolute;left:2px;top:-26px;font:500 11px var(--f-mono);letter-spacing:.02em;color:var(--gain);white-space:nowrap}
-html[data-theme=light] .id-card img{border-radius:12px}
-html[data-theme=light] .hm-g,html[data-theme=light] .cr,html[data-theme=light] .risk,html[data-theme=light] .ks{border-color:var(--line-2);background:#fff;box-shadow:0 1px 2px rgba(16,16,22,.04),0 22px 40px -28px rgba(16,16,22,.25)}
-html[data-theme=light] .ks{border-radius:18px;backdrop-filter:none;-webkit-backdrop-filter:none}
-html[data-theme=light] .ticker{background:#101014;border-color:#101014}
-html[data-theme=light] .tk{color:#e9e9ee;border-right-color:rgba(255,255,255,.1)}
-html[data-theme=light] .tk b{color:#fff}
-html[data-theme=light] .tk i{color:#8d8d99}
-html[data-theme=light] .tk em{color:#8ea2ff}
-html[data-theme=light] .sec-tag b{background:rgba(36,71,255,.08);color:var(--gain);border:1px solid rgba(36,71,255,.28);border-radius:7px}
-html[data-theme=light] .bar.before i{background:#cfcdc6}
-html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*.55%),#fff);border-color:color-mix(in srgb,var(--c) 30%,transparent);color:var(--text)}
-html[data-theme=light] .chart .band{background:rgba(36,71,255,.06);border-inline:1px dashed rgba(36,71,255,.45)}
-html[data-theme=light] .nudge{background:#101014;color:#fff;border:0;box-shadow:0 14px 30px -12px rgba(16,16,20,.5);rotate:0deg}
-html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{color:var(--faint)}
-/* day cursor: a clean design-tool arrow that always carries a name tag */
-html[data-theme=light] #cur .cm,html[data-theme=light] #cur.hot .cm,html[data-theme=light] #cur.down .cm{width:24px;height:24px;left:-3px;top:-3px;transform:none;border-radius:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3.2 2.4v15.2l3.8-3.5 2.6 6.1 2.6-1.1-2.5-5.9 5.1-.2z' fill='%232447ff' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;box-shadow:none;animation:none;filter:drop-shadow(0 2px 3px rgba(16,16,22,.28))}
-html[data-theme=light] #cur.hot .cm{scale:1.15}
-html[data-theme=light] #cur.down .cm{scale:.88}
+html[data-theme=light] .hero-bg::before{display:none}
+/* hero: a cobalt stage with the portrait and floating product metrics */
+html[data-theme=light] .hero{padding-bottom:40px}
+html[data-theme=light] .hero-grid{isolation:isolate;padding-block:6px}
+@media (min-width:1061px){ html[data-theme=light] .hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)} }
+html[data-theme=light] .id-card{max-width:430px}
+html[data-theme=light] .hero-grid::before{content:"";position:absolute;inset:-38px 4px -42px;border-radius:40px;z-index:-1;
+  background:radial-gradient(760px 460px at 88% 6%,rgba(138,155,255,.6),transparent 62%),radial-gradient(520px 380px at 0% 100%,rgba(212,255,63,.22),transparent 62%),linear-gradient(135deg,#2447ff,#1a2cc8 58%,#101a86);
+  box-shadow:0 40px 80px -40px rgba(36,71,255,.7)}
+html[data-theme=light] .name .b{color:var(--gain)}
+html[data-theme=light] .id-card{position:relative;background:none;border:0;box-shadow:none;padding:0;overflow:visible}
+html[data-theme=light] .id-card::before{content:"";position:absolute;inset:16px -16px -16px 16px;border:1.5px solid rgba(212,255,63,.7);border-radius:32px;pointer-events:none}
+html[data-theme=light] .id-card img{position:relative;z-index:1;border-radius:28px;box-shadow:0 34px 60px -26px rgba(0,0,50,.7)}
+html[data-theme=light] .id-meta{position:absolute;z-index:2;left:12px;right:12px;bottom:12px;padding:12px 16px;border-radius:18px;background:rgba(12,16,52,.78)}
+html[data-theme=light] .fx{display:flex;flex-direction:column;gap:2px;position:absolute;z-index:3;padding:11px 16px 12px;border-radius:18px;background:#fff;color:#0d0f28;box-shadow:0 22px 40px -20px rgba(0,0,60,.6);animation:fxfloat 6.5s ease-in-out infinite}
+html[data-theme=light] .fx small{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:#6a6d8c}
+html[data-theme=light] .fx b{font:700 22px/1.1 var(--f-display);letter-spacing:-.03em;color:#2447ff}
+html[data-theme=light] .fx1{left:-96px;top:12%}
+html[data-theme=light] .fx2{right:-34px;top:-30px;animation-delay:-2.2s}
+html[data-theme=light] .fx3{left:26px;bottom:-54px;animation-delay:-4.1s}
+@keyframes fxfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+html[data-theme=light] .ks,html[data-theme=light] .hm-g,html[data-theme=light] .risk{border-color:var(--line-2);background:#fff;box-shadow:0 1px 2px rgba(13,15,40,.05),0 26px 46px -32px rgba(13,15,40,.35)}
+html[data-theme=light] .ks{border-radius:22px;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-theme=light] .ticker{background:#d4ff3f;border-color:#d4ff3f}
+html[data-theme=light] .tk{color:#0d0f28;border-right-color:rgba(13,15,40,.16)}
+html[data-theme=light] .tk b{color:#0d0f28}
+html[data-theme=light] .tk i{color:rgba(13,15,40,.58)}
+html[data-theme=light] .tk em{color:#1a2cc8}
+/* image band: the portrait, duotone cobalt */
+html[data-theme=light] .ib{display:block;position:relative;height:clamp(190px,25vw,330px);margin-top:clamp(34px,5vw,64px);border-radius:32px;overflow:hidden;
+  background:linear-gradient(90deg,#2447ff 0,#2447ff 30%,rgba(36,71,255,0) 78%),url(../assets/profile.png) 82% 16%/cover no-repeat,#2447ff;background-blend-mode:normal,luminosity,normal}
+html[data-theme=light] .ib span{position:absolute;left:clamp(22px,4.4vw,64px);top:50%;transform:translateY(-50%);font:700 clamp(28px,5vw,68px)/.98 var(--f-display);letter-spacing:-.045em;color:#fff}
+html[data-theme=light] .ib span em{font-style:normal;color:#d4ff3f}
+html[data-theme=light] .sec-tag b{background:#2447ff;color:#fff;border-radius:12px}
+html[data-theme=light] .bar.before i{background:#c9c5b8}
+html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*1%),#fff);border-color:transparent;color:#0d0f28}
+html[data-theme=light] .g-pm{--c:#2447ff} html[data-theme=light] .g-an{--c:#a8d600} html[data-theme=light] .g-ds{--c:#8b6cff}
+html[data-theme=light] .chart-card{background:#0c1034}
+html[data-theme=light] .chart .band{background:rgba(212,255,63,.1);border-inline:1px dashed rgba(212,255,63,.55)}
+html[data-theme=light] .cr:nth-child(1){background:#e6e0ff;border-color:transparent}
+html[data-theme=light] .cr:nth-child(2){background:#eefdb0;border-color:transparent}
+html[data-theme=light] .cr{box-shadow:none}
+html[data-theme=light] .cr-badge{background:rgba(13,15,40,.08);color:#0d0f28}
+/* contact: ink-blue block, portrait washed into the corner */
+html[data-theme=light] #contact .wrap{position:relative;isolation:isolate}
+html[data-theme=light] #contact .wrap::before{content:"";position:absolute;inset:-30px 4px -34px;border-radius:40px;z-index:-1;
+  background:linear-gradient(270deg,rgba(12,16,52,0) 0,rgba(12,16,52,.55) 16%,#0c1034 34%),url(../assets/profile.png) 100% 0/auto 108% no-repeat,#0c1034;background-blend-mode:normal,luminosity,normal}
+html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:var(--gain);border-color:var(--gain);color:var(--on-gain)}
+html[data-theme=light] .nudge{background:#d4ff3f;color:#0d0f28;border:0;box-shadow:0 14px 30px -12px rgba(13,15,40,.45);rotate:0deg}
+html[data-theme=light] .amb.up{color:#2447ff}
+html[data-theme=light] .amb.dn{color:#7a7d9c}
+html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{opacity:.9}
+/* day cursor: a comment pin that follows you (clicks drop numbered pins) */
+html[data-theme=light] #cur .cm,html[data-theme=light] #cur.hot .cm,html[data-theme=light] #cur.down .cm{width:28px;height:28px;left:0;top:-28px;transform:none;transform-origin:0 100%;border-radius:50% 50% 50% 0;background:#2447ff;box-shadow:0 0 0 2px #fff,0 10px 20px -6px rgba(36,71,255,.6);animation:none}
+html[data-theme=light] #cur .cm::after{content:"K";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font:700 12.5px var(--f-display);letter-spacing:0}
+html[data-theme=light] #cur.hot .cm{scale:1.12}
+html[data-theme=light] #cur.down .cm{scale:.86;background:#0d0f28}
 html[data-theme=light] #cur .brk{display:none}
-html[data-theme=light] #cur .tag,html[data-theme=light] #cur.hot .tag{opacity:1;translate:0 0;left:16px;top:22px;background:var(--gain);color:#fff;border-radius:0 8px 8px 8px;font:600 11.5px/1.35 var(--f-body);letter-spacing:0;padding:3px 9px}
-html[data-theme=light] #cur.down .tag{background:#101014;color:#fff}
+html[data-theme=light] #cur .tag,html[data-theme=light] #cur.hot .tag{left:36px;top:-24px;background:#d4ff3f;color:#0d0f28;border-radius:999px;font:700 11px/1.3 var(--f-body);letter-spacing:.02em;padding:4px 10px;box-shadow:0 8px 16px -8px rgba(13,15,40,.5)}
 html[data-theme=light] .ch{display:none!important}
+@media (max-width:1060px){ html[data-theme=light] .fx{display:none} }
 html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-track):not(.tsw-knob)::before,html.tswitch :not(.tsw-track):not(.tsw-knob)::after{transition:none!important}
 
 /* ================= MOBILE PASS ================= */
@@ -538,8 +563,13 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
   .name{grid-column:1;grid-row:1;font-size:min(56px,calc((100vw - 150px)/4.4))}
   html[data-theme] .id-card{grid-column:2;grid-row:1;width:94px;max-width:none;margin:0;padding:4px;border-radius:20px}
   html[data-theme] .id-card img{border-radius:16px}
-  html[data-theme=light] .id-card::before,html[data-theme=light] .name::after{display:none}
-  html[data-theme=light] .name::before{inset:-6px -8px -4px -8px}
+  html[data-theme=light] .hero{padding-top:104px;padding-bottom:28px}
+  html[data-theme=light] .name{font-size:min(54px,calc((100vw - 176px)/4.4))}
+  html[data-theme=light] .hero-grid{padding-inline:calc(var(--gutter) + 12px);padding-block:10px 12px}
+  html[data-theme=light] .hero-grid::before{inset:-26px 6px -26px;border-radius:30px}
+  html[data-theme=light] .id-card::before{display:none}
+  html[data-theme=light] .id-card img{border-radius:20px}
+  html[data-theme=light] .ib span{font-size:clamp(24px,7.4vw,34px)}
   .id-meta{display:none}
   .role,.lede,.cta-row{grid-column:1/-1}
   .role{margin-top:14px}
@@ -593,7 +623,6 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
 .ct-list{margin-inline:auto}
 .ct-dl{background:var(--gain);border-color:var(--gain);color:var(--on-gain);font-weight:700}
 .ct-dl:hover{background:var(--gain);border-color:var(--gain);color:var(--on-gain);filter:brightness(1.08)}
-html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:#101014;border-color:#101014;color:#fff}
 @media (min-width:900px){
   #contact .sec-head{align-items:center}
   #contact .ct-title{text-align:center}
@@ -669,6 +698,9 @@ html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:#10
           <span class="id-name">Karthikeya Burugula</span>
           <span class="id-sub">Product Manager · Chennai, India</span>
         </figcaption>
+        <span class="fx fx1" aria-hidden="true"><small>Activation time</small><b>22 → &lt;12 min</b></span>
+        <span class="fx fx2" aria-hidden="true"><small>SIF AUM · 2 quarters</small><b>+74%</b></span>
+        <span class="fx fx3" aria-hidden="true"><small>PMS AUM · 30 days</small><b>₹55 Cr</b></span>
       </figure>
     </div>
 
@@ -727,6 +759,7 @@ html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:#10
             <p class="risk-l">I take the whole problem, not just my slice of it.</p>
           </div>
       </div>
+      <div class="ib" role="img" aria-label="Portrait of Karthikeya Burugula"><span>Read the board.<br><em>Take the shot.</em></span></div>
     </div>
   </section>
 
@@ -888,7 +921,7 @@ html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:#10
           <div class="ct-row"><span class="mono-l">Email</span><a class="v" href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a><button class="ct-act" type="button" id="copyMail">Copy</button></div>
           <div class="ct-row"><span class="mono-l">Phone</span><a class="v" href="tel:+918296114865">+91 82961 14865</a><a class="ct-act" href="tel:+918296114865">Call</a></div>
           <div class="ct-row"><span class="mono-l">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">/in/karthikeyaburugula</a><a class="ct-act" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">Open</a></div>
-          <div class="ct-row"><span class="mono-l">Resume</span><span class="v">View My Experience</span><a class="ct-act ct-dl" href="../assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download</a></div>
+          <div class="ct-row"><span class="mono-l">Resume</span><span class="v">Let’s Figure Out</span><a class="ct-act ct-dl" href="../assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download</a></div>
         </div>
       </div>
     </div>
@@ -926,7 +959,7 @@ let pal={day:false,up:'#3be28f',down:'#ff6b5d',text:'#ecf4ee',bg:'#080d0b',dim:'
 function refreshPalette(){
   const day=root.dataset.theme==='light';
   pal={day,up:cssVar('--gain')||pal.up,down:cssVar('--loss')||pal.down,text:cssVar('--text')||pal.text,bg:cssVar('--bg')||pal.bg,dim:cssVar('--dim')||pal.dim,
-    c1:cssVar('--gain')||pal.c1,c2:(day?'#8a9bff':cssVar('--cyan'))||pal.c2,core:day?'#ffffff':'#eafff4',
+    c1:cssVar('--gain')||pal.c1,c2:(day?'#7a5cff':cssVar('--cyan'))||pal.c2,core:day?'#ffffff':'#eafff4',
     blocks:day?['#2447ff','#101014','#8a9bff']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(16,16,20,.84)':'rgba(5,7,11,.78)',vtext:day?'#fafaf8':'#e6f7ff'};
 }
 refreshPalette();
@@ -937,7 +970,7 @@ let themeTouched=false, nudgeT=0;
 themeBtn.setAttribute('aria-checked',root.dataset.theme==='light');
 function applyTheme(t){
   root.dataset.theme=t; themeBtn.setAttribute('aria-checked',t==='light');
-  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#fafaf8':'#080d0b';
+  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#ece8de':'#080d0b';
   if(nudgeEl.classList.contains('show')){ nudgeEl.querySelector('small').textContent=''; }
   refreshPalette(); if(window.__themeChanged) window.__themeChanged(); if(window.__refreshCur) window.__refreshCur();
 }
@@ -1255,12 +1288,13 @@ function addPoint(x,y){
   tail.push({x,y,t:now,sp}); if(tail.length>60) tail.shift(); kick();
 }
 const PM_WORDS=['Shipped','LGTM','Merged','Approved','Unblocked','+1','Done'];
+let pinN=0;
 function rrect(x,y,w,h,r){ cx.beginPath(); cx.moveTo(x+r,y); cx.arcTo(x+w,y,x+w,y+h,r); cx.arcTo(x+w,y+h,x,y+h,r); cx.arcTo(x,y+h,x,y,r); cx.arcTo(x,y,x+w,y,r); cx.closePath(); }
 function burst(x,y){
   if(reduce) return;
   const now=performance.now();
   if(pal.day){
-    bursts.push({day:true,x,y,t:now,label:PM_WORDS[Math.floor(Math.random()*PM_WORDS.length)]});
+    pinN=pinN%99+1; bursts.push({day:true,x,y,t:now,life:2000,n:pinN,label:PM_WORDS[Math.floor(Math.random()*PM_WORDS.length)]});
   }else{
     const n=16, spikes=[];
     for(let i=0;i<n;i++){
@@ -1331,16 +1365,20 @@ function frame(now){
   cx.globalAlpha=1;
   /* click bursts */
   for(let i=bursts.length-1;i>=0;i--){
-    const b=bursts[i], ms=now-b.t, a=ms/BURST_LIFE;
+    const b=bursts[i], ms=now-b.t, a=ms/(b.life||BURST_LIFE);
     if(a>=1){ bursts.splice(i,1); continue; }
     const alpha=1-Math.pow(a,2.2);
     if(b.day){
-      const e=1-Math.pow(1-Math.min(1,a*1.2),3);
-      cx.lineWidth=1.5; cx.strokeStyle=pal.up;
-      for(let k=0;k<2;k++){ cx.globalAlpha=alpha*(k?.4:.9); cx.beginPath(); cx.arc(b.x,b.y,(k?16:7)+e*(k?66:42),0,6.2832); cx.stroke(); }
-      cx.font='600 12px '+FMONO; const tw=cx.measureText(b.label).width+20, cy=b.y-32-Math.min(1,a*1.4)*26;
-      cx.globalAlpha=alpha; cx.fillStyle=pal.text; rrect(b.x-tw/2,cy-12,tw,24,7); cx.fill();
-      cx.fillStyle='#fff'; cx.textAlign='center'; cx.textBaseline='middle'; cx.fillText(b.label,b.x,cy+.5); cx.textBaseline='alphabetic';
+      const k=Math.min(1,ms/260), sc=1+2.7*Math.pow(k-1,3)+1.7*Math.pow(k-1,2), fade=a>.72?1-(a-.72)/.28:1;
+      cx.save(); cx.globalAlpha=fade; cx.translate(b.x,b.y); cx.scale(sc,sc);
+      cx.shadowColor='rgba(36,71,255,.45)'; cx.shadowBlur=14; cx.shadowOffsetY=6;
+      cx.fillStyle=pal.up; cx.beginPath(); cx.moveTo(0,0); cx.lineTo(0,-15); cx.arc(15,-15,15,Math.PI,Math.PI/2,false); cx.closePath(); cx.fill();
+      cx.shadowColor='transparent'; cx.lineWidth=2.5; cx.strokeStyle='#fff'; cx.stroke();
+      cx.fillStyle='#fff'; cx.font='700 13px '+FDISP; cx.textAlign='center'; cx.textBaseline='middle'; cx.fillText(String(b.n),15,-14.5);
+      if(ms>140){ const t2=Math.min(1,(ms-140)/220); cx.globalAlpha=fade*t2; cx.font='600 12px '+FMONO; const tw=cx.measureText(b.label).width+22;
+        cx.fillStyle='#fff'; cx.shadowColor='rgba(13,15,40,.35)'; cx.shadowBlur=16; cx.shadowOffsetY=8; rrect(36,-28+(1-t2)*6,tw,28,10); cx.fill(); cx.shadowColor='transparent';
+        cx.fillStyle='#0d0f28'; cx.textAlign='left'; cx.fillText(b.label,47,-13.5+(1-t2)*6); }
+      cx.restore(); cx.textBaseline='alphabetic';
     }else{
       const e=1-Math.pow(1-Math.min(1,a*1.35),3);
       b.spikes.forEach(s=>{
@@ -1440,14 +1478,14 @@ if(fine){
   const words=['+0.8%','▲ 2.1','+₹340','+1.4%','▲ 0.6','+3.2%','▲ 12 bps','+0.5%','▲ 1.8'], neg=['-0.4%','▼ 0.9','-1.1%'];
   const fun=['v2.4','LGTM','P0','shipped','A/B +4.2%','NPS 72','merged','sprint 24','OKR ✓','PRD v3','roadmap'];
   function go(){
-    if(!document.hidden && amb.childElementCount<12){
+    if(!document.hidden && amb.childElementCount<28){
       const up=Math.random()>.2, el=document.createElement('span');
       el.className='amb '+(up?'up':'dn');
       const list=pal.day?fun:(up?words:neg); el.textContent=list[Math.floor(Math.random()*list.length)];
       el.style.left=(Math.random()*94+1)+'vw'; el.style.top=(38+Math.random()*58)+'vh';
       amb.appendChild(el); el.addEventListener('animationend',()=>el.remove());
     }
-    setTimeout(go,300+Math.random()*520);
+    setTimeout(go,110+Math.random()*230);
   }
   setTimeout(go,700);
 })();
