@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Karthikeya Burugula · Product Manager</title>
 <meta name="description" content="Product Manager, 4+ years building fintech and B2B platforms. Currently at AssetPlus, owning onboarding and growth for a 200K+ user mutual fund platform. Read the factsheet.">
-<meta name="theme-color" content="#ece8de">
+<meta name="theme-color" content="#f5f2ea">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Karthikeya Burugula · Product Manager">
 <meta property="og:description" content="Fintech & B2B product manager. PMS tracker, SIF growth, 22 → 12 minute activation. Read the factsheet.">
@@ -13,7 +13,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23080d0b'/%3E%3Cpath d='M5 22l7-7 5 4 10-11' fill='none' stroke='%233be28f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Figtree:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Figtree:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
 <script>
 /* Set the theme before first paint so there is no flash. */
 (function(){
@@ -40,12 +40,13 @@
   color-scheme:dark;
 }
 :root[data-theme=light]{
-  --bg:#ece8de; --bg-2:#e3dfd3; --surface:#f8f6f0; --surface-2:#efebe1;
-  --line:rgba(13,15,40,.1); --line-2:rgba(13,15,40,.18);
-  --text:#0d0f28; --dim:#4a4d6a; --faint:#82849c;
-  --gain:#2447ff; --on-gain:#ffffff; --amber:#9dc800; --cyan:#8b6cff; --loss:#ff5a3c;
-  --glass:rgba(248,246,240,.8);
-  --shadow:0 1px 2px rgba(13,15,40,.05),0 30px 60px -34px rgba(13,15,40,.35);
+  --bg:#f5f2ea; --bg-2:#ece8dd; --surface:#fbfaf6; --surface-2:#f0ece1;
+  --line:rgba(21,23,28,.12); --line-2:rgba(21,23,28,.22);
+  --text:#15171c; --dim:#555a66; --faint:#8a8e98;
+  --gain:#14284b; --on-gain:#f7f4ec; --amber:#a9812f; --cyan:#4a6b8a; --loss:#8f2d2d;
+  --glass:rgba(245,242,234,.85);
+  --shadow:0 1px 2px rgba(21,23,28,.04),0 24px 48px -32px rgba(21,23,28,.25);
+  --f-display:"Newsreader","Iowan Old Style","Palatino Linotype",Georgia,serif;
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -449,7 +450,7 @@ html.cx-on .ch{opacity:1}
 @keyframes twig{0%,100%{transform:none}20%{transform:rotate(-4deg) scale(1.06)}40%{transform:rotate(4deg) scale(1.06)}60%{transform:rotate(-2deg)}}
 @keyframes tpulse{from{transform:scale(.85);opacity:.9}to{transform:scale(1.35);opacity:0}}
 .nudge{position:absolute;top:calc(100% + 16px);right:-4px;display:flex;align-items:center;gap:10px;padding:11px 18px 11px 14px;border-radius:16px;background:var(--gain);color:var(--on-gain);white-space:nowrap;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.9);transform-origin:80% 0;transition:opacity .35s,transform .5s var(--ease);z-index:3;box-shadow:0 14px 30px -12px color-mix(in srgb,var(--gain) 70%,transparent)}
-.nudge .nh{font-size:26px;line-height:1;animation:nhand 1s ease-in-out infinite}
+.nudge .nh{display:grid;font-size:0;line-height:1;animation:nhand 1s ease-in-out infinite}
 .nudge b{display:block;font:800 16px/1.1 var(--f-body);letter-spacing:-.01em}
 .nudge small{display:block;margin-top:2px;font:600 11.5px/1.2 var(--f-mono);opacity:.85;letter-spacing:.02em}
 @keyframes nhand{0%,100%{transform:translateY(2px)}50%{transform:translateY(-5px)}}
@@ -463,92 +464,90 @@ html.cx-on .ch{opacity:1}
 /* ---------- hero sun (day only) ---------- */
 @keyframes cmspin{to{rotate:360deg}}
 
-/* ================= DAY: "Studio" ===================
-   Art-directed light theme: warm stone canvas, big cobalt and ink colour blocks,
-   one acid-lime accent, the portrait cropped three ways, floating product metrics.
+/* ================= DAY: "Annual Report" ===================
+   Professional and minimal: ivory paper, a serif display face, ink and navy,
+   a touch of brass, hairline rules, one portrait plate, one image band.
    Night stays the market terminal. */
-.fx,.ib{display:none}
-html[data-theme=light] body::before{
-  background-image:radial-gradient(60vmax 50vmax at 0% 0%,rgba(36,71,255,.12),transparent 60%),radial-gradient(52vmax 42vmax at 100% 90%,rgba(190,238,30,.26),transparent 62%);
-  background-size:auto;mask-image:none;-webkit-mask-image:none}
-/* dark colour blocks share one set of scoped tokens */
-html[data-theme=light] .nav,html[data-theme=light] .chart-card,html[data-theme=light] .hero-grid,html[data-theme=light] #contact .wrap{
-  --bg:#0c1034;--bg-2:#141a4a;--surface:#121746;--surface-2:#1c2260;--line:rgba(255,255,255,.12);--line-2:rgba(255,255,255,.22);
-  --text:#ffffff;--dim:rgba(255,255,255,.78);--faint:rgba(255,255,255,.55);--gain:#d4ff3f;--on-gain:#0c1034;--loss:#ff7a59;--glass:rgba(12,16,52,.6);
-  --shadow:0 30px 60px -30px rgba(0,0,40,.6);color:var(--text)}
-html[data-theme=light] .hero-grid{--bg:#2447ff;--surface:#1f3be6;--surface-2:#2d4cff}
-html[data-theme=light] .nav{background:rgba(12,16,52,.96);border-color:rgba(255,255,255,.14);box-shadow:0 18px 40px -20px rgba(12,16,52,.6)}
-html[data-theme=light] .mkt.hire{--gain:#4ee08c}
-html[data-theme=light] .tsw-track{border:1px solid rgba(255,255,255,.3)}
-html[data-theme=light] .btn-primary{background:#0d0f28;color:#fff;border-color:#0d0f28}
-html[data-theme=light] .btn-primary:hover{background:#000;box-shadow:0 16px 30px -16px rgba(13,15,40,.6);transform:translateY(-2px)}
-html[data-theme=light] .nav .btn-primary,html[data-theme=light] .hero-grid .btn-primary,html[data-theme=light] #contact .btn-primary{background:var(--gain);color:var(--on-gain);border-color:var(--gain)}
-html[data-theme=light] .nav .btn-primary:hover,html[data-theme=light] .hero-grid .btn-primary:hover{background:#e4ff7a;border-color:#e4ff7a;box-shadow:0 16px 30px -14px rgba(0,0,60,.6)}
-html[data-theme=light] .btn-ghost{background:#fff;border-color:var(--line-2)}
-html[data-theme=light] .hero-grid .btn-ghost{background:transparent;border-color:rgba(255,255,255,.55);color:#fff}
-html[data-theme=light] .hero-grid .btn-ghost:hover{background:rgba(255,255,255,.14);border-color:#fff}
-html[data-theme=light] .hc{visibility:hidden}
-html[data-theme=light] .hero-bg::before{display:none}
-/* hero: a cobalt stage with the portrait and floating product metrics */
-html[data-theme=light] .hero{padding-bottom:40px}
-html[data-theme=light] .hero-grid{isolation:isolate;padding-block:6px}
-@media (min-width:1061px){ html[data-theme=light] .hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)} }
-html[data-theme=light] .id-card{max-width:430px}
-html[data-theme=light] .hero-grid::before{content:"";position:absolute;inset:-38px 4px -42px;border-radius:40px;z-index:-1;
-  background:radial-gradient(760px 460px at 88% 6%,rgba(138,155,255,.6),transparent 62%),radial-gradient(520px 380px at 0% 100%,rgba(212,255,63,.22),transparent 62%),linear-gradient(135deg,#2447ff,#1a2cc8 58%,#101a86);
-  box-shadow:0 40px 80px -40px rgba(36,71,255,.7)}
-html[data-theme=light] .name .b{color:var(--gain)}
-html[data-theme=light] .id-card{position:relative;background:none;border:0;box-shadow:none;padding:0;overflow:visible}
-html[data-theme=light] .id-card::before{content:"";position:absolute;inset:16px -16px -16px 16px;border:1.5px solid rgba(212,255,63,.7);border-radius:32px;pointer-events:none}
-html[data-theme=light] .id-card img{position:relative;z-index:1;border-radius:28px;box-shadow:0 34px 60px -26px rgba(0,0,50,.7)}
-html[data-theme=light] .id-meta{position:absolute;z-index:2;left:12px;right:12px;bottom:12px;padding:12px 16px;border-radius:18px;background:rgba(12,16,52,.78)}
-html[data-theme=light] .fx{display:flex;flex-direction:column;gap:2px;position:absolute;z-index:3;padding:11px 16px 12px;border-radius:18px;background:#fff;color:#0d0f28;box-shadow:0 22px 40px -20px rgba(0,0,60,.6);animation:fxfloat 6.5s ease-in-out infinite}
-html[data-theme=light] .fx small{font:500 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:#6a6d8c}
-html[data-theme=light] .fx b{font:700 22px/1.1 var(--f-display);letter-spacing:-.03em;color:#2447ff}
-html[data-theme=light] .fx1{left:-96px;top:12%}
-html[data-theme=light] .fx2{right:-34px;top:-30px;animation-delay:-2.2s}
-html[data-theme=light] .fx3{left:26px;bottom:-54px;animation-delay:-4.1s}
-@keyframes fxfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-html[data-theme=light] .ks,html[data-theme=light] .hm-g,html[data-theme=light] .risk{border-color:var(--line-2);background:#fff;box-shadow:0 1px 2px rgba(13,15,40,.05),0 26px 46px -32px rgba(13,15,40,.35)}
-html[data-theme=light] .ks{border-radius:22px;backdrop-filter:none;-webkit-backdrop-filter:none}
-html[data-theme=light] .ticker{background:#d4ff3f;border-color:#d4ff3f}
-html[data-theme=light] .tk{color:#0d0f28;border-right-color:rgba(13,15,40,.16)}
-html[data-theme=light] .tk b{color:#0d0f28}
-html[data-theme=light] .tk i{color:rgba(13,15,40,.58)}
-html[data-theme=light] .tk em{color:#1a2cc8}
-/* image band: the portrait, duotone cobalt */
-html[data-theme=light] .ib{display:block;position:relative;height:clamp(190px,25vw,330px);margin-top:clamp(34px,5vw,64px);border-radius:32px;overflow:hidden;
-  background:linear-gradient(90deg,#2447ff 0,#2447ff 30%,rgba(36,71,255,0) 78%),url(../assets/profile.png) 82% 16%/cover no-repeat,#2447ff;background-blend-mode:normal,luminosity,normal}
-html[data-theme=light] .ib span{position:absolute;left:clamp(22px,4.4vw,64px);top:50%;transform:translateY(-50%);font:700 clamp(28px,5vw,68px)/.98 var(--f-display);letter-spacing:-.045em;color:#fff}
-html[data-theme=light] .ib span em{font-style:normal;color:#d4ff3f}
-html[data-theme=light] .sec-tag b{background:#2447ff;color:#fff;border-radius:12px}
-html[data-theme=light] .bar.before i{background:#c9c5b8}
-html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*1%),#fff);border-color:transparent;color:#0d0f28}
-html[data-theme=light] .g-pm{--c:#2447ff} html[data-theme=light] .g-an{--c:#a8d600} html[data-theme=light] .g-ds{--c:#8b6cff}
-html[data-theme=light] .chart-card{background:#0c1034}
-html[data-theme=light] .chart .band{background:rgba(212,255,63,.1);border-inline:1px dashed rgba(212,255,63,.55)}
-html[data-theme=light] .cr:nth-child(1){background:#e6e0ff;border-color:transparent}
-html[data-theme=light] .cr:nth-child(2){background:#eefdb0;border-color:transparent}
-html[data-theme=light] .cr{box-shadow:none}
-html[data-theme=light] .cr-badge{background:rgba(13,15,40,.08);color:#0d0f28}
-/* contact: ink-blue block, portrait washed into the corner */
-html[data-theme=light] #contact .wrap{position:relative;isolation:isolate}
-html[data-theme=light] #contact .wrap::before{content:"";position:absolute;inset:-30px 4px -34px;border-radius:40px;z-index:-1;
-  background:linear-gradient(270deg,rgba(12,16,52,0) 0,rgba(12,16,52,.55) 16%,#0c1034 34%),url(../assets/profile.png) 100% 0/auto 108% no-repeat,#0c1034;background-blend-mode:normal,luminosity,normal}
+.ib{display:none}
+html[data-theme=light] body::before{display:none}
+html[data-theme=light] :is(.name,.sec-title,.ct-title,.ks-v,.h-name,.h-metric b,.hm-h h3,.cr h3,.rp h3,.risk-v,.trio b,.id-name,.arc-head h3,.tile.md,.tile.lg,.ib span){font-weight:500}
+html[data-theme=light] :is(.name,.ct-title){letter-spacing:-.028em}
+html[data-theme=light] :is(.sec-title,.ks-v,.h-metric b){letter-spacing:-.022em}
+html[data-theme=light] :is(.h-name,.hm-h h3,.cr h3,.rp h3,.risk-v,.id-name,.trio b,.tile.md,.tile.lg){letter-spacing:-.012em}
+html[data-theme=light] .name{line-height:.96}
+html[data-theme=light] .name .b,html[data-theme=light] .sec-title em,html[data-theme=light] .ct-title em{font-style:italic;font-weight:400}
+html[data-theme=light] .obj{font-weight:400;letter-spacing:-.005em}
+html[data-theme=light] .obj mark{color:var(--gain);font-style:italic}
+html[data-theme=light] .logo{font-weight:600}
+/* chrome */
+html[data-theme=light] .nav{border-radius:14px;background:rgba(251,250,246,.94);border-color:var(--line-2);box-shadow:0 1px 2px rgba(21,23,28,.04),0 16px 34px -22px rgba(21,23,28,.3)}
+html[data-theme=light] .mkt{border-radius:8px;background:var(--surface-2);color:var(--text)}
+html[data-theme=light] .mkt.hire{--gain:#2e8b5e}
+html[data-theme=light] .links a{border-radius:8px}
+html[data-theme=light] .tsw-track{border:1px solid var(--line-2);background:linear-gradient(#bcd6ee,#f4e4c6)}
+html[data-theme=light] .tsw-knob{background:#f0b429;box-shadow:0 0 0 3px rgba(240,180,41,.25),0 0 10px rgba(240,180,41,.55)}
+html[data-theme=light] .btn,html[data-theme=light] .btn-sm{border-radius:10px}
+html[data-theme=light] .btn-primary{background:#15171c;color:#f7f4ec;border-color:#15171c}
+html[data-theme=light] .btn-primary:hover{background:var(--gain);border-color:var(--gain);box-shadow:0 14px 28px -16px rgba(20,40,75,.7);transform:translateY(-1px)}
+html[data-theme=light] .btn-ghost,html[data-theme=light] .hero .btn-ghost:not(:hover){background:transparent;border-color:var(--line-2);color:var(--text)}
+html[data-theme=light] .btn-ghost:hover{background:transparent;border-color:var(--text)}
+/* hero: type first, one portrait plate */
+html[data-theme=light] .hc,html[data-theme=light] .hero-bg::before{display:none}
+html[data-theme=light] .id-card{position:relative;max-width:400px;background:none;border:0;box-shadow:none;padding:0;border-radius:0;overflow:visible}
+html[data-theme=light] .id-card img{position:relative;z-index:1;aspect-ratio:4/5;object-position:center 16%;border-radius:6px;border:0}
+html[data-theme=light] .id-meta{position:relative;z-index:1;padding:18px 0 0}
+html[data-theme=light] .ks{background:none;border:0;border-block:1px solid var(--line-2);border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-theme=light] .ks-i{border-left-color:var(--line)}
+html[data-theme=light] .ks-i:first-child{border-left:0}
+html[data-theme=light] .ticker{background:#0f1b2d;border-color:#0f1b2d}
+html[data-theme=light] .tk{color:#e8e4d8;border-right-color:rgba(255,255,255,.1)}
+html[data-theme=light] .tk b{color:#fff}
+html[data-theme=light] .tk i{color:#8d97a8}
+html[data-theme=light] .tk em{color:#d6b66a}
+/* sections */
+html[data-theme=light] .sec-tag b{background:none;color:var(--text);border:1px solid var(--line-2);border-radius:6px;font-weight:500}
+html[data-theme=light] .risk,html[data-theme=light] .hm-g,html[data-theme=light] .chart-card,html[data-theme=light] .cr{background:var(--surface);border:1px solid var(--line-2);border-radius:8px;box-shadow:none}
+html[data-theme=light] .hold{border-top:1px solid var(--text)}
+html[data-theme=light] .h-row{border-bottom-color:var(--line-2)}
+html[data-theme=light] .h-btn::before{background:linear-gradient(90deg,rgba(20,40,75,.06),transparent 70%)}
+html[data-theme=light] .h-tag{border-radius:4px;background:none;color:var(--dim)}
+html[data-theme=light] .trio div{background:var(--surface);border-radius:8px}
+html[data-theme=light] .bar::before{background:#e4dfd2}
+html[data-theme=light] .bar.before i{background:#c9c3b3}
+html[data-theme=light] .g-pm{--c:#14284b} html[data-theme=light] .g-an{--c:#a9812f} html[data-theme=light] .g-ds{--c:#4a6b8a}
+html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*.5%),#fbfaf6);border:1px solid color-mix(in srgb,var(--c) 22%,transparent);border-radius:4px;color:var(--text)}
+html[data-theme=light] .rtab{border-radius:8px;background:transparent}
+html[data-theme=light] .rtab[aria-pressed=true]{background:var(--gain);border-color:var(--gain);color:var(--on-gain)}
+html[data-theme=light] .chart .band{background:rgba(169,129,47,.08);border-inline:1px dashed rgba(169,129,47,.55)}
+html[data-theme=light] .cr-badge{background:rgba(20,40,75,.07);color:var(--gain);border-radius:4px}
+/* one image band: monochrome navy */
+html[data-theme=light] .ib{display:block;position:relative;height:clamp(180px,22vw,280px);margin-top:clamp(34px,5vw,64px);border-radius:8px;overflow:hidden;
+  background:linear-gradient(90deg,#0f1b2d 0,#0f1b2d 34%,rgba(15,27,45,0) 80%),url(../assets/profile.png) 82% 16%/cover no-repeat,#0f1b2d;background-blend-mode:normal,luminosity,normal}
+html[data-theme=light] .ib span{position:absolute;left:clamp(22px,4.4vw,64px);top:50%;transform:translateY(-50%);font:500 clamp(28px,4.6vw,62px)/1.02 var(--f-display);letter-spacing:-.025em;color:#f5f2ea}
+html[data-theme=light] .ib span em{font-style:italic;font-weight:400;color:#d6b66a}
+/* contact: deep navy block */
+html[data-theme=light] #contact .wrap{position:relative;isolation:isolate;
+  --bg:#0f1b2d;--bg-2:#13233a;--surface:#15263e;--surface-2:#1b3050;--line:rgba(245,242,234,.14);--line-2:rgba(245,242,234,.26);
+  --text:#f5f2ea;--dim:rgba(245,242,234,.78);--faint:rgba(245,242,234,.55);--gain:#d6b66a;--on-gain:#0f1b2d;color:var(--text)}
+html[data-theme=light] #contact .wrap::before{content:"";position:absolute;inset:-30px 4px -34px;border-radius:10px;z-index:-1;background:#0f1b2d}
+html[data-theme=light] .ct-act{border-radius:6px}
 html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:var(--gain);border-color:var(--gain);color:var(--on-gain)}
-html[data-theme=light] .nudge{background:#d4ff3f;color:#0d0f28;border:0;box-shadow:0 14px 30px -12px rgba(13,15,40,.45);rotate:0deg}
-html[data-theme=light] .amb.up{color:#2447ff}
-html[data-theme=light] .amb.dn{color:#7a7d9c}
+html[data-theme=light] #contact .btn-primary{background:var(--gain);color:var(--on-gain);border-color:var(--gain)}
+html[data-theme=light] .nudge{background:#15171c;color:#f7f4ec;border:0;border-radius:10px;box-shadow:0 14px 30px -14px rgba(21,23,28,.5);rotate:0deg}
+html[data-theme=light] .amb.up{color:var(--gain)}
+html[data-theme=light] .amb.dn{color:var(--faint)}
 html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{opacity:.9}
-/* day cursor: a comment pin that follows you (clicks drop numbered pins) */
-html[data-theme=light] #cur .cm,html[data-theme=light] #cur.hot .cm,html[data-theme=light] #cur.down .cm{width:28px;height:28px;left:0;top:-28px;transform:none;transform-origin:0 100%;border-radius:50% 50% 50% 0;background:#2447ff;box-shadow:0 0 0 2px #fff,0 10px 20px -6px rgba(36,71,255,.6);animation:none}
-html[data-theme=light] #cur .cm::after{content:"K";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font:700 12.5px var(--f-display);letter-spacing:0}
-html[data-theme=light] #cur.hot .cm{scale:1.12}
-html[data-theme=light] #cur.down .cm{scale:.86;background:#0d0f28}
-html[data-theme=light] #cur .brk{display:none}
-html[data-theme=light] #cur .tag,html[data-theme=light] #cur.hot .tag{left:36px;top:-24px;background:#d4ff3f;color:#0d0f28;border-radius:999px;font:700 11px/1.3 var(--f-body);letter-spacing:.02em;padding:4px 10px;box-shadow:0 8px 16px -8px rgba(13,15,40,.5)}
+/* day cursor: a precise dot that opens into a ring, colour-inverting over any surface */
+html[data-theme=light] #cur{mix-blend-mode:difference}
+html[data-theme=light] #cur .cm,html[data-theme=light] #cur.hot .cm,html[data-theme=light] #cur.down .cm{width:8px;height:8px;left:-4px;top:-4px;border-radius:50%;transform:none;background:#fff;box-shadow:none;animation:none;transition:scale .25s var(--ease)}
+html[data-theme=light] #cur.hot .cm{scale:.4}
+html[data-theme=light] #cur.down .cm{scale:1.7}
+html[data-theme=light] #cur .brk{left:-22px;top:-22px;width:44px;height:44px;border:1px solid #fff;border-radius:50%;opacity:0;transform:scale(.4)}
+html[data-theme=light] #cur .brk i{display:none}
+html[data-theme=light] #cur.hot .brk{opacity:1;transform:scale(1)}
+html[data-theme=light] #cur.down .brk{opacity:1;transform:scale(.8)}
+html[data-theme=light] #cur .tag,html[data-theme=light] #cur.hot .tag,html[data-theme=light] #cur.down .tag{left:30px;top:-6px;background:none;color:#fff;box-shadow:none;border:0;border-radius:0;padding:0;font:500 10.5px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase}
 html[data-theme=light] .ch{display:none!important}
-@media (max-width:1060px){ html[data-theme=light] .fx{display:none} }
 html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-track):not(.tsw-knob)::before,html.tswitch :not(.tsw-track):not(.tsw-knob)::after{transition:none!important}
 
 /* ================= MOBILE PASS ================= */
@@ -563,12 +562,10 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
   .name{grid-column:1;grid-row:1;font-size:min(56px,calc((100vw - 150px)/4.4))}
   html[data-theme] .id-card{grid-column:2;grid-row:1;width:94px;max-width:none;margin:0;padding:4px;border-radius:20px}
   html[data-theme] .id-card img{border-radius:16px}
-  html[data-theme=light] .hero{padding-top:104px;padding-bottom:28px}
-  html[data-theme=light] .name{font-size:min(54px,calc((100vw - 176px)/4.4))}
-  html[data-theme=light] .hero-grid{padding-inline:calc(var(--gutter) + 12px);padding-block:10px 12px}
-  html[data-theme=light] .hero-grid::before{inset:-26px 6px -26px;border-radius:30px}
+  html[data-theme=light] .name{font-size:min(56px,calc((100vw - 146px)/5.4))}
+  html[data-theme=light] .id-card{padding:0;border:0;border-radius:6px;width:88px}
+  html[data-theme=light] .id-card img{border-radius:6px;aspect-ratio:4/5}
   html[data-theme=light] .id-card::before{display:none}
-  html[data-theme=light] .id-card img{border-radius:20px}
   html[data-theme=light] .ib span{font-size:clamp(24px,7.4vw,34px)}
   .id-meta{display:none}
   .role,.lede,.cta-row{grid-column:1/-1}
@@ -698,9 +695,6 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
           <span class="id-name">Karthikeya Burugula</span>
           <span class="id-sub">Product Manager · Chennai, India</span>
         </figcaption>
-        <span class="fx fx1" aria-hidden="true"><small>Activation time</small><b>22 → &lt;12 min</b></span>
-        <span class="fx fx2" aria-hidden="true"><small>SIF AUM · 2 quarters</small><b>+74%</b></span>
-        <span class="fx fx3" aria-hidden="true"><small>PMS AUM · 30 days</small><b>₹55 Cr</b></span>
       </figure>
     </div>
 
@@ -959,8 +953,8 @@ let pal={day:false,up:'#3be28f',down:'#ff6b5d',text:'#ecf4ee',bg:'#080d0b',dim:'
 function refreshPalette(){
   const day=root.dataset.theme==='light';
   pal={day,up:cssVar('--gain')||pal.up,down:cssVar('--loss')||pal.down,text:cssVar('--text')||pal.text,bg:cssVar('--bg')||pal.bg,dim:cssVar('--dim')||pal.dim,
-    c1:cssVar('--gain')||pal.c1,c2:(day?'#7a5cff':cssVar('--cyan'))||pal.c2,core:day?'#ffffff':'#eafff4',
-    blocks:day?['#2447ff','#101014','#8a9bff']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(16,16,20,.84)':'rgba(5,7,11,.78)',vtext:day?'#fafaf8':'#e6f7ff'};
+    c1:cssVar('--gain')||pal.c1,c2:(day?cssVar('--gain'):cssVar('--cyan'))||pal.c2,core:day?'#f5f2ea':'#eafff4',
+    blocks:day?['#14284b','#a9812f','#4a6b8a']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(21,23,28,.84)':'rgba(5,7,11,.78)',vtext:day?'#f5f2ea':'#e6f7ff'};
 }
 refreshPalette();
 
@@ -970,14 +964,14 @@ let themeTouched=false, nudgeT=0;
 themeBtn.setAttribute('aria-checked',root.dataset.theme==='light');
 function applyTheme(t){
   root.dataset.theme=t; themeBtn.setAttribute('aria-checked',t==='light');
-  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#ece8de':'#080d0b';
+  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#f5f2ea':'#080d0b';
   if(nudgeEl.classList.contains('show')){ nudgeEl.querySelector('small').textContent=''; }
   refreshPalette(); if(window.__themeChanged) window.__themeChanged(); if(window.__refreshCur) window.__refreshCur();
 }
 function hideNudge(){ nudgeEl.classList.remove('show'); themeBtn.classList.remove('nudging'); }
 function showNudge(){
   if(themeTouched||document.hidden) return;
-  nudgeEl.innerHTML='<span class="nh">\u261D</span><span><b>Click here</b><small>'+(root.dataset.theme==='light'?'to switch to night':'to switch to day')+'</small></span>';
+  nudgeEl.innerHTML='<span class="nh"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 7-6 2-2 6z"/></svg></span><span><b>Click here</b><small>'+(root.dataset.theme==='light'?'to switch to night':'to switch to day')+'</small></span>';
   nudgeEl.classList.add('show'); themeBtn.classList.add('nudging');
 }
 /* every page load: first at 5s, visible 5s, hidden 10s, repeat, until the switch is used */
@@ -1294,7 +1288,7 @@ function burst(x,y){
   if(reduce) return;
   const now=performance.now();
   if(pal.day){
-    pinN=pinN%99+1; bursts.push({day:true,x,y,t:now,life:2000,n:pinN,label:PM_WORDS[Math.floor(Math.random()*PM_WORDS.length)]});
+    bursts.push({day:true,x,y,t:now,life:900});
   }else{
     const n=16, spikes=[];
     for(let i=0;i<n;i++){
@@ -1330,13 +1324,13 @@ function drawRibbon(now){
     const a=pts[Math.max(0,i-1)], b=pts[Math.min(m-1,i+1)];
     const dx=b.x-a.x, dy=b.y-a.y, len=Math.hypot(dx,dy)||1, nx=-dy/len, ny=dx/len;
     const f=i/(m-1), life=Math.max(0,1-pts[i].age);
-    const w=(.3+5.2*Math.pow(f,1.5))*(1.15-Math.min(1,pts[i].sp/2.4)*.5)*life;
+    const w=(.3+5.2*Math.pow(f,1.5))*(1.15-Math.min(1,pts[i].sp/2.4)*.5)*life*(pal.day?.42:1);
     L.push([pts[i].x+nx*w,pts[i].y+ny*w]); R.push([pts[i].x-nx*w,pts[i].y-ny*w]);
   }
   const g=cx.createLinearGradient(pts[0].x,pts[0].y,pts[m-1].x,pts[m-1].y);
   g.addColorStop(0,hexA(pal.c1,0)); g.addColorStop(.55,hexA(pal.c1,.55)); g.addColorStop(1,hexA(pal.c2,.9));
   cx.save();
-  cx.fillStyle=g; cx.shadowColor=pal.c1; cx.shadowBlur=pal.day?5:10;
+  cx.fillStyle=g; cx.shadowColor=pal.c1; cx.shadowBlur=pal.day?0:10;
   cx.beginPath(); cx.moveTo(L[0][0],L[0][1]);
   for(let i=1;i<m;i++) cx.lineTo(L[i][0],L[i][1]);
   for(let i=m-1;i>=0;i--) cx.lineTo(R[i][0],R[i][1]);
@@ -1359,7 +1353,7 @@ function frame(now){
     if(a>=1){ sparks.splice(i,1); continue; }
     s.x+=s.vx*dt; s.y+=s.vy*dt;
     const col=s.c?pal.c2:pal.c1; cx.globalAlpha=1-a; cx.strokeStyle=col; cx.fillStyle=col; cx.lineWidth=s.sz*.8; cx.lineCap='round';
-    if(pal.day){ cx.beginPath(); cx.arc(s.x,s.y,s.sz*1.1*(1-a*.5),0,6.2832); cx.fill(); }
+    if(pal.day){ /* no sparks by day */ }
     else { cx.beginPath(); cx.moveTo(s.x,s.y); cx.lineTo(s.x-s.vx*70,s.y-s.vy*70); cx.stroke(); }
   }
   cx.globalAlpha=1;
@@ -1369,16 +1363,10 @@ function frame(now){
     if(a>=1){ bursts.splice(i,1); continue; }
     const alpha=1-Math.pow(a,2.2);
     if(b.day){
-      const k=Math.min(1,ms/260), sc=1+2.7*Math.pow(k-1,3)+1.7*Math.pow(k-1,2), fade=a>.72?1-(a-.72)/.28:1;
-      cx.save(); cx.globalAlpha=fade; cx.translate(b.x,b.y); cx.scale(sc,sc);
-      cx.shadowColor='rgba(36,71,255,.45)'; cx.shadowBlur=14; cx.shadowOffsetY=6;
-      cx.fillStyle=pal.up; cx.beginPath(); cx.moveTo(0,0); cx.lineTo(0,-15); cx.arc(15,-15,15,Math.PI,Math.PI/2,false); cx.closePath(); cx.fill();
-      cx.shadowColor='transparent'; cx.lineWidth=2.5; cx.strokeStyle='#fff'; cx.stroke();
-      cx.fillStyle='#fff'; cx.font='700 13px '+FDISP; cx.textAlign='center'; cx.textBaseline='middle'; cx.fillText(String(b.n),15,-14.5);
-      if(ms>140){ const t2=Math.min(1,(ms-140)/220); cx.globalAlpha=fade*t2; cx.font='600 12px '+FMONO; const tw=cx.measureText(b.label).width+22;
-        cx.fillStyle='#fff'; cx.shadowColor='rgba(13,15,40,.35)'; cx.shadowBlur=16; cx.shadowOffsetY=8; rrect(36,-28+(1-t2)*6,tw,28,10); cx.fill(); cx.shadowColor='transparent';
-        cx.fillStyle='#0d0f28'; cx.textAlign='left'; cx.fillText(b.label,47,-13.5+(1-t2)*6); }
-      cx.restore(); cx.textBaseline='alphabetic';
+      const e=1-Math.pow(1-Math.min(1,a*1.15),3);
+      cx.lineWidth=1; cx.strokeStyle=pal.up;
+      cx.globalAlpha=alpha*.8; cx.beginPath(); cx.arc(b.x,b.y,6+e*36,0,6.2832); cx.stroke();
+      cx.globalAlpha=alpha*.4; cx.beginPath(); cx.arc(b.x,b.y,2+e*16,0,6.2832); cx.stroke();
     }else{
       const e=1-Math.pow(1-Math.min(1,a*1.35),3);
       b.spikes.forEach(s=>{
