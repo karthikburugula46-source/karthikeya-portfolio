@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Karthikeya Burugula · Product Manager</title>
 <meta name="description" content="Product Manager, 4+ years building fintech and B2B platforms. Currently at AssetPlus, owning onboarding and growth for a 200K+ user mutual fund platform. Read the factsheet.">
-<meta name="theme-color" content="#fff4e0">
+<meta name="theme-color" content="#fafaf8">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Karthikeya Burugula · Product Manager">
 <meta property="og:description" content="Fintech & B2B product manager. PMS tracker, SIF growth, 22 → 12 minute activation. Read the factsheet.">
@@ -40,12 +40,12 @@
   color-scheme:dark;
 }
 :root[data-theme=light]{
-  --bg:#fff3de; --bg-2:#ffe7bf; --surface:#fffdf8; --surface-2:#ffecc7;
-  --line:rgba(29,23,71,.16); --line-2:#1d1747;
-  --text:#1d1747; --dim:#4e4678; --faint:#7d77a0;
-  --gain:#e8451c; --on-gain:#fffaf0; --amber:#b86400; --cyan:#2f4fe0; --loss:#6a3df0;
-  --glass:rgba(255,243,222,.86);
-  --shadow:6px 6px 0 #1d1747;
+  --bg:#fafaf8; --bg-2:#f1f0ec; --surface:#ffffff; --surface-2:#f3f2ee;
+  --line:rgba(16,16,22,.08); --line-2:rgba(16,16,22,.14);
+  --text:#101014; --dim:#555560; --faint:#8b8b96;
+  --gain:#2447ff; --on-gain:#ffffff; --amber:#0f8f78; --cyan:#7c4dff; --loss:#e5484d;
+  --glass:rgba(250,250,248,.82);
+  --shadow:0 1px 2px rgba(16,16,22,.04),0 28px 56px -32px rgba(16,16,22,.28);
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -463,80 +463,66 @@ html.cx-on .ch{opacity:1}
 /* ---------- hero sun (day only) ---------- */
 @keyframes cmspin{to{rotate:360deg}}
 
-/* ================= DAY: "Sunrise Pop" ===================
-   Deliberately not fintech: cream paper, ink outlines, hard shadows,
-   a sun, sparkles and confetti. Night stays the market terminal. */
-html[data-theme=light] body::before{ /* day: pop wrapping paper, little plus, ring, triangle, squiggle, star */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M30 24v18M21 33h18' stroke='%23e8451c' stroke-opacity='.28' stroke-width='3'/%3E%3Ccircle cx='122' cy='38' r='7' stroke='%236a3df0' stroke-opacity='.26' stroke-width='2.6'/%3E%3Cpath d='M66 108l8 14h-16z' fill='%23ffb000' fill-opacity='.5' stroke='%23ffb000' stroke-opacity='.5' stroke-width='2'/%3E%3Cpath d='M112 138q6-10 12 0t12 0t12 0' stroke='%231d1747' stroke-opacity='.2' stroke-width='2.6'/%3E%3Ccircle cx='162' cy='92' r='3.6' fill='%23e8451c' fill-opacity='.3'/%3E%3Ccircle cx='18' cy='112' r='3.2' fill='%236a3df0' fill-opacity='.3'/%3E%3Cpath d='M98 86l3 6 6 1-4.5 4 1.2 6-5.7-3.2-5.7 3.2 1.2-6-4.5-4 6-1z' fill='%231d1747' fill-opacity='.14'/%3E%3C/svg%3E");background-size:220px 220px;opacity:.6;
-  mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,.5));-webkit-mask-image:linear-gradient(to bottom,#000 55%,rgba(0,0,0,.45))}
-html[data-theme=light] .nav{border:2px solid var(--line-2);box-shadow:4px 4px 0 var(--line-2);backdrop-filter:none;-webkit-backdrop-filter:none;background:#fff8ea}
-html[data-theme=light] .mkt{background:#fff;border-color:var(--line-2);color:var(--text)}
-html[data-theme=light] .links a:hover,html[data-theme=light] .links a[aria-current=true]{background:#ffd23f;color:var(--text)}
-html[data-theme=light] .tsw-track{border:2px solid var(--line-2)}
-html[data-theme=light] .btn{border-color:var(--line-2)}
-html[data-theme=light] .btn-primary{box-shadow:inset 0 0 0 1px var(--line-2),3px 3px 0 var(--line-2)}
-html[data-theme=light] .btn-primary:hover{box-shadow:inset 0 0 0 1px var(--line-2),5px 5px 0 var(--line-2);transform:translate(-2px,-2px)}
-html[data-theme=light] .btn-primary:active{box-shadow:inset 0 0 0 1px var(--line-2);transform:translate(3px,3px)}
-html[data-theme=light] .btn-ghost{background:#fff;box-shadow:inset 0 0 0 1px var(--line-2),3px 3px 0 var(--line-2)}
-html[data-theme=light] .btn-ghost:hover{background:#ffd23f;transform:translate(-2px,-2px);box-shadow:inset 0 0 0 1px var(--line-2),5px 5px 0 var(--line-2)}
+/* ================= DAY: "Product Spec" ===================
+   Modern, minimal, product-minded: paper-white canvas, hairlines, one cobalt
+   accent, and design-tool motifs (selection frame, named cursor, layer labels).
+   No ornament. Night stays the market terminal. */
+html[data-theme=light] body::before{ /* four layout-grid guides across the content column */
+  inset:0 auto 0 50%;width:min(var(--maxw),100vw);transform:translateX(-50%);padding-inline:var(--gutter);
+  background-clip:content-box;background-origin:content-box;
+  background-image:linear-gradient(90deg,rgba(16,16,22,.06) 1px,transparent 1px),linear-gradient(rgba(16,16,22,.06),rgba(16,16,22,.06));
+  background-size:25% 100%,1px 100%;background-position:0 0,100% 0;background-repeat:repeat-x,no-repeat;opacity:1;
+  mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.45));-webkit-mask-image:linear-gradient(to bottom,#000,rgba(0,0,0,.45))}
+html[data-theme=light] .nav{background:rgba(255,255,255,.94);border-color:var(--line-2);box-shadow:0 1px 2px rgba(16,16,22,.04),0 14px 32px -18px rgba(16,16,22,.22)}
+html[data-theme=light] .mkt{background:var(--surface-2);color:var(--text)}
+html[data-theme=light] .mkt.hire{--gain:#16a05a}
+html[data-theme=light] .tsw-track{border:1px solid rgba(16,16,22,.2)}
+html[data-theme=light] .btn-primary{background:#101014;color:#fff;border-color:#101014}
+html[data-theme=light] .btn-primary:hover{background:#000;box-shadow:0 16px 30px -16px rgba(16,16,22,.6);transform:translateY(-2px)}
+html[data-theme=light] .btn-ghost{background:#fff;border-color:var(--line-2)}
+html[data-theme=light] .btn-ghost:hover{background:#fff;border-color:#101014}
 html[data-theme=light] .hc{visibility:hidden}
-html[data-theme=light] .hero-bg::before{background:radial-gradient(circle,rgba(255,106,61,.2),transparent 62%)}
-html[data-theme=light] .id-card,html[data-theme=light] .chart-card,html[data-theme=light] .arc-card,html[data-theme=light] .hm-g,html[data-theme=light] .cr,html[data-theme=light] .risk{border:1px solid var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2),6px 6px 0 var(--line-2);background:#fffdf8}
-html[data-theme=light] .id-card img{border:2px solid var(--line-2)}
-html[data-theme=light] .ks{border-color:var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2),0 6px 0 var(--line-2);background:#fffdf8;border-radius:20px;backdrop-filter:none;-webkit-backdrop-filter:none}
-html[data-theme=light] .ks-i{border-left-color:rgba(29,23,71,.2)}
-html[data-theme=light] .ks-i:first-child{border-left:0}
-html[data-theme=light] .ks-d{color:var(--gain)}
-html[data-theme=light] .ticker{background:var(--text);border-color:var(--text)}
-html[data-theme=light] .tk{color:#fff4e0;border-right-color:rgba(255,244,224,.18)}
+html[data-theme=light] .hero-bg::before{background:radial-gradient(circle,rgba(36,71,255,.08),transparent 62%)}
+/* hero name sits in a design-tool selection frame with a named collaborator cursor */
+html[data-theme=light] .name{position:relative;width:fit-content;max-width:100%}
+html[data-theme=light] .name::before{content:"";position:absolute;inset:-14px -18px -5px -18px;pointer-events:none;
+  background:
+   linear-gradient(#fff,#fff) 1px 1px/5px 5px no-repeat,
+   linear-gradient(#fff,#fff) calc(100% - 6px) 1px/5px 5px no-repeat,
+   linear-gradient(#fff,#fff) 1px calc(100% - 6px)/5px 5px no-repeat,
+   linear-gradient(#fff,#fff) calc(100% - 6px) calc(100% - 6px)/5px 5px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) 0 0/7px 7px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) calc(100% - 7px) 0/7px 7px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) 0 calc(100% - 7px)/7px 7px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) calc(100% - 7px) calc(100% - 7px)/7px 7px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) 3px 3px/calc(100% - 6px) 1px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) 3px calc(100% - 4px)/calc(100% - 6px) 1px no-repeat,
+   linear-gradient(var(--gain),var(--gain)) 3px 3px/1px calc(100% - 6px) no-repeat,
+   linear-gradient(var(--gain),var(--gain)) calc(100% - 4px) 3px/1px calc(100% - 6px) no-repeat}
+html[data-theme=light] .name::after{content:"Karthikeya";position:absolute;left:calc(100% + 30px);top:46%;padding:4px 11px 4px 26px;border-radius:0 9px 9px 9px;background:var(--gain) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3.2 2.4v15.2l3.8-3.5 2.6 6.1 2.6-1.1-2.5-5.9 5.1-.2z' fill='%232447ff' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat 7px 50%/13px 15px;color:#fff;font:600 12.5px/1.35 var(--f-body);letter-spacing:0;font-variation-settings:normal;white-space:nowrap;pointer-events:none}
+html[data-theme=light] .id-card{position:relative}
+html[data-theme=light] .id-card::before{content:"Portrait \00b7  800 \00d7  800";position:absolute;left:2px;top:-26px;font:500 11px var(--f-mono);letter-spacing:.02em;color:var(--gain);white-space:nowrap}
+html[data-theme=light] .id-card img{border-radius:12px}
+html[data-theme=light] .hm-g,html[data-theme=light] .cr,html[data-theme=light] .risk,html[data-theme=light] .ks{border-color:var(--line-2);background:#fff;box-shadow:0 1px 2px rgba(16,16,22,.04),0 22px 40px -28px rgba(16,16,22,.25)}
+html[data-theme=light] .ks{border-radius:18px;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-theme=light] .ticker{background:#101014;border-color:#101014}
+html[data-theme=light] .tk{color:#e9e9ee;border-right-color:rgba(255,255,255,.1)}
 html[data-theme=light] .tk b{color:#fff}
-html[data-theme=light] .tk i{color:#b9b3dc}
-html[data-theme=light] .tk em{color:#ffc247}
-html[data-theme=light] .sec-title em,html[data-theme=light] .ct-title em{color:var(--text);background:linear-gradient(transparent 56%,#ffd23f 56% 90%,transparent 90%);padding:0 .06em;margin:0 -.02em}
-html[data-theme=light] .sec-tag b{border:2px solid var(--line-2);color:#fff}
-html[data-theme=light] .hold{border-top-color:var(--line-2)}
-html[data-theme=light] .h-row{border-bottom-color:var(--line-2)}
-html[data-theme=light] .h-plus{border-color:var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2)}
-html[data-theme=light] .h-tag{border-color:var(--line-2);background:#fff;color:var(--text)}
-html[data-theme=light] .trio div{background:#fff;border-color:var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2)}
-html[data-theme=light] .bar::before{background:#fff;border:2px solid var(--line-2)}
-html[data-theme=light] .bar i{border:2px solid var(--line-2)}
-html[data-theme=light] .bar.before i{background:#ffd9a1}
-html[data-theme=light] .sq{border:1.5px solid var(--line-2);background:#fff}
-html[data-theme=light] .node{background:#fff;border-color:var(--line-2);color:var(--text)}
-html[data-theme=light] .node[aria-pressed=true]{background:var(--gain);color:#fff}
-html[data-theme=light] .rtab{background:#fff;box-shadow:inset 0 0 0 1px var(--line-2)}
-html[data-theme=light] .rtab i{background:var(--surface-2);color:var(--text)}
-html[data-theme=light] .rtab[aria-pressed=true]{background:var(--gain);border-color:var(--line-2);color:#fff;box-shadow:inset 0 0 0 1px var(--line-2),3px 3px 0 var(--line-2)}
-html[data-theme=light] .rtab[aria-pressed=true] small{color:rgba(255,255,255,.8)}
-html[data-theme=light] .chart .band{background:rgba(255,210,63,.3);border-inline:2px dashed var(--line-2)}
-html[data-theme=light] .tip{background:#fff;border:2px solid var(--line-2);box-shadow:3px 3px 0 var(--line-2)}
-html[data-theme=light] .xd{background:#fff}
-html[data-theme=light] .tile{border-color:var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2);color:var(--text)}
-html[data-theme=light] .mini-btn{border-color:var(--line-2);background:#fff;box-shadow:inset 0 0 0 1px var(--line-2),2px 2px 0 var(--line-2)}
-html[data-theme=light] .mini-btn.primary{background:var(--gain);color:#fff}
-html[data-theme=light] .stack-canvas,html[data-theme=light] .game-board{border:1px solid var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2);background:#fff6e3}
-html[data-theme=light] .ct-act{border-color:var(--line-2);box-shadow:inset 0 0 0 1px var(--line-2);background:#fff;color:var(--text)}
-html[data-theme=light] .ct-act:hover{background:#ffd23f}
-html[data-theme=light] .ct-list,html[data-theme=light] .ct-row{border-color:var(--line-2)}
-html[data-theme=light] .disc,html[data-theme=light] .disc p{border-color:var(--line-2)}
-html[data-theme=light] .cr-badge{background:#ffd23f;color:var(--text);border-color:var(--line-2)}
-html[data-theme=light] .nudge{background:#ffd23f;color:var(--text);border:2px solid var(--line-2);box-shadow:4px 4px 0 var(--line-2);rotate:-2deg}
-html[data-theme=light] .nudge::before{border:2px solid var(--line-2);border-right:0;border-bottom:0;top:-8px}
-html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{opacity:.9}
-html[data-theme=light] .amb.up{color:var(--gain)}
-html[data-theme=light] .amb.dn{color:var(--loss)}
-/* day cursor: a spinning star */
-html[data-theme=light] #cur .cm{width:22px;height:22px;left:-11px;top:-11px;transform:none;background:none;box-shadow:none;animation:cmspin 7s linear infinite}
-html[data-theme=light] #cur .cm::before,html[data-theme=light] #cur .cm::after{content:"";position:absolute;clip-path:polygon(50% 0,63% 37%,100% 50%,63% 63%,50% 100%,37% 63%,0 50%,37% 37%)}
-html[data-theme=light] #cur .cm::before{inset:-3px;background:var(--line-2)}
-html[data-theme=light] #cur .cm::after{inset:0;background:var(--gain);transition:background-color .15s}
+html[data-theme=light] .tk i{color:#8d8d99}
+html[data-theme=light] .tk em{color:#8ea2ff}
+html[data-theme=light] .sec-tag b{background:rgba(36,71,255,.08);color:var(--gain);border:1px solid rgba(36,71,255,.28);border-radius:7px}
+html[data-theme=light] .bar.before i{background:#cfcdc6}
+html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*.55%),#fff);border-color:color-mix(in srgb,var(--c) 30%,transparent);color:var(--text)}
+html[data-theme=light] .chart .band{background:rgba(36,71,255,.06);border-inline:1px dashed rgba(36,71,255,.45)}
+html[data-theme=light] .nudge{background:#101014;color:#fff;border:0;box-shadow:0 14px 30px -12px rgba(16,16,20,.5);rotate:0deg}
+html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{color:var(--faint)}
+/* day cursor: a clean design-tool arrow that always carries a name tag */
+html[data-theme=light] #cur .cm,html[data-theme=light] #cur.hot .cm,html[data-theme=light] #cur.down .cm{width:24px;height:24px;left:-3px;top:-3px;transform:none;border-radius:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3.2 2.4v15.2l3.8-3.5 2.6 6.1 2.6-1.1-2.5-5.9 5.1-.2z' fill='%232447ff' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;box-shadow:none;animation:none;filter:drop-shadow(0 2px 3px rgba(16,16,22,.28))}
+html[data-theme=light] #cur.hot .cm{scale:1.15}
+html[data-theme=light] #cur.down .cm{scale:.88}
 html[data-theme=light] #cur .brk{display:none}
-html[data-theme=light] #cur.hot .cm{scale:1.55}
-html[data-theme=light] #cur.down .cm{scale:.8}
-html[data-theme=light] #cur.down .cm::after{background:var(--loss)}
-html[data-theme=light] #cur .tag{background:#ffd23f;color:var(--text);border:2px solid var(--line-2);box-shadow:2px 2px 0 var(--line-2)}
-html[data-theme=light] #cur.down .tag{background:var(--loss);color:#fff}
+html[data-theme=light] #cur .tag,html[data-theme=light] #cur.hot .tag{opacity:1;translate:0 0;left:16px;top:22px;background:var(--gain);color:#fff;border-radius:0 8px 8px 8px;font:600 11.5px/1.35 var(--f-body);letter-spacing:0;padding:3px 9px}
+html[data-theme=light] #cur.down .tag{background:#101014;color:#fff}
 html[data-theme=light] .ch{display:none!important}
 html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-track):not(.tsw-knob)::before,html.tswitch :not(.tsw-track):not(.tsw-knob)::after{transition:none!important}
 
@@ -552,8 +538,8 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
   .name{grid-column:1;grid-row:1;font-size:min(56px,calc((100vw - 150px)/4.4))}
   html[data-theme] .id-card{grid-column:2;grid-row:1;width:94px;max-width:none;margin:0;padding:4px;border-radius:20px}
   html[data-theme] .id-card img{border-radius:16px}
-  html[data-theme=light] .id-card{box-shadow:inset 0 0 0 1px var(--line-2),3px 3px 0 var(--line-2)}
-  html[data-theme=light] .id-card img{border-width:1.5px}
+  html[data-theme=light] .id-card::before,html[data-theme=light] .name::after{display:none}
+  html[data-theme=light] .name::before{inset:-6px -8px -4px -8px}
   .id-meta{display:none}
   .role,.lede,.cta-row{grid-column:1/-1}
   .role{margin-top:14px}
@@ -582,7 +568,6 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
 
 /* ================= MOBILE PASS 2 ================= */
 .hero .btn-ghost:not(:hover){background:var(--bg)}
-html[data-theme=light] .hero .btn-ghost:not(:hover){background:#fff}
 .sheet-foot{justify-content:flex-start}
 .sheet-foot .btn{align-self:flex-start;font-weight:800;font-size:17px}
 @media (max-width:640px){
@@ -608,7 +593,7 @@ html[data-theme=light] .hero .btn-ghost:not(:hover){background:#fff}
 .ct-list{margin-inline:auto}
 .ct-dl{background:var(--gain);border-color:var(--gain);color:var(--on-gain);font-weight:700}
 .ct-dl:hover{background:var(--gain);border-color:var(--gain);color:var(--on-gain);filter:brightness(1.08)}
-html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:var(--gain);border-color:var(--line-2);color:#fff;box-shadow:inset 0 0 0 1px var(--line-2),2px 2px 0 var(--line-2)}
+html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:#101014;border-color:#101014;color:#fff}
 @media (min-width:900px){
   #contact .sec-head{align-items:center}
   #contact .ct-title{text-align:center}
@@ -903,7 +888,7 @@ html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:var
           <div class="ct-row"><span class="mono-l">Email</span><a class="v" href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a><button class="ct-act" type="button" id="copyMail">Copy</button></div>
           <div class="ct-row"><span class="mono-l">Phone</span><a class="v" href="tel:+918296114865">+91 82961 14865</a><a class="ct-act" href="tel:+918296114865">Call</a></div>
           <div class="ct-row"><span class="mono-l">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">/in/karthikeyaburugula</a><a class="ct-act" href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">Open</a></div>
-          <div class="ct-row"><span class="mono-l">Resume</span><span class="v">Karthikeya_CV.pdf</span><a class="ct-act ct-dl" href="../assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download</a></div>
+          <div class="ct-row"><span class="mono-l">Resume</span><span class="v">View My Experience</span><a class="ct-act ct-dl" href="../assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download</a></div>
         </div>
       </div>
     </div>
@@ -941,8 +926,8 @@ let pal={day:false,up:'#3be28f',down:'#ff6b5d',text:'#ecf4ee',bg:'#080d0b',dim:'
 function refreshPalette(){
   const day=root.dataset.theme==='light';
   pal={day,up:cssVar('--gain')||pal.up,down:cssVar('--loss')||pal.down,text:cssVar('--text')||pal.text,bg:cssVar('--bg')||pal.bg,dim:cssVar('--dim')||pal.dim,
-    c1:cssVar('--gain')||pal.c1,c2:(day?cssVar('--loss'):cssVar('--cyan'))||pal.c2,core:day?'#fff4d6':'#eafff4',
-    blocks:day?['#ff6a3d','#ffb000','#6a3df0']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(29,23,71,.84)':'rgba(5,7,11,.78)',vtext:day?'#fff4e0':'#e6f7ff'};
+    c1:cssVar('--gain')||pal.c1,c2:(day?'#8a9bff':cssVar('--cyan'))||pal.c2,core:day?'#ffffff':'#eafff4',
+    blocks:day?['#2447ff','#101014','#8a9bff']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(16,16,20,.84)':'rgba(5,7,11,.78)',vtext:day?'#fafaf8':'#e6f7ff'};
 }
 refreshPalette();
 
@@ -952,9 +937,9 @@ let themeTouched=false, nudgeT=0;
 themeBtn.setAttribute('aria-checked',root.dataset.theme==='light');
 function applyTheme(t){
   root.dataset.theme=t; themeBtn.setAttribute('aria-checked',t==='light');
-  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#fff4e0':'#080d0b';
+  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#fafaf8':'#080d0b';
   if(nudgeEl.classList.contains('show')){ nudgeEl.querySelector('small').textContent=''; }
-  refreshPalette(); if(window.__themeChanged) window.__themeChanged();
+  refreshPalette(); if(window.__themeChanged) window.__themeChanged(); if(window.__refreshCur) window.__refreshCur();
 }
 function hideNudge(){ nudgeEl.classList.remove('show'); themeBtn.classList.remove('nudging'); }
 function showNudge(){
@@ -1269,17 +1254,13 @@ function addPoint(x,y){
   }
   tail.push({x,y,t:now,sp}); if(tail.length>60) tail.shift(); kick();
 }
-const CONFETTI_WORDS=['pop!','yay!','boom!','nice!','whee!','ding!'];
+const PM_WORDS=['Shipped','LGTM','Merged','Approved','Unblocked','+1','Done'];
+function rrect(x,y,w,h,r){ cx.beginPath(); cx.moveTo(x+r,y); cx.arcTo(x+w,y,x+w,y+h,r); cx.arcTo(x+w,y+h,x,y+h,r); cx.arcTo(x,y+h,x,y,r); cx.arcTo(x,y,x+w,y,r); cx.closePath(); }
 function burst(x,y){
   if(reduce) return;
   const now=performance.now();
   if(pal.day){
-    const cols=[pal.up,pal.down,'#ffb000','#2f6bff'], pieces=[];
-    for(let i=0;i<24;i++){
-      const a=Math.random()*6.2832, v=.2+Math.random()*.5;
-      pieces.push({vx:Math.cos(a)*v,vy:Math.sin(a)*v-.14,rot:Math.random()*6,vr:(Math.random()-.5)*.02,sh:i%3,c:cols[i%4],sz:4+Math.random()*5});
-    }
-    bursts.push({day:true,x,y,t:now,pieces,label:CONFETTI_WORDS[Math.floor(Math.random()*CONFETTI_WORDS.length)]});
+    bursts.push({day:true,x,y,t:now,label:PM_WORDS[Math.floor(Math.random()*PM_WORDS.length)]});
   }else{
     const n=16, spikes=[];
     for(let i=0;i<n;i++){
@@ -1344,7 +1325,7 @@ function frame(now){
     if(a>=1){ sparks.splice(i,1); continue; }
     s.x+=s.vx*dt; s.y+=s.vy*dt;
     const col=s.c?pal.c2:pal.c1; cx.globalAlpha=1-a; cx.strokeStyle=col; cx.fillStyle=col; cx.lineWidth=s.sz*.8; cx.lineCap='round';
-    if(pal.day){ star(s.x,s.y,s.sz*2.4*(1-a*.5),a*4); }
+    if(pal.day){ cx.beginPath(); cx.arc(s.x,s.y,s.sz*1.1*(1-a*.5),0,6.2832); cx.fill(); }
     else { cx.beginPath(); cx.moveTo(s.x,s.y); cx.lineTo(s.x-s.vx*70,s.y-s.vy*70); cx.stroke(); }
   }
   cx.globalAlpha=1;
@@ -1354,15 +1335,12 @@ function frame(now){
     if(a>=1){ bursts.splice(i,1); continue; }
     const alpha=1-Math.pow(a,2.2);
     if(b.day){
-      b.pieces.forEach(p=>{
-        const px=b.x+p.vx*ms, py=b.y+p.vy*ms+.5*.0007*ms*ms, rot=p.rot+p.vr*ms;
-        cx.globalAlpha=alpha; cx.fillStyle=p.c;
-        if(p.sh===2){ star(px,py,p.sz*1.2,rot); }
-        else if(p.sh===1){ cx.save(); cx.translate(px,py); cx.rotate(rot); cx.beginPath(); cx.moveTo(0,-p.sz); cx.lineTo(p.sz,p.sz*.8); cx.lineTo(-p.sz,p.sz*.8); cx.closePath(); cx.fill(); cx.restore(); }
-        else { cx.save(); cx.translate(px,py); cx.rotate(rot); cx.fillRect(-p.sz/2,-p.sz/2,p.sz,p.sz); cx.restore(); }
-      });
-      cx.globalAlpha=alpha; cx.fillStyle=pal.text; cx.textAlign='center'; cx.font='800 17px '+FDISP;
-      cx.fillText(b.label,b.x,b.y-24-Math.min(1,a*1.4)*34);
+      const e=1-Math.pow(1-Math.min(1,a*1.2),3);
+      cx.lineWidth=1.5; cx.strokeStyle=pal.up;
+      for(let k=0;k<2;k++){ cx.globalAlpha=alpha*(k?.4:.9); cx.beginPath(); cx.arc(b.x,b.y,(k?16:7)+e*(k?66:42),0,6.2832); cx.stroke(); }
+      cx.font='600 12px '+FMONO; const tw=cx.measureText(b.label).width+20, cy=b.y-32-Math.min(1,a*1.4)*26;
+      cx.globalAlpha=alpha; cx.fillStyle=pal.text; rrect(b.x-tw/2,cy-12,tw,24,7); cx.fill();
+      cx.fillStyle='#fff'; cx.textAlign='center'; cx.textBaseline='middle'; cx.fillText(b.label,b.x,cy+.5); cx.textBaseline='alphabetic';
     }else{
       const e=1-Math.pow(1-Math.min(1,a*1.35),3);
       b.spikes.forEach(s=>{
@@ -1406,7 +1384,7 @@ function tagFor(el){
   return '';
 }
 let lastEl=null, lpx=-1, lpy=-1;
-function refreshTag(){ const t=tagFor(lastEl); curTag.textContent=t; cur.classList.toggle('hot',!!t); }
+function refreshTag(){ const t=tagFor(lastEl); curTag.textContent=t||(pal.day?'Karthikeya':''); cur.classList.toggle('hot',!!t); }
 window.__refreshCur=()=>setTimeout(()=>{ if(lpx>=0){ lastEl=document.elementFromPoint(lpx,lpy); } refreshTag(); },60);
 
 if(!reduce){
@@ -1460,13 +1438,12 @@ if(fine){
 (function(){
   const amb=$('#amb'); if(reduce) return;
   const words=['+0.8%','▲ 2.1','+₹340','+1.4%','▲ 0.6','+3.2%','▲ 12 bps','+0.5%','▲ 1.8'], neg=['-0.4%','▼ 0.9','-1.1%'];
-  const fun=['✦','★','✺','✿','♥','☀','✧','♪'];
+  const fun=['v2.4','LGTM','P0','shipped','A/B +4.2%','NPS 72','merged','sprint 24','OKR ✓','PRD v3','roadmap'];
   function go(){
     if(!document.hidden && amb.childElementCount<12){
       const up=Math.random()>.2, el=document.createElement('span');
       el.className='amb '+(up?'up':'dn');
       const list=pal.day?fun:(up?words:neg); el.textContent=list[Math.floor(Math.random()*list.length)];
-      if(pal.day) el.style.fontSize=(14+Math.random()*14)+'px';
       el.style.left=(Math.random()*94+1)+'vw'; el.style.top=(38+Math.random()*58)+'vh';
       amb.appendChild(el); el.addEventListener('animationend',()=>el.remove());
     }
