@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Karthikeya Burugula · Product Manager</title>
 <meta name="description" content="Product Manager, 4+ years building fintech and B2B platforms. Currently at AssetPlus, owning onboarding and growth for a 200K+ user mutual fund platform. Read the factsheet.">
-<meta name="theme-color" content="#f5f2ea">
+<meta name="theme-color" content="#f2f4f8">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Karthikeya Burugula · Product Manager">
 <meta property="og:description" content="Fintech & B2B product manager. PMS tracker, SIF growth, 22 → 12 minute activation. Read the factsheet.">
@@ -13,7 +13,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23080d0b'/%3E%3Cpath d='M5 22l7-7 5 4 10-11' fill='none' stroke='%233be28f' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Figtree:wght@400..700&family=JetBrains+Mono:wght@400..600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Figtree:wght@400..700&family=JetBrains+Mono:wght@400..600&display=swap">
 <script>
 /* Set the theme before first paint so there is no flash. */
 (function(){
@@ -40,13 +40,15 @@
   color-scheme:dark;
 }
 :root[data-theme=light]{
-  --bg:#f5f2ea; --bg-2:#ece8dd; --surface:#fbfaf6; --surface-2:#f0ece1;
-  --line:rgba(21,23,28,.12); --line-2:rgba(21,23,28,.22);
-  --text:#15171c; --dim:#555a66; --faint:#8a8e98;
-  --gain:#14284b; --on-gain:#f7f4ec; --amber:#a9812f; --cyan:#4a6b8a; --loss:#8f2d2d;
-  --glass:rgba(245,242,234,.85);
-  --shadow:0 1px 2px rgba(21,23,28,.04),0 24px 48px -32px rgba(21,23,28,.25);
-  --f-display:"Newsreader","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --bg:#f2f4f8; --bg-2:#e9edf4; --surface:rgba(255,255,255,.72); --surface-2:rgba(255,255,255,.55);
+  --line:rgba(15,23,42,.08); --line-2:rgba(15,23,42,.14);
+  --text:#0b1020; --dim:#4a5368; --faint:#8790a4;
+  --gain:#0a64ff; --on-gain:#ffffff; --amber:#14a3b8; --cyan:#7a5cff; --loss:#ff453a;
+  --glass:rgba(255,255,255,.7);
+  --shadow:0 1px 1px rgba(15,23,42,.04),0 24px 48px -28px rgba(15,23,42,.28);
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Figtree","Segoe UI",system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Figtree","Segoe UI",system-ui,sans-serif;
+  --f-mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -164,7 +166,7 @@ ul{padding:0;list-style:none}
 .id-top{display:flex;justify-content:space-between;align-items:center}
 .id-name{font:700 19px var(--f-display);letter-spacing:-.02em}
 .id-sub{font-size:13.5px;color:var(--dim)}
-.ks{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(56px,8vw,96px);border:1px solid var(--line);background:var(--glass);}
+.ks{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(36px,min(8vw,9vh),96px);border:1px solid var(--line);background:var(--glass);}
 .ks-i{display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px clamp(14px,2.2vw,32px) 26px;border-left:1px solid var(--line)}
 .ks-i:first-child{border-left:0}
 .ks-v{font:700 clamp(34px,5vw,68px)/1 var(--f-display);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
@@ -464,80 +466,54 @@ html.cx-on .ch{opacity:1}
 /* ---------- hero sun (day only) ---------- */
 @keyframes cmspin{to{rotate:360deg}}
 
-/* ================= DAY: "Annual Report" ===================
-   Professional and minimal: ivory paper, a serif display face, ink and navy,
-   a touch of brass, hairline rules, one portrait plate, one image band.
-   Night stays the market terminal. */
-.ib{display:none}
-html[data-theme=light] body::before{display:none}
-html[data-theme=light] :is(.name,.sec-title,.ct-title,.ks-v,.h-name,.h-metric b,.hm-h h3,.cr h3,.rp h3,.risk-v,.trio b,.id-name,.arc-head h3,.tile.md,.tile.lg,.ib span){font-weight:500}
-html[data-theme=light] :is(.name,.ct-title){letter-spacing:-.028em}
-html[data-theme=light] :is(.sec-title,.ks-v,.h-metric b){letter-spacing:-.022em}
-html[data-theme=light] :is(.h-name,.hm-h h3,.cr h3,.rp h3,.risk-v,.id-name,.trio b,.tile.md,.tile.lg){letter-spacing:-.012em}
-html[data-theme=light] .name{line-height:.96}
-html[data-theme=light] .name .b,html[data-theme=light] .sec-title em,html[data-theme=light] .ct-title em{font-style:italic;font-weight:400}
-html[data-theme=light] .obj{font-weight:400;letter-spacing:-.005em}
-html[data-theme=light] .obj mark{color:var(--gain);font-style:italic}
-html[data-theme=light] .logo{font-weight:600}
-/* chrome */
-html[data-theme=light] .nav{border-radius:14px;background:rgba(251,250,246,.94);border-color:var(--line-2);box-shadow:0 1px 2px rgba(21,23,28,.04),0 16px 34px -22px rgba(21,23,28,.3)}
-html[data-theme=light] .mkt{border-radius:8px;background:var(--surface-2);color:var(--text)}
-html[data-theme=light] .mkt.hire{--gain:#2e8b5e}
-html[data-theme=light] .links a{border-radius:8px}
-html[data-theme=light] .tsw-track{border:1px solid var(--line-2);background:linear-gradient(#bcd6ee,#f4e4c6)}
-html[data-theme=light] .tsw-knob{background:#f0b429;box-shadow:0 0 0 3px rgba(240,180,41,.25),0 0 10px rgba(240,180,41,.55)}
-html[data-theme=light] .btn,html[data-theme=light] .btn-sm{border-radius:10px}
-html[data-theme=light] .btn-primary{background:#15171c;color:#f7f4ec;border-color:#15171c}
-html[data-theme=light] .btn-primary:hover{background:var(--gain);border-color:var(--gain);box-shadow:0 14px 28px -16px rgba(20,40,75,.7);transform:translateY(-1px)}
-html[data-theme=light] .btn-ghost,html[data-theme=light] .hero .btn-ghost:not(:hover){background:transparent;border-color:var(--line-2);color:var(--text)}
-html[data-theme=light] .btn-ghost:hover{background:transparent;border-color:var(--text)}
-/* hero: type first, one portrait plate */
+/* ================= DAY: "Aurora Glass" ===================
+   Mac-native and quiet: SF Pro type, cool paper, frosted glass, one blue-to-violet
+   gradient, a deep glass contact panel. Night stays the market terminal. */
+html[data-theme=light] body::before{
+  background-image:radial-gradient(46vmax 36vmax at 12% -6%,rgba(10,100,255,.17),transparent 62%),radial-gradient(40vmax 34vmax at 96% 8%,rgba(122,92,255,.14),transparent 62%),radial-gradient(44vmax 34vmax at 70% 112%,rgba(20,163,184,.13),transparent 62%);
+  background-size:auto;mask-image:none;-webkit-mask-image:none}
+html[data-theme=light] :is(.name,.sec-title,.ct-title,.ks-v,.h-name,.h-metric b,.hm-h h3,.cr h3,.rp h3,.risk-v,.trio b,.id-name,.tile.md,.tile.lg){font-weight:600}
+html[data-theme=light] .name{font-size:clamp(52px,min(8.6vw,16.5vh),128px)}
+html[data-theme=light] .name .b{display:inline-block;padding-bottom:.16em;margin-bottom:-.16em}
+html[data-theme=light] :is(.name .b,.sec-title em,.ct-title em){background:linear-gradient(100deg,#0a64ff 0%,#6a4dff 52%,#b25cff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+html[data-theme=light] .nav{background:rgba(255,255,255,.88);border:1px solid #fff;box-shadow:0 0 0 1px rgba(15,23,42,.06),0 16px 36px -18px rgba(15,23,42,.3),inset 0 1px 0 #fff}
+html[data-theme=light] .mkt{background:rgba(15,23,42,.05);color:var(--text)}
+html[data-theme=light] .mkt.hire{--gain:#22b36b}
+html[data-theme=light] .tsw-track{border:1px solid var(--line-2);background:linear-gradient(#9cc9ff,#ffe3b8)}
+html[data-theme=light] .tsw-knob{background:#ffb830;box-shadow:0 0 0 3px rgba(255,184,48,.28),0 0 12px rgba(255,184,48,.6)}
+html[data-theme=light] .btn-primary{background:linear-gradient(180deg,#2b7bff,#0a64ff);color:#fff;border-color:transparent;box-shadow:0 10px 22px -10px rgba(10,100,255,.7),inset 0 1px 0 rgba(255,255,255,.35)}
+html[data-theme=light] .btn-primary:hover{box-shadow:0 16px 28px -12px rgba(10,100,255,.8),inset 0 1px 0 rgba(255,255,255,.35);transform:translateY(-1px)}
+html[data-theme=light] .btn-ghost,html[data-theme=light] .hero .btn-ghost:not(:hover){background:rgba(255,255,255,.75);border-color:rgba(15,23,42,.12);box-shadow:0 1px 0 #fff inset}
+html[data-theme=light] .btn-ghost:hover{background:#fff;border-color:rgba(15,23,42,.3)}
 html[data-theme=light] .hc,html[data-theme=light] .hero-bg::before{display:none}
-html[data-theme=light] .id-card{position:relative;max-width:400px;background:none;border:0;box-shadow:none;padding:0;border-radius:0;overflow:visible}
-html[data-theme=light] .id-card img{position:relative;z-index:1;aspect-ratio:4/5;object-position:center 16%;border-radius:6px;border:0}
-html[data-theme=light] .id-meta{position:relative;z-index:1;padding:18px 0 0}
-html[data-theme=light] .ks{background:none;border:0;border-block:1px solid var(--line-2);border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-theme=light] .id-card{background:rgba(255,255,255,.74);border:1px solid #fff;box-shadow:0 0 0 1px rgba(15,23,42,.06),0 28px 50px -34px rgba(15,23,42,.32),inset 0 1px 0 #fff;border-radius:34px;padding:10px;box-shadow:0 0 0 1px rgba(15,23,42,.06),0 44px 70px -36px rgba(10,100,255,.5),inset 0 1px 0 #fff}
+html[data-theme=light] .id-card img{border-radius:26px}
+html[data-theme=light] .ks{background:rgba(255,255,255,.74);border:1px solid #fff;box-shadow:0 0 0 1px rgba(15,23,42,.06),0 28px 50px -34px rgba(15,23,42,.32),inset 0 1px 0 #fff;border-radius:28px;backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-theme=light] .ks-i{border-left-color:var(--line)}
-html[data-theme=light] .ks-i:first-child{border-left:0}
-html[data-theme=light] .ticker{background:#0f1b2d;border-color:#0f1b2d}
-html[data-theme=light] .tk{color:#e8e4d8;border-right-color:rgba(255,255,255,.1)}
-html[data-theme=light] .tk b{color:#fff}
-html[data-theme=light] .tk i{color:#8d97a8}
-html[data-theme=light] .tk em{color:#d6b66a}
-/* sections */
-html[data-theme=light] .sec-tag b{background:none;color:var(--text);border:1px solid var(--line-2);border-radius:6px;font-weight:500}
-html[data-theme=light] .risk,html[data-theme=light] .hm-g,html[data-theme=light] .chart-card,html[data-theme=light] .cr{background:var(--surface);border:1px solid var(--line-2);border-radius:8px;box-shadow:none}
-html[data-theme=light] .hold{border-top:1px solid var(--text)}
-html[data-theme=light] .h-row{border-bottom-color:var(--line-2)}
-html[data-theme=light] .h-btn::before{background:linear-gradient(90deg,rgba(20,40,75,.06),transparent 70%)}
-html[data-theme=light] .h-tag{border-radius:4px;background:none;color:var(--dim)}
-html[data-theme=light] .trio div{background:var(--surface);border-radius:8px}
-html[data-theme=light] .bar::before{background:#e4dfd2}
-html[data-theme=light] .bar.before i{background:#c9c3b3}
-html[data-theme=light] .g-pm{--c:#14284b} html[data-theme=light] .g-an{--c:#a9812f} html[data-theme=light] .g-ds{--c:#4a6b8a}
-html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*.5%),#fbfaf6);border:1px solid color-mix(in srgb,var(--c) 22%,transparent);border-radius:4px;color:var(--text)}
-html[data-theme=light] .rtab{border-radius:8px;background:transparent}
-html[data-theme=light] .rtab[aria-pressed=true]{background:var(--gain);border-color:var(--gain);color:var(--on-gain)}
-html[data-theme=light] .chart .band{background:rgba(169,129,47,.08);border-inline:1px dashed rgba(169,129,47,.55)}
-html[data-theme=light] .cr-badge{background:rgba(20,40,75,.07);color:var(--gain);border-radius:4px}
-/* one image band: monochrome navy */
-html[data-theme=light] .ib{display:block;position:relative;height:clamp(180px,22vw,280px);margin-top:clamp(34px,5vw,64px);border-radius:8px;overflow:hidden;
-  background:linear-gradient(90deg,#0f1b2d 0,#0f1b2d 34%,rgba(15,27,45,0) 80%),url(../assets/profile.png) 82% 16%/cover no-repeat,#0f1b2d;background-blend-mode:normal,luminosity,normal}
-html[data-theme=light] .ib span{position:absolute;left:clamp(22px,4.4vw,64px);top:50%;transform:translateY(-50%);font:500 clamp(28px,4.6vw,62px)/1.02 var(--f-display);letter-spacing:-.025em;color:#f5f2ea}
-html[data-theme=light] .ib span em{font-style:italic;font-weight:400;color:#d6b66a}
-/* contact: deep navy block */
+html[data-theme=light] .risk,html[data-theme=light] .hm-g,html[data-theme=light] .chart-card,html[data-theme=light] .cr{GLASS}
+html[data-theme=light] .tile{background:color-mix(in srgb,var(--c) calc(var(--k)*.7%),#fff);border-color:color-mix(in srgb,var(--c) 26%,transparent);color:var(--text)}
+html[data-theme=light] .g-pm{--c:#0a64ff}
+html[data-theme=light] .node,html[data-theme=light] .tip{background:#fff}
+html[data-theme=light] .rtab{background:rgba(255,255,255,.7)}
+html[data-theme=light] .rtab[aria-pressed=true]{background:var(--gain);border-color:var(--gain);color:#fff}
+html[data-theme=light] .h-tag{background:rgba(255,255,255,.6)}
+html[data-theme=light] .trio div{background:rgba(255,255,255,.8)}
+html[data-theme=light] .bar::before{background:rgba(15,23,42,.07)}
+html[data-theme=light] .bar.before i{background:#c7cedd}
+/* contact: deep glass panel with a soft aurora */
 html[data-theme=light] #contact .wrap{position:relative;isolation:isolate;
-  --bg:#0f1b2d;--bg-2:#13233a;--surface:#15263e;--surface-2:#1b3050;--line:rgba(245,242,234,.14);--line-2:rgba(245,242,234,.26);
-  --text:#f5f2ea;--dim:rgba(245,242,234,.78);--faint:rgba(245,242,234,.55);--gain:#d6b66a;--on-gain:#0f1b2d;color:var(--text)}
-html[data-theme=light] #contact .wrap::before{content:"";position:absolute;inset:-30px 4px -34px;border-radius:10px;z-index:-1;background:#0f1b2d}
-html[data-theme=light] .ct-act{border-radius:6px}
-html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:var(--gain);border-color:var(--gain);color:var(--on-gain)}
-html[data-theme=light] #contact .btn-primary{background:var(--gain);color:var(--on-gain);border-color:var(--gain)}
-html[data-theme=light] .nudge{background:#15171c;color:#f7f4ec;border:0;border-radius:10px;box-shadow:0 14px 30px -14px rgba(21,23,28,.5);rotate:0deg}
+  --bg:#0b1020;--bg-2:#10172e;--surface:rgba(255,255,255,.06);--surface-2:rgba(255,255,255,.1);--line:rgba(255,255,255,.12);--line-2:rgba(255,255,255,.22);
+  --text:#ffffff;--dim:rgba(255,255,255,.76);--faint:rgba(255,255,255,.5);--gain:#7db4ff;--on-gain:#0b1020;color:var(--text)}
+html[data-theme=light] #contact .wrap::before{content:"";position:absolute;inset:-34px 4px -38px;border-radius:36px;z-index:-1;
+  background:radial-gradient(540px 320px at 10% 0%,rgba(10,100,255,.6),transparent 62%),radial-gradient(520px 340px at 94% 100%,rgba(122,92,255,.55),transparent 62%),#0b1020;box-shadow:0 40px 80px -44px rgba(11,16,32,.8)}
+html[data-theme=light] #contact :is(.ct-title em){background:linear-gradient(100deg,#7db4ff,#b79bff);-webkit-background-clip:text;background-clip:text}
+html[data-theme=light] .ct-dl,html[data-theme=light] .ct-dl:hover{background:#fff;border-color:#fff;color:#0b1020}
+html[data-theme=light] #contact .btn-primary{background:#fff;color:#0b1020;box-shadow:none}
+html[data-theme=light] .nudge{background:#0b1020;color:#fff;border:0;border-radius:14px;box-shadow:0 16px 34px -14px rgba(11,16,32,.55);rotate:0deg}
 html[data-theme=light] .amb.up{color:var(--gain)}
-html[data-theme=light] .amb.dn{color:var(--faint)}
-html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{opacity:.9}
-/* day cursor: a precise dot that opens into a ring, colour-inverting over any surface */
+html[data-theme=light] .amb.dn{color:#7a5cff}
+html[data-theme=light] .amb.up,html[data-theme=light] .amb.dn{opacity:.85}
+/* day cursor: a precise dot that opens into a ring, inverting over any surface */
 html[data-theme=light] #cur{mix-blend-mode:difference}
 html[data-theme=light] #cur .cm,html[data-theme=light] #cur.hot .cm,html[data-theme=light] #cur.down .cm{width:8px;height:8px;left:-4px;top:-4px;border-radius:50%;transform:none;background:#fff;box-shadow:none;animation:none;transition:scale .25s var(--ease)}
 html[data-theme=light] #cur.hot .cm{scale:.4}
@@ -562,11 +538,9 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
   .name{grid-column:1;grid-row:1;font-size:min(56px,calc((100vw - 150px)/4.4))}
   html[data-theme] .id-card{grid-column:2;grid-row:1;width:94px;max-width:none;margin:0;padding:4px;border-radius:20px}
   html[data-theme] .id-card img{border-radius:16px}
-  html[data-theme=light] .name{font-size:min(56px,calc((100vw - 146px)/5.4))}
-  html[data-theme=light] .id-card{padding:0;border:0;border-radius:6px;width:88px}
-  html[data-theme=light] .id-card img{border-radius:6px;aspect-ratio:4/5}
-  html[data-theme=light] .id-card::before{display:none}
-  html[data-theme=light] .ib span{font-size:clamp(24px,7.4vw,34px)}
+  html[data-theme=light] .id-card{padding:3px;border-radius:22px}
+  html[data-theme=light] .id-card img{border-radius:19px}
+  html[data-theme=light] .name{font-size:min(56px,calc((100vw - 150px)/4.6))}
   .id-meta{display:none}
   .role,.lede,.cta-row{grid-column:1/-1}
   .role{margin-top:14px}
@@ -626,6 +600,17 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
 }
 @media (max-width:640px){ .ct-row{grid-template-columns:58px minmax(0,1fr) auto} .ct-row .ct-act{width:auto;min-width:60px;padding:7px 12px} }
 @media (max-width:380px){ .ct-row{grid-template-columns:50px minmax(0,1fr) auto} .ct-row .ct-act{min-width:54px;padding:7px 8px} }
+/* trader-mode cursor: round and soft instead of a sharp diamond */
+#cur .cm{border-radius:50%;transform:none;box-shadow:0 0 0 2px var(--bg),0 0 0 4px color-mix(in srgb,var(--gain) 40%,transparent),0 0 18px color-mix(in srgb,var(--gain) 70%,transparent)}
+#cur.hot .cm{transform:scale(.6)}
+#cur.down .cm{transform:scale(1.5)}
+#cur .brk i{width:11px;height:11px;border-width:2px}
+#cur .brk i:nth-child(1){border-top-left-radius:6px}
+#cur .brk i:nth-child(2){border-top-right-radius:6px}
+#cur .brk i:nth-child(3){border-bottom-left-radius:6px}
+#cur .brk i:nth-child(4){border-bottom-right-radius:6px}
+#cur .tag{border-radius:999px;padding:4px 10px}
+.ch-tag{border-radius:8px}
 </style>
 </head>
 <body>
@@ -753,7 +738,6 @@ html.tswitch :not(.tsw):not(.tsw-track):not(.tsw-knob),html.tswitch :not(.tsw-tr
             <p class="risk-l">I take the whole problem, not just my slice of it.</p>
           </div>
       </div>
-      <div class="ib" role="img" aria-label="Portrait of Karthikeya Burugula"><span>Read the board.<br><em>Take the shot.</em></span></div>
     </div>
   </section>
 
@@ -953,8 +937,8 @@ let pal={day:false,up:'#3be28f',down:'#ff6b5d',text:'#ecf4ee',bg:'#080d0b',dim:'
 function refreshPalette(){
   const day=root.dataset.theme==='light';
   pal={day,up:cssVar('--gain')||pal.up,down:cssVar('--loss')||pal.down,text:cssVar('--text')||pal.text,bg:cssVar('--bg')||pal.bg,dim:cssVar('--dim')||pal.dim,
-    c1:cssVar('--gain')||pal.c1,c2:(day?cssVar('--gain'):cssVar('--cyan'))||pal.c2,core:day?'#f5f2ea':'#eafff4',
-    blocks:day?['#14284b','#a9812f','#4a6b8a']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(21,23,28,.84)':'rgba(5,7,11,.78)',vtext:day?'#f5f2ea':'#e6f7ff'};
+    c1:cssVar('--gain')||pal.c1,c2:(day?'#7a5cff':cssVar('--cyan'))||pal.c2,core:day?'#ffffff':'#eafff4',
+    blocks:day?['#0a64ff','#14a3b8','#7a5cff']:['#3be28f','#ffbb3b','#53c8f2'],veil:day?'rgba(11,16,32,.84)':'rgba(5,7,11,.78)',vtext:day?'#f2f4f8':'#e6f7ff'};
 }
 refreshPalette();
 
@@ -964,7 +948,7 @@ let themeTouched=false, nudgeT=0;
 themeBtn.setAttribute('aria-checked',root.dataset.theme==='light');
 function applyTheme(t){
   root.dataset.theme=t; themeBtn.setAttribute('aria-checked',t==='light');
-  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#f5f2ea':'#080d0b';
+  const m=document.querySelector('meta[name=theme-color]'); if(m) m.content=t==='light'?'#f2f4f8':'#080d0b';
   if(nudgeEl.classList.contains('show')){ nudgeEl.querySelector('small').textContent=''; }
   refreshPalette(); if(window.__themeChanged) window.__themeChanged(); if(window.__refreshCur) window.__refreshCur();
 }
@@ -1335,6 +1319,7 @@ function drawRibbon(now){
   for(let i=1;i<m;i++) cx.lineTo(L[i][0],L[i][1]);
   for(let i=m-1;i>=0;i--) cx.lineTo(R[i][0],R[i][1]);
   cx.closePath(); cx.fill();
+  { const hx=pts[m-1].x, hy=pts[m-1].y, hw=Math.hypot(L[m-1][0]-R[m-1][0],L[m-1][1]-R[m-1][1])/2; if(hw>.4){ cx.beginPath(); cx.arc(hx,hy,hw,0,6.2832); cx.fill(); } }
   cx.shadowBlur=0;
   const cg=cx.createLinearGradient(pts[0].x,pts[0].y,pts[m-1].x,pts[m-1].y);
   cg.addColorStop(0,hexA(pal.core,0)); cg.addColorStop(.6,hexA(pal.core,.1)); cg.addColorStop(1,hexA(pal.core,.8));
@@ -1342,7 +1327,7 @@ function drawRibbon(now){
   cx.beginPath(); cx.moveTo(pts[0].x,pts[0].y); for(let i=1;i<m;i++) cx.lineTo(pts[i].x,pts[i].y); cx.stroke();
   cx.restore();
 }
-function frame(now){
+function paint(now){
   const dt=Math.min(40,now-lastFrame); lastFrame=now;
   cx.clearRect(0,0,DW,DH);
   while(tail.length&&now-tail[0].t>TAIL_LIFE) tail.shift();
@@ -1382,8 +1367,9 @@ function frame(now){
     }
   }
   cx.globalAlpha=1;
-  if(tail.length||sparks.length||bursts.length) requestAnimationFrame(frame); else { running=false; cx.clearRect(0,0,DW,DH); }
+  return !!(tail.length||sparks.length||bursts.length);
 }
+function frame(now){ if(paint(now)) requestAnimationFrame(frame); else { running=false; cx.clearRect(0,0,DW,DH); } }
 
 /* BSE and NSE levels used for the night-mode price tags (last value and previous close). */
 const LV={sx:{last:72638.70,prev:71909.70},nf:{last:22603.05,prev:22421.95}};
@@ -1444,7 +1430,7 @@ if(fine){
     mx+=(tx-mx)*k; my+=(ty-my)*k;
     cur.style.transform='translate3d('+mx.toFixed(2)+'px,'+my.toFixed(2)+'px,0)';
     if(!pal.day) crosshair(mx,my);
-    if(!reduce) addPoint(mx,my);
+    if(!reduce){ addPoint(mx,my); if(running) paint(now); }
     if(Math.abs(tx-mx)>.15||Math.abs(ty-my)>.15) requestAnimationFrame(follow); else fRun=false;
   }
   addEventListener('pointermove',e=>{
