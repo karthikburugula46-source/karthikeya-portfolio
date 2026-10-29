@@ -414,3 +414,10 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 ## Round 20 — v2 promoted to the live root site
 - Copied `v2/index.html` to root `index.html` (asset paths `../assets/` → `assets/`), removed `v2/`. Old root site is recoverable from git history (commit before this one).
 - The live URL is now `https://karthikburugula46-source.github.io/karthikeya-portfolio/`; `/v2/` no longer exists.
+
+## Round 21 — Day theme "Daylight" reimagined (contour map)
+- New day concept: morning light over a topographic contour map. Background = `assets/contour.svg` (generated with numpy+cv2 marching-squares contours, seed 7; minor lines .14 / index lines .25 opacity) inside fixed `#sun` layer with peach sun glow + periwinkle wash; drifts with scroll progress (max 32vh up / 5vw left, bounded so the layer never runs out). `assets/contour-light.svg` (white-blue strokes) is used inside the dark contact panel.
+- Palette: porcelain `#f3f5fa`, ink `#0f1629`, indigo accent `--gain:#4b3fe4`, peach sun, sky `#2f7fb8`, amber `#d98a1c`. Display weight 400/500 + Instrument Serif italic accent words.
+- Layout (day, >=1061px): sticky left rail (big light numeral + label + title + sub) with content in a right column; hairline between sections; heatmap groups single column; Holdings tag hidden in rail layout. <1061px = stacked (as before). Mobile hero unchanged (name + small arched portrait).
+- Hero portrait: arch with two concentric outline rings (outline-offset 14/30px) + peach glow. Stat strip = white rounded card. Contact = ink panel with contour lines + indigo glow along the base.
+- Night theme untouched. Test driver rebuilt as `shot.mjs` in the scratchpad (scratchpad had been wiped).
