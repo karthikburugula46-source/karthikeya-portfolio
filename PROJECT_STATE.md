@@ -421,3 +421,6 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Layout (day, >=1061px): sticky left rail (big light numeral + label + title + sub) with content in a right column; hairline between sections; heatmap groups single column; Holdings tag hidden in rail layout. <1061px = stacked (as before). Mobile hero unchanged (name + small arched portrait).
 - Hero portrait: arch with two concentric outline rings (outline-offset 14/30px) + peach glow. Stat strip = white rounded card. Contact = ink panel with contour lines + indigo glow along the base.
 - Night theme untouched. Test driver rebuilt as `shot.mjs` in the scratchpad (scratchpad had been wiped).
+
+## Round 22 — contour readability
+- User: contour map made content hard to read. Contour now lives on `#sun::after` (washes stay on `#sun`), layer opacity .4 on mobile; on >=1061px opacity .85 with a horizontal mask (full strength in the left/right 20% gutters, 20% behind the content column). `--dim` darkened to #3f485c, `--faint` #7d869a.
