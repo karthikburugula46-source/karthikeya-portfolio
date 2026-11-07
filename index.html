@@ -19,7 +19,7 @@
 <noscript><style>.bld{opacity:1!important;translate:none!important;filter:none!important}#boot{display:none!important}</style></noscript>
 <style>
 :root{
-  --bg:#08090c; --bg2:#0e0e14; --ink:#f4f1ea; --dim:#9b99a6; --faint:#5d5c68; --line:rgba(255,255,255,.12);
+  --bg:#08090c; --soft:#e6e3dc; --bg2:#0e0e14; --ink:#f4f1ea; --dim:#9b99a6; --faint:#5d5c68; --line:rgba(255,255,255,.12);
   --acc:#5ee8c5; --acc-rgb:94 232 197; --on:#03140f; --blue:#4c8dff;
   --f-d:"Anton","Bebas Neue","Impact","Arial Narrow",sans-serif;
   --f-b:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -126,6 +126,16 @@ img{display:block;max-width:100%}
 .tags span{padding:6px 11px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.03);font:500 10.5px var(--f-m);letter-spacing:.04em;color:var(--dim)}
 
 /* stack marquee */
+.work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px var(--colgap);align-items:start}
+.work-head{position:sticky;top:104px}
+.work-head .dsp{font-size:clamp(54px,8.4vw,140px)}
+.work-grid .cards{grid-template-columns:minmax(0,1fr);margin-top:0;gap:clamp(44px,5vw,72px)}
+.card .pre,.card li,.card-top span,.metric span,.tags span{color:var(--soft)}
+.card-top span{font-size:11px}
+.card .pre{font-size:15.5px}
+.card h3{font-size:clamp(36px,4.2vw,68px)}
+.metric{align-items:center;gap:18px;margin-top:26px}
+.metric span{padding-left:18px;border-left:1px solid var(--line-2);font:500 10.5px/1.5 var(--f-m);letter-spacing:.14em;text-transform:uppercase}
 .stack{margin-top:clamp(64px,8vw,120px)}
 .stack-h{display:flex;justify-content:space-between;gap:12px}
 .stack-h .eyebrow{margin:0}
@@ -149,42 +159,24 @@ img{display:block;max-width:100%}
 .tl time{font:400 26px/1 var(--f-d);color:var(--acc);text-align:right;white-space:nowrap}
 .tl .now{color:#fff}
 
-/* about */
-.about-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px var(--colgap);margin-top:clamp(36px,4vw,60px);align-items:start}
-.about-grid p{margin:0;color:#d6d3da;font-size:15px;max-width:560px}
-.about-grid p b{color:#fff}
-.about-b{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:44px var(--colgap);margin-top:clamp(44px,5vw,76px);align-items:start}
-.how-col{display:grid;gap:40px;justify-items:start}
-.how-col .how{width:100%}
-.edu h5,.how h5{margin:0 0 18px;font:700 10px var(--f-m);letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
-.edu .deg{margin:0 0 22px}
-.edu .deg b{display:block;font:700 15px var(--f-b)}
-.edu .deg span{font:500 11px var(--f-m);color:var(--dim);letter-spacing:.04em}
-.sk{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:12.5px}
-.sk dt{font:500 9.5px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--faint);padding-top:3px}
-.sk dd{margin:0;color:#d6d3da}
-.how ol{list-style:none;margin:0;padding:0}
-.how li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:4px 10px;padding:14px 0;border-top:1px solid var(--line)}
-.how li b.n{font:400 20px/1 var(--f-d);color:var(--acc)}
-.how li b.t{font:700 14px/1.3 var(--f-b)}
-.how li span{grid-column:2;color:var(--dim);font-size:12.5px;line-height:1.5}
-.note{position:relative;justify-self:start;width:min(100%,340px);aspect-ratio:1;padding:26px 24px;background:var(--acc);color:var(--on);rotate:2.2deg;box-shadow:0 30px 50px -26px rgb(var(--acc-rgb) / .55);display:flex;flex-direction:column;justify-content:space-between}
-.note p{margin:0;font:400 clamp(28px,2.7vw,40px)/.98 var(--f-d);text-transform:uppercase;max-width:none;color:var(--on)}
-.note span{font:500 11px var(--f-m);letter-spacing:.1em;text-transform:uppercase}
+.note{position:relative;align-self:flex-end;width:min(100%,206px);margin-top:34px;aspect-ratio:1;padding:16px 15px 13px;background:var(--acc);color:var(--on);rotate:2.2deg;box-shadow:0 22px 40px -24px rgb(var(--acc-rgb) / .55);display:flex;flex-direction:column;justify-content:space-between}
+.note p{margin:0;font:400 clamp(20px,1.7vw,25px)/1 var(--f-d);text-transform:uppercase;max-width:none;color:var(--on)}
+.note span{align-self:flex-end;text-align:right;font:500 10px var(--f-m);letter-spacing:.1em;text-transform:uppercase}
 
 /* contact */
 .contact{padding-bottom:clamp(110px,12vw,180px)}
 .ct-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px var(--colgap);align-items:end}
 .ct-l p{margin:24px 0 0;max-width:340px;color:#d6d3da;font-size:14.5px}
-.ct-list{list-style:none;margin:26px 0 0;padding:0;max-width:400px;border-top:1px solid var(--line)}
-.ct-list li{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:center}
+.ct-list{list-style:none;margin:26px 0 0;padding:0;max-width:560px;border-top:1px solid var(--line)}
+.ct-list li{display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:center}
 .ct-list .mono{font-size:9.5px}
 .ct-list a{font:600 14px var(--f-b);overflow-wrap:anywhere}
 .ct-list a:hover{color:var(--acc)}
-.ct-list a.cta{margin:0;justify-self:start;padding:11px 18px;color:var(--on);font:700 11.5px var(--f-m)}
+.ct-list .v{font:600 14px var(--f-b)}
+.ct-list a.cta{grid-column:3;margin:0;justify-self:end;min-width:136px;padding:11px 18px;color:var(--on);font:700 11.5px var(--f-m)}
 .ct-list a.cta:hover{color:var(--on)}
 .ct-l .dsp{font-size:clamp(48px,7.2vw,118px)}
-.shipit{justify-self:start;text-align:left}
+.shipit{justify-self:stretch;display:flex;flex-direction:column;align-items:flex-start;text-align:left}
 .shipit .dsp{font-size:clamp(48px,7.2vw,120px)}
 .ft{border-top:1px solid var(--line);padding:22px 0 90px;font:500 10px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
 .ft .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -229,7 +221,11 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
 .burst .lb{position:absolute;left:0;top:0;translate:-50% -34px;padding:3px 8px;border-radius:6px;background:var(--c);color:#0b0b10;font:700 10px/1.3 var(--f-m);letter-spacing:.04em;white-space:nowrap;animation:lb .9s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes lb{0%{opacity:0;transform:translateY(8px) scale(.7)}18%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-34px) scale(1)}}
 
+@media (min-width:1001px){ .hero-copy,.portrait-wrap{top:clamp(16px,3.6vh,36px)} }
 @media (max-width:1000px){
+  .work-grid{grid-template-columns:minmax(0,1fr)}
+  .work-head{position:static}
+  .work-head .dsp{font-size:clamp(54px,15vw,110px)}
   .hero{min-height:0;padding-top:96px}
   .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0;padding-top:clamp(40px,14vw,110px)}
   .hero h1{font-size:clamp(58px,11vw,120px)}
@@ -240,18 +236,18 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
   .side-h{justify-content:flex-start}
   .side ul{grid-auto-flow:column;justify-content:space-between;justify-items:start;gap:14px}
   .side span{margin-left:0}
-  .sec-head,.track,.about-grid,.ct-grid,.about-b{grid-template-columns:minmax(0,1fr)}
+  .sec-head,.track,.ct-grid{grid-template-columns:minmax(0,1fr)}
   .cards{grid-template-columns:minmax(0,1fr)}
-  .note{justify-self:start;width:min(100%,300px)}
-  .shipit{justify-self:start;margin-top:30px}
+  .note{width:min(100%,190px)}
+  .shipit{margin-top:30px}
   .intro{max-width:none}
 }
 @media (max-width:560px){
   .nav{top:12px}.nav a.l{padding:8px 10px;font-size:12px}
   .hero-bg{top:70px}
   .nums{gap:18px}
-  .sk{grid-template-columns:84px minmax(0,1fr)}
   .ct-list li{grid-template-columns:70px minmax(0,1fr)}
+  .ct-list a.cta{grid-column:2;justify-self:start;margin-top:6px}
   .sb .code pre{font-size:8.5px}
   .chip{font-size:9px;padding:2px 6px 2px 5px}.chip svg{width:10px;height:10px}.ag svg.cur{width:11px;height:11px}
   .boot-foot{flex-direction:column;gap:6px}.boot-line{bottom:78px}
@@ -273,7 +269,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
 
 <header class="nav" id="nav">
   <a class="logo" href="#home" aria-label="Karthikeya Burugula, home">K</a>
-  <a class="l on" href="#home">Home</a><a class="l" href="#work">Work</a><a class="l" href="#about">About</a><a class="l" href="#contact">Contact</a>
+  <a class="l on" href="#home">Home</a><a class="l" href="#work">Work</a><a class="l" href="#contact">Contact</a>
 </header>
 
 <main>
@@ -305,19 +301,9 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
   <!-- ============ WORK ============ -->
   <section class="sec" id="work" aria-labelledby="t-work">
     <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <p class="eyebrow bld">Selected work</p>
-          <h2 class="dsp bld" id="t-work"><span class="w">Work that</span><span class="r">ships.</span></h2>
-        </div>
-        <div class="intro">
-          <p class="bld">Launches and fixes in fintech. Every one went from a brief to something real people use, and every one moved a number.</p>
-          <div class="nums">
-            <div class="bld"><b>03</b><span>Launches in focus</span></div>
-            <div class="bld"><b>200K+</b><span>Users on platform</span></div>
-            <div class="bld"><b>5+</b><span>Roles, 4 years</span></div>
-          </div>
-        </div>
+      <div class="work-grid">
+      <div class="work-head">
+        <h2 class="dsp bld" id="t-work"><span class="w">Work</span><span class="w">that I</span><span class="r">shipped.</span></h2>
       </div>
 
       <div class="cards">
@@ -327,7 +313,6 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <p class="pre bld">Distributors and clients had no clean way to track clients’ Portfolio Management Services holdings.</p>
           <ul>
             <li class="bld">Validated the gap through <b>30+ distributor interviews</b>; 85% called tracking a pain point.</li>
-            <li class="bld">Digitised <b>₹55 Cr</b> of PMS AUM across 50 clients in 30 days.</li>
           </ul>
           <div class="metric bld"><b>₹55 Cr</b><span>AUM digitised<br>in 30 days</span></div>
           <div class="tags bld"><span>Discovery</span><span>0-to-1</span><span>Distributor research</span><span>PMS</span></div>
@@ -339,7 +324,6 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <p class="pre bld">Specialised Investment Funds were leaking users mid-flow.</p>
           <ul>
             <li class="bld">CleverTap analysis and partner interviews pinpointed the <b>investment-flow drop-offs</b>.</li>
-            <li class="bld">Fixed the funnel; AUM went from <b>₹23 Cr to ₹40 Cr</b>.</li>
           </ul>
           <div class="metric bld"><b>+74%</b><span>SIF AUM<br>in 2 quarters</span></div>
           <div class="tags bld"><span>CleverTap</span><span>Funnel analysis</span><span>Partner interviews</span><span>SIF</span></div>
@@ -351,7 +335,6 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <p class="pre bld">On a platform serving 200K+ users, activation was slow.</p>
           <ul>
             <li class="bld">Shipped <b>PAN-based autofilling</b> and <b>Resume Activation</b>.</li>
-            <li class="bld">Activation time fell from <b>22 min to under 12</b>, 45%+ faster.</li>
           </ul>
           <div class="metric bld"><b>22 → &lt;12</b><span>Minutes<br>to activate</span></div>
           <div class="tags bld"><span>Onboarding</span><span>PAN autofill</span><span>Resume flow</span><span>Activation</span></div>
@@ -368,6 +351,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           </ul>
           <div class="tags bld"><span>QR Scan &amp; Pay</span><span>Dashboards</span><span>Sprint capacity</span><span>Community</span></div>
         </article>
+      </div>
       </div>
 
       <div class="stack">
@@ -388,7 +372,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <p class="mono big-l bld">Users on the platform whose onboarding and growth funnel I own</p>
         </div>
         <ul class="tl">
-          <li class="bld"><div><h4>Product Manager</h4><p>AssetPlus · Product pod lead: 5 engineers, 1 designer, 1 QA</p></div><time class="now">Jun 24 → Now</time></li>
+          <li class="bld"><div><h4>Product Manager</h4><p>AssetPlus · Jun 2024 – Present</p></div><time class="now">Jun 24 → Now</time></li>
           <li class="bld"><div><h4>Associate Product Manager</h4><p>Sprink.Online · Oct 2023 – Jun 2024</p></div><time>2024</time></li>
           <li class="bld"><div><h4>Product Management Intern</h4><p>Upliance.ai · Aug – Oct 2023</p></div><time>2023</time></li>
           <li class="bld"><div><h4>Product Management Intern</h4><p>Accredian · Mar – Aug 2023</p></div><time>2023</time></li>
@@ -398,42 +382,6 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
     </div>
   </section>
 
-  <!-- ============ ABOUT ============ -->
-  <section class="sec" id="about" aria-labelledby="t-about">
-    <div class="wrap">
-      <p class="eyebrow bld">About</p>
-      <h2 class="dsp bld" id="t-about" style="font-size:clamp(44px,7.6vw,124px)"><span class="w">Not just roadmaps.</span><span class="r">Products that ship.</span></h2>
-      <div class="about-grid">
-        <p class="bld">I’m a <b>Product Manager at AssetPlus</b> in Chennai, owning the onboarding and growth funnel of a mutual fund platform with 200K+ users.</p>
-        <p class="bld">I build fintech and B2B platforms across onboarding, investing and 0-to-1 products. I work the whole lifecycle, from discovery to launch and scale, including <b>BSE and AMFI API integrations</b>, and I drive execution across engineering, design, sales and operations.</p>
-      </div>
-      <div class="about-b">
-        <div class="edu">
-          <h5 class="bld">Education &amp; skills</h5>
-          <div class="deg bld"><b>B.E., Electronics &amp; Communication Engineering</b><span>Acharya Institutes of Technology, Bangalore · 2017–2021</span></div>
-          <div class="deg bld"><b>Postgraduate Certification in Product Management</b><span>Duke CE &amp; UpGrad · 2022–2023</span></div>
-          <dl style="margin:0">
-            <div class="sk bld"><dt>Product</dt><dd>Discovery, Strategy, Roadmapping, 0-to-1 launches, GTM, Prioritisation</dd></div>
-            <div class="sk bld"><dt>Analytics</dt><dd>SQL, CleverTap, Mixpanel, Funnel analysis, A/B testing, MS Clarity</dd></div>
-            <div class="sk bld"><dt>Design</dt><dd>Figma, Miro, Wireframing, Whimsical</dd></div>
-            <div class="sk bld"><dt>AI &amp; tools</dt><dd>Claude Code, Cowork, OpenAI, Gemini, JIRA, Notion</dd></div>
-          </dl>
-        </div>
-        <div class="how-col">
-        <div class="how">
-          <h5 class="bld">How I work</h5>
-          <ol>
-            <li class="bld"><b class="n">01</b><b class="t">Start with the real problem</b><span>30+ distributor interviews before the PMS tracker was specced.</span></li>
-            <li class="bld"><b class="n">02</b><b class="t">Let the data decide</b><span>CleverTap, SQL and funnels show where users actually drop off.</span></li>
-            <li class="bld"><b class="n">03</b><b class="t">Ship with the whole team</b><span>Engineering, design, sales and ops in the same room.</span></li>
-            <li class="bld"><b class="n">04</b><b class="t">Measure after launch</b><span>A launch isn’t done until the metric moves.</span></li>
-          </ol>
-        </div>
-        <div class="note bld"><p>Read the board. Take the shot.</p><span>— Karthikeya</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- ============ CONTACT ============ -->
   <section class="sec contact" id="contact" aria-labelledby="t-ct">
@@ -443,15 +391,15 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
         <div class="ct-l">
           <h2 class="dsp bld" id="t-ct"><span class="w">Let’s work</span><span class="r">together.</span></h2>
           <p class="bld">Open to product roles in fintech and B2B platforms. If you have a hard problem about money, onboarding or growth, I’d like to hear it.</p>
-          <a class="cta bld" href="mailto:karthikburugula46@gmail.com">Email me <span aria-hidden="true">↗</span></a>
           <ul class="ct-list">
-            <li class="bld"><span class="mono">Email</span><a href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a></li>
+            <li class="bld"><span class="mono">Email</span><a href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a><a class="cta sm" href="mailto:karthikburugula46@gmail.com">Email me <span aria-hidden="true">↗</span></a></li>
             <li class="bld"><span class="mono">Phone</span><a href="tel:+918296114865">+91 82961 14865</a></li>
             <li class="bld"><span class="mono">LinkedIn</span><a href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">/in/karthikeyaburugula</a></li>
-            <li class="bld"><span class="mono">Resume</span><a class="cta sm" href="assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download CV <span aria-hidden="true">↓</span></a></li>
+            <li class="bld"><span class="mono">Resume</span><span class="v">Resume (PDF)</span><a class="cta sm" href="assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download CV <span aria-hidden="true">↓</span></a></li>
           </ul>
         </div>
-        <div class="shipit" id="shipit"><h2 class="dsp bld"><span class="w">Ship it</span><span class="r">for real.</span></h2></div>
+        <div class="shipit" id="shipit"><h2 class="dsp bld"><span class="w">Ship it</span><span class="r">for real.</span></h2>
+          <div class="note bld"><p>Read the board. Take the shot.</p><span>— Karthikeya</span></div></div>
       </div>
     </div>
   </section>
@@ -472,7 +420,7 @@ try{ history.scrollRestoration='manual'; }catch(e){}
 scrollTo({top:0,behavior:'instant'});
 
 /* nav: highlight the section in view */
-var links=$$('.nav a.l'), secs=['home','work','about','contact'].map(function(id){return document.getElementById(id)});
+var links=$$('.nav a.l'), secs=['home','work','contact'].map(function(id){return document.getElementById(id)});
 function spy(){ var y=scrollY+innerHeight*.35, cur=0; secs.forEach(function(s,i){ if(s.offsetTop<=y) cur=i; }); links.forEach(function(a,i){ a.classList.toggle('on',i===cur); }); }
 addEventListener('scroll',spy,{passive:true}); spy();
 var heroBg=$('#heroBg');

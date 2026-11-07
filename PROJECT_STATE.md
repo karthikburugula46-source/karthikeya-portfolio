@@ -460,3 +460,8 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Bottom HUD (agents live / pause / power / Rebuild) removed along with startBuild/enter code. A reload replays the build.
 - Lenis 1.3.27 self-hosted (`assets/lenis.min.js`, licence in `assets/LICENSE-lenis.txt`). `lerp:.1`, wheel/trackpad only (touch native). Build auto-scroll and return-to-top use `jump()` (Lenis immediate scrollTo); nav anchors glide via `lenis.scrollTo`. Verified by CDP: wheel step eases (~1s), wheel during the build cancels it and reveals everything, nav click glides. Reduced motion: no Lenis, no agents.
 - Added og:title/description/image/url tags. Tested 1470x800 at root: 83/83 built, 0 errors.
+
+## Round 28 — content/layout trim
+- Hero: copy block and photo nudged down (`top:clamp(16px,3.6vh,36px)` at >=1001px, no layout change); "Impact created" untouched.
+- Work: eyebrow and right-hand intro/stats removed; title "Work that I shipped." (3 stacked lines) sticky on the left, the 4 cards stacked vertically on the right (`.work-grid`). Card text uses `--soft:#e6e3dc`. Dropped bullets duplicated by the metric (cards 01-03); metric = number | divider | label, vertically centred. Track record AssetPlus row no longer lists the team.
+- About section removed (and nav link). Sticky note kept but smaller (206px), moved into Contact under "Ship it for real.", signature at its right. Separate "Email me" CTA removed; it now sits in the Email row; Resume row has Download CV in the same column.
