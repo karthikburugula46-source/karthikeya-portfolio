@@ -127,6 +127,8 @@ img{display:block;max-width:100%}
 
 /* stack marquee */
 .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px var(--colgap);align-items:start}
+.log-grid{margin-top:clamp(72px,9vw,130px)}
+.card.ph h3{color:var(--soft)}
 .work-head{position:sticky;top:104px}
 .work-head .dsp{font-size:clamp(54px,8.4vw,140px)}
 .work-grid .cards{grid-template-columns:minmax(0,1fr);margin-top:0;gap:clamp(44px,5vw,72px)}
@@ -298,7 +300,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
     <div class="wrap">
       <div class="work-grid">
       <div class="work-head">
-        <h2 class="dsp bld" id="t-work"><span class="w">Work</span><span class="w">that I</span><span class="r">shipped.</span></h2>
+        <h2 class="dsp bld" id="t-work"><span class="w">Ideas to</span><span class="r">Impact.</span></h2>
       </div>
 
       <div class="cards">
@@ -335,6 +337,26 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <div class="tags bld"><span>Onboarding</span><span>PAN autofill</span><span>Resume flow</span><span>Activation</span></div>
         </article>
       </div>
+      </div>
+
+      <div class="work-grid log-grid" id="log">
+        <div class="work-head">
+          <h2 class="dsp bld" id="t-log"><span class="w">The</span><span class="w">builder’s</span><span class="r">log.</span></h2>
+        </div>
+        <div class="cards">
+          <article class="card ph">
+            <div class="card-top bld"><b>01</b><span>Building now</span></div>
+            <h3 class="bld">Project 1</h3>
+            <p class="pre bld">Details coming soon.</p>
+            <div class="tags bld"><span>Coming soon</span></div>
+          </article>
+          <article class="card ph">
+            <div class="card-top bld"><b>02</b><span>Building now</span></div>
+            <h3 class="bld">Project 2</h3>
+            <p class="pre bld">Details coming soon.</p>
+            <div class="tags bld"><span>Coming soon</span></div>
+          </article>
+        </div>
       </div>
 
       <div class="stack">

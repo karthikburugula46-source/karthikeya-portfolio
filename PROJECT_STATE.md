@@ -478,3 +478,7 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Removed the 4th card ("More Wins"); Work now shows the top 3 only (PMS Portfolio Tracker, SIF Growth Engine, Activation Overhaul). Projects the user is building now will be added later.
 - Contact CTAs: labels were left-aligned inside the buttons (.cta had no justify-content); now centred. Arrows removed from the four contact CTAs (hero "See my work ↗" keeps its arrow), width 118px for all four.
 - Contact Resume row value text changed from "Resume (PDF)" to "Let’s figure out the fit."
+
+## Round 32
+- Work heading renamed "Ideas to Impact." (two lines).
+- New "The builder's log." block (`#log`, reuses `.work-grid`: sticky title left, cards right) directly under the Work cards, with two placeholder cards "Project 1" / "Project 2" (label "Building now", text "Details coming soon.", tag "Coming soon"). Content to be supplied later by the user. No nav link added.
