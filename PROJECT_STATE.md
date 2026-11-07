@@ -482,3 +482,6 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 ## Round 32
 - Work heading renamed "Ideas to Impact." (two lines).
 - New "The builder's log." block (`#log`, reuses `.work-grid`: sticky title left, cards right) directly under the Work cards, with two placeholder cards "Project 1" / "Project 2" (label "Building now", text "Details coming soon.", tag "Coming soon"). Content to be supplied later by the user. No nav link added.
+
+## Round 33 — faster build
+- Whole sequence cut from ~13s to ~5.8s (laptop) / ~6.0s (phone), measured by CDP polling until the agent cursor is ready; first content appears at ~1s. Changes: scroll BASE 520 -> 1250 px/s, block-check zone .45 -> .5, lookahead 28% -> 45% (scan 1.28 -> 1.45), fly 380 -> 230ms, code time 340/460/620 -> 190/260/360ms, wipe 260 -> 170ms, assign gap 45 -> 18ms, agent easing tau 105 -> 62ms, stale reveal 2400 -> 1500ms, boot ring 38 -> 20ms per dot, return-to-top 900-1500 -> 550-850ms, agents leave faster (28ms stagger, 650ms fade), completion idle 500 -> 250ms. Scroll still pauses if something in the upper half is unbuilt, and any wheel/touch/key stops it and reveals everything.

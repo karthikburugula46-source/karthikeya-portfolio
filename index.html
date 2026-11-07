@@ -472,7 +472,7 @@ var io=new IntersectionObserver(function(es){
     if(state.phase==='done'){ reveal(el); return; }
     el._q=performance.now(); queue.push(el);
   });
-},{threshold:0,rootMargin:'0px 0px 28% 0px'});
+},{threshold:0,rootMargin:'0px 0px 45% 0px'});
 bld.forEach(function(el){ io.observe(el); });
 setTimeout(function(){ if(state.phase==='boot') revealAll(); },9000); /* safety net: nothing stays hidden */
 
@@ -516,7 +516,7 @@ function hl(t){
   return t.replace(/(&lt;\/?)([\w-]+)/g,'$1<i class=k>$2</i>').replace(/"([^"]*)"/g,'<i class=s>"$1"</i>').replace(/^(\s*)([a-z-]+)(:)/gm,'$1<i class=t>$2</i>$3');
 }
 
-var T_FLY=380, T_NEAR=90, T_WIPE=260, GAP=45;
+var T_FLY=230, T_NEAR=130, T_WIPE=170, GAP=18;
 function startJob(a,el,now){ a.job={el:el,t0:now,phase:'fly',box:null,full:'',n:-1}; a.wanderAt=0; }
 function endJob(a,now,skipReveal){
   var j=a.job; if(!j) return;
@@ -553,8 +553,8 @@ function leave(){
       a.leaving=true;
       var dx=(a.x-innerWidth/2)/innerWidth, dy=(a.y-innerHeight/2)/innerHeight;
       if(Math.abs(dx)>Math.abs(dy)){ a.tx=dx>0?innerWidth+160:-160; a.ty=a.y; } else { a.ty=dy>0?innerHeight+120:-120; a.tx=a.x; }
-      setTimeout(function(){ if(a.leaving) a.el.classList.remove('on'); },950);
-    },i*55);
+      setTimeout(function(){ if(a.leaving) a.el.classList.remove('on'); },650);
+    },i*28);
   });
 }
 /* ---------------- the agent cursor, shown once the build is done ---------------- */
@@ -593,7 +593,7 @@ function scan(now){
   if(now<scanAt) return; scanAt=now+90;
   for(var i=0;i<bld.length;i++){
     var el=bld[i]; if(el.classList.contains('built')||el._q) continue;
-    var r=el.getBoundingClientRect(); if(r.top<innerHeight*1.28&&r.bottom>-40){ el._q=now; queue.push(el); }
+    var r=el.getBoundingClientRect(); if(r.top<innerHeight*1.45&&r.bottom>-40){ el._q=now; queue.push(el); }
   }
 }
 var last=performance.now();
@@ -605,7 +605,7 @@ function loop(now){
   for(var k=queue.length-1;k>=0;k--){
     var qe=queue[k], qr=qe.getBoundingClientRect();
     if(!building||state.paused||qr.bottom<-40){ reveal(qe); queue.splice(k,1); continue; }
-    if(qr.top<innerHeight*.94){ if(!qe._vis) qe._vis=now; else if(now-qe._vis>2400){ reveal(qe); queue.splice(k,1); } }
+    if(qr.top<innerHeight*.94){ if(!qe._vis) qe._vis=now; else if(now-qe._vis>1500){ reveal(qe); queue.splice(k,1); } }
   }
   /* hand the highest queued element to an idle agent */
   if(building&&!state.paused&&queue.length&&now>nextAssign){
@@ -626,7 +626,7 @@ function loop(now){
         var d=Math.hypot(a.tx-a.x,a.ty-a.y), t=now-j.t0;
         if(j.phase==='fly'&&(d<T_NEAR||t>T_FLY)&&r.top<innerHeight*.94){
           j.phase='code'; j.t1=now; j.box=makeBox(); j.full=genCode(j.el);
-          var area=r.width*r.height; j.dur=area<20000?340:(area<120000?460:620);
+          var area=r.width*r.height; j.dur=area<20000?190:(area<120000?260:360);
           var tg=j.el.tagName.toLowerCase(); j.box._em.innerHTML=(/^(h[1-6]|p|li|time)$/.test(tg)?'Text':(tg==='figure'?'Image':(tg==='a'||tg==='button'?'Button':'Frame')))+'<u>'+Math.round(r.width)+' × '+Math.round(r.height)+' · writing</u>';
           placeBox(j.box,r); j.box.classList.add('on');
         }
@@ -643,14 +643,14 @@ function loop(now){
       }
     }else if(!a.leaving&&now>a.wanderAt){ wander(a,now); }
     if(!state.paused){
-      var tau=a.leaving?240:(a.job?105:780), k2=1-Math.exp(-dt/tau);
+      var tau=a.leaving?200:(a.job?62:700), k2=1-Math.exp(-dt/tau);
       a.x+=(a.tx-a.x)*k2; a.y+=(a.ty-a.y)*k2;
     }
     var bob=(a.job||a.leaving)?0:Math.sin(now/620+a.seed)*3.5;
     a.el.style.transform='translate3d('+a.x.toFixed(1)+'px,'+(a.y+bob).toFixed(1)+'px,0)';
   }
   /* the build is finished when nothing is queued, nobody is working and the page scroll has ended */
-  if(building&&!state.auto&&!queue.length&&!anyJob()){ if(!state.idleSince) state.idleSince=now; else if(now-state.idleSince>500) complete(); } else state.idleSince=0;
+  if(building&&!state.auto&&!queue.length&&!anyJob()){ if(!state.idleSince) state.idleSince=now; else if(now-state.idleSince>250) complete(); } else state.idleSince=0;
   /* agent cursor follows the pointer */
   if(acur.classList.contains('on')){ cx+=(mx-cx)*.42; cy+=(my-cy)*.42; acur.style.transform='translate3d('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px,0)'; }
   requestAnimationFrame(loop);
@@ -661,7 +661,7 @@ function complete(){ state.phase='done'; state.idleSince=0; revealAll(); leave()
 
 /* the page scrolls itself once, but only as fast as the agents can build: it never moves on
    while something in the upper half of the screen is still unbuilt */
-var BASE=520;
+var BASE=1250;
 function autoScroll(){
   state.auto=true; state.cancel=false;
   var stop=function(){ state.cancel=true; };
@@ -671,7 +671,7 @@ function autoScroll(){
   function cancelled(){ cleanup(); revealAll(); queue.length=0; agents.forEach(function(a){ if(a.job) endJob(a,performance.now(),true); }); $$('.sb').forEach(function(b){ b.remove(); }); state.auto=false; }
   var y=scrollY, v=0, last=performance.now(), t0=last;
   function blocked(){
-    for(var i=0;i<bld.length;i++){ var el=bld[i]; if(el.classList.contains('built')) continue; var r=el.getBoundingClientRect(); if(r.bottom>30&&r.top<innerHeight*.45) return true; }
+    for(var i=0;i<bld.length;i++){ var el=bld[i]; if(el.classList.contains('built')) continue; var r=el.getBoundingClientRect(); if(r.bottom>30&&r.top<innerHeight*.5) return true; }
     return false;
   }
   function down(now){
@@ -686,11 +686,11 @@ function autoScroll(){
   }
   function settle(t){ /* let the last agents finish the footer, then head back up */
     if(state.cancel){ cancelled(); return; }
-    if((!queue.length&&!anyJob())||performance.now()-t>3000){ setTimeout(up,200); } else setTimeout(function(){ settle(t); },80);
+    if((!queue.length&&!anyJob())||performance.now()-t>1500){ setTimeout(up,120); } else setTimeout(function(){ settle(t); },80);
   }
   function up(){
     if(state.cancel){ cancelled(); return; }
-    var t1=performance.now(), y0=scrollY, d1=Math.max(900,Math.min(1500,y0*.2));
+    var t1=performance.now(), y0=scrollY, d1=Math.max(550,Math.min(850,y0*.12));
     (function stepUp(now){
       if(state.cancel){ cancelled(); return; }
       var p=Math.min(1,(now-t1)/d1), e=1-Math.pow(1-p,3);
@@ -705,11 +705,11 @@ var ring=$('#ring'), bootN=$('#bootN'), bootLine=$('#bootLine'), boot=$('#boot')
 DEF.forEach(function(d,i){ var s=document.createElement('i'); s.style.setProperty('--c',d[1]); s.style.transform='rotate('+(i*360/N)+'deg) translateY(-34px)'; ring.appendChild(s); dots.push(s); });
 var n=0, bt=setInterval(function(){
   if(n<N){ dots[n].classList.add('on'); n++; bootN.textContent=(n<10?'0':'')+n+'/'+N; bootLine.style.setProperty('--p',n/N); }
-  else{ clearInterval(bt); setTimeout(release,100); }
-},38);
+  else{ clearInterval(bt); setTimeout(release,60); }
+},20);
 function release(){
   boot.classList.add('done'); setTimeout(function(){ boot.remove(); },1100);
-  agents.forEach(function(a,i){ setTimeout(function(){ a.el.classList.add('on'); },i*30); });
+  agents.forEach(function(a,i){ setTimeout(function(){ a.el.classList.add('on'); },i*16); });
   state.phase='build'; state.auto=true; last=performance.now(); requestAnimationFrame(loop);
   /* hero elements are queued by the observer; start the paced scroll right away */
   autoScroll();
