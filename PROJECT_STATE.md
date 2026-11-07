@@ -476,3 +476,4 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 
 ## Round 31
 - Removed the 4th card ("More Wins"); Work now shows the top 3 only (PMS Portfolio Tracker, SIF Growth Engine, Activation Overhaul). Projects the user is building now will be added later.
+- Contact CTAs: labels were left-aligned inside the buttons (.cta had no justify-content); now centred. Arrows removed from the four contact CTAs (hero "See my work ↗" keeps its arrow), width 118px for all four.
