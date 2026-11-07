@@ -438,3 +438,10 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Flow: boot -> hero built -> auto-scroll the whole page once (760px/s) while agents build -> scroll back to top -> agents fly off -> HUD "Build complete" -> cursor becomes an agent chip (fine pointers). Any wheel/touch/key/click cancels the auto-scroll and reveals everything. Click/tap = ring + particle burst + floating label ("Shipped", "LGTM"...), and the cursor switches to the next agent. HUD: power toggle brings agents back to wander; REBUILD replays everything.
 - Contact: Resume row now has a "Download CV" CTA button.
 - Tested headless Chrome 1470x800, 1280x720, 390x844: 82/82 built, 0 errors, phase sequence verified by sampling scrollY/HUD every 1.5s.
+
+## Round 25 — agentic: overlaps, photo blend, code-writing build, colour
+- Hero: smaller PORTFOLIO backdrop (16.5vw) and name (7.9vw, fits its column) so nothing overlaps the photo or the backdrop; content starts lower. Photo natural colours, edges dissolve into `--bg` via overlay gradients (no tint, no hard edge). Text now "Open to product roles".
+- Colour default = `aqua` (#5ee8c5, a lime+cyan mix). `?c=cyan|lime|violet|gold|pink` compares others.
+- Build: starts right after a ~0.8s boot (scroll restoration forced to top). Each job: fly -> blue box draws -> generated code (from the element's own tag/class/text/computed font) types inside the box with syntax colours + progress bar -> code layer wipes away revealing the real element. IO lookahead 28% so agents are ready before elements scroll in; assignment picks the highest unbuilt element first.
+- Auto-scroll is now paced by the build: 520px/s but holds while anything in the upper 45% of the screen is unbuilt (28s cap). Whole flow measured ~12s at 1470x800.
+- Tested 1470x800 (aqua + cyan) and 390x844: 82/82 built, 0 errors.

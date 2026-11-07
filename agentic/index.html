@@ -13,8 +13,8 @@
 <noscript><style>.bld{opacity:1!important;translate:none!important;filter:none!important}#boot{display:none!important}</style></noscript>
 <style>
 :root{
-  --bg:#08080c; --bg2:#0e0e14; --ink:#f4f1ea; --dim:#9b99a6; --faint:#5d5c68; --line:rgba(255,255,255,.12);
-  --acc:#d4ff3a; --acc-rgb:212 255 58; --on:#0b0d04; --blue:#4c8dff;
+  --bg:#08090c; --bg2:#0e0e14; --ink:#f4f1ea; --dim:#9b99a6; --faint:#5d5c68; --line:rgba(255,255,255,.12);
+  --acc:#5ee8c5; --acc-rgb:94 232 197; --on:#03140f; --blue:#4c8dff;
   --f-d:"Anton","Bebas Neue","Impact","Arial Narrow",sans-serif;
   --f-b:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --f-m:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
@@ -34,7 +34,7 @@ img{display:block;max-width:100%}
 .dsp .w{display:block}
 
 /* build state: elements start hidden and are revealed when an agent finishes them */
-.js .bld{opacity:0;translate:0 20px;filter:blur(6px);transition:opacity .7s var(--ease),translate .8s var(--ease),filter .7s var(--ease)}
+.js .bld{opacity:0;translate:0 16px;filter:blur(5px);transition:opacity .4s var(--ease),translate .5s var(--ease),filter .4s var(--ease)}
 .js .bld.built{opacity:1;translate:0 0;filter:none}
 
 /* ---------------- boot ---------------- */
@@ -63,12 +63,12 @@ img{display:block;max-width:100%}
 
 /* ---------------- hero ---------------- */
 .hero{position:relative;min-height:max(100svh,720px);padding:110px 0 0;overflow:hidden}
-.hero-bg{position:absolute;left:0;right:0;top:64px;text-align:center;font:400 clamp(110px,24.5vw,430px)/.8 var(--f-d);letter-spacing:-.01em;text-transform:uppercase;white-space:nowrap;pointer-events:none;user-select:none;
-  background:linear-gradient(180deg,rgb(var(--acc-rgb) / .8) 6%,rgb(var(--acc-rgb) / .34) 55%,rgb(var(--acc-rgb) / 0) 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr) minmax(0,.4fr);gap:0 clamp(12px,2vw,36px);min-height:calc(max(100svh,720px) - 110px);align-items:start}
+.hero-bg{position:absolute;left:0;right:0;top:64px;text-align:center;font:400 clamp(90px,16.5vw,290px)/.8 var(--f-d);letter-spacing:-.01em;text-transform:uppercase;white-space:nowrap;pointer-events:none;user-select:none;
+  background:linear-gradient(180deg,rgb(var(--acc-rgb) / .62) 6%,rgb(var(--acc-rgb) / .24) 55%,rgb(var(--acc-rgb) / 0) 98%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-grid{position:relative;display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr) minmax(0,.4fr);gap:0 clamp(12px,2vw,36px);min-height:calc(max(100svh,720px) - 110px);padding-top:clamp(40px,7vw,118px);align-items:start}
 .hero-copy{align-self:start;padding-top:clamp(10px,3vh,40px);padding-bottom:clamp(40px,8vh,90px);position:relative;z-index:2}
 .hello{font:700 clamp(17px,1.7vw,26px)/1 var(--f-b);margin:0 0 6px}
-.hero h1{font:400 clamp(62px,9.6vw,168px)/.9 var(--f-d);margin:0;letter-spacing:-.012em}
+.hero h1{font:400 clamp(54px,7.9vw,140px)/.92 var(--f-d);margin:0;letter-spacing:-.012em}
 .hero h1 i{font-style:normal;color:var(--acc)}
 .role{margin:22px 0 0;font:400 clamp(20px,2.1vw,32px)/1.02 var(--f-d);text-transform:uppercase;color:var(--acc);letter-spacing:.005em}
 .lede{margin:16px 0 0;max-width:380px;font-size:14px;line-height:1.55;color:#d6d3da}
@@ -79,10 +79,11 @@ img{display:block;max-width:100%}
 .open b{color:var(--acc);font-weight:700}
 .open .pd{flex:none;width:8px;height:8px;border-radius:50%;background:var(--acc);animation:pd 2.2s infinite}
 @keyframes pd{0%{box-shadow:0 0 0 0 rgb(var(--acc-rgb) / .55)}70%,100%{box-shadow:0 0 0 10px rgb(var(--acc-rgb) / 0)}}
-.portrait-wrap{position:relative;align-self:start;justify-self:center;width:min(100%,520px,calc((100svh - 190px)*.8));margin-top:clamp(10px,3vh,40px)}
-.portrait-wrap::before{content:"";position:absolute;inset:-9% -12% -4%;background:radial-gradient(closest-side,rgb(var(--acc-rgb) / .22),rgb(var(--acc-rgb) / 0));pointer-events:none}
-.portrait{position:relative;margin:0;aspect-ratio:4/5;border-radius:26px;overflow:hidden;border:1px solid rgba(255,255,255,.16);box-shadow:0 44px 80px -44px rgba(0,0,0,.9),0 0 0 7px rgba(255,255,255,.035)}
-.portrait img{width:100%;height:100%;object-fit:cover;object-position:center 12%}
+.portrait-wrap{position:relative;align-self:start;justify-self:center;width:min(100%,520px,calc((100svh - 255px)*.82));margin-top:clamp(34px,5.4vh,76px)}
+.portrait{position:relative;margin:0;aspect-ratio:4/5;background:var(--bg)}
+.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 8%}
+.portrait::after{content:"";position:absolute;inset:-2px;pointer-events:none;box-shadow:inset 0 0 0 3px var(--bg);
+  background:linear-gradient(180deg,var(--bg) 0,rgba(8,9,12,0) 20%),linear-gradient(0deg,var(--bg) 0,rgba(8,9,12,.85) 12%,rgba(8,9,12,0) 40%),linear-gradient(90deg,var(--bg) 0,rgba(8,9,12,0) 30%),linear-gradient(270deg,var(--bg) 0,rgba(8,9,12,0) 30%)}
 .side{align-self:center;margin-top:clamp(10px,3vh,40px);list-style:none;margin:0;padding:0 0 clamp(40px,8vh,90px);display:grid;gap:34px;justify-items:end;text-align:right;position:relative;z-index:2}
 .side b{display:block;font:400 clamp(34px,3.6vw,58px)/.9 var(--f-d);color:#fff}
 .side span{display:block;margin-top:6px;font:500 9.5px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--dim);max-width:130px;margin-left:auto}
@@ -184,6 +185,12 @@ img{display:block;max-width:100%}
 .sb{position:fixed;left:0;top:0;z-index:58;pointer-events:none;border:1px solid #8db6ff;background:rgba(76,141,255,.11);transform-origin:0 0;opacity:0;transition:opacity .22s}
 .sb.on{opacity:1}
 .sb.out{opacity:0}
+.sb .code{position:absolute;inset:0;overflow:hidden;background:rgba(5,9,22,.93);clip-path:inset(0 0 0 0);transition:clip-path .26s cubic-bezier(.6,0,.2,1)}
+.sb.wipe .code{clip-path:inset(0 0 0 100%)}
+.sb .code pre{position:absolute;left:6px;right:4px;bottom:4px;margin:0;font:500 9.5px/1.38 var(--f-m);color:#8fb8ff;white-space:pre;overflow:hidden}
+.sb .code i{font-style:normal}.sb .code i.k{color:#ff9ec4}.sb .code i.t{color:#7ee0ff}.sb .code i.s{color:#b9f08a}.sb .code i.cr{display:inline-block;width:5px;height:10px;background:#8fb8ff;vertical-align:-1px;animation:cr .5s steps(1) infinite}
+@keyframes cr{50%{opacity:0}}
+.sb .bar{position:absolute;left:0;bottom:-1px;height:2px;width:calc(var(--p,0)*100%);background:var(--blue);box-shadow:0 0 8px var(--blue)}
 .sb s{position:absolute;width:6px;height:6px;background:#fff;border:1px solid var(--blue);display:block}
 .sb s:nth-of-type(1){left:-4px;top:-4px}.sb s:nth-of-type(2){right:-4px;top:-4px}.sb s:nth-of-type(3){left:-4px;bottom:-4px}.sb s:nth-of-type(4){right:-4px;bottom:-4px}
 .sb em{position:absolute;left:-1px;bottom:100%;margin-bottom:3px;padding:2px 6px;border-radius:3px;background:var(--blue);color:#fff;font:600 9.5px/1.3 var(--f-m);letter-spacing:.03em;white-space:nowrap;font-style:normal}
@@ -220,7 +227,9 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
 
 @media (max-width:1000px){
   .hero{min-height:0;padding-top:96px}
-  .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0}
+  .hero-grid{grid-template-columns:minmax(0,1fr);min-height:0;padding-top:clamp(40px,14vw,110px)}
+  .hero h1{font-size:clamp(58px,11vw,120px)}
+  .portrait-wrap{margin-top:8px}
   .hero-copy{padding-bottom:0}
   .portrait-wrap{margin-top:12px;width:min(88vw,480px);order:3}
   .side{order:4;grid-auto-flow:column;justify-content:space-between;justify-items:start;text-align:left;gap:14px;padding:24px 0 10px}
@@ -237,6 +246,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
   .nums{gap:18px}
   .sk{grid-template-columns:84px minmax(0,1fr)}
   .ct-list li{grid-template-columns:70px minmax(0,1fr)}
+  .sb .code pre{font-size:8.5px}
   .chip{font-size:9px;padding:2px 6px 2px 5px}.chip svg{width:10px;height:10px}.ag svg.cur{width:11px;height:11px}
   #hud{gap:8px;padding:6px 6px 6px 12px;font-size:9px;bottom:14px}#hud .go{padding:7px 11px}
   .boot-foot{flex-direction:column;gap:6px}.boot-line{bottom:78px}
@@ -273,7 +283,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <p class="role bld">Product Manager<br>&amp; Builder</p>
           <p class="lede bld">I build onboarding, investing and 0-to-1 products for money. Today I own the funnel of a <b>200K+ user</b> mutual fund platform at AssetPlus.</p>
           <a class="cta bld" href="#work">See my work <span aria-hidden="true">↗</span></a>
-          <p class="open bld"><span class="pd"></span><span>Open to <b>broader roles</b></span></p>
+          <p class="open bld"><span class="pd"></span><span>Open to <b>product roles</b></span></p>
         </div>
         <div class="portrait-wrap">
           <figure class="portrait bld"><img src="../assets/profile.png" width="800" height="800" alt="Portrait of Karthikeya Burugula" fetchpriority="high"></figure>
@@ -457,9 +467,11 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
 var $=function(s,r){return (r||document).querySelector(s)}, $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 var bld=$$('.bld');
+try{ history.scrollRestoration='manual'; }catch(e){}
+scrollTo({top:0,behavior:'instant'});
 
-/* accent colour: lime by default. Add ?c=violet, ?c=gold or ?c=pink to the address to compare. */
-var PAL={lime:['212 255 58','#d4ff3a','#0b0d04'],violet:['143 107 255','#8f6bff','#ffffff'],gold:['255 194 51','#ffc233','#150e00'],pink:['255 77 148','#ff4d94','#ffffff']};
+/* accent colour: aqua (a lime + cyan mix) by default. Add ?c=cyan, ?c=lime, ?c=violet, ?c=gold or ?c=pink to the address to compare. */
+var PAL={aqua:['94 232 197','#5ee8c5','#03140f'],cyan:['47 216 240','#2fd8f0','#021419'],lime:['212 255 58','#d4ff3a','#0b0d04'],violet:['143 107 255','#8f6bff','#ffffff'],gold:['255 194 51','#ffc233','#150e00'],pink:['255 77 148','#ff4d94','#ffffff']};
 var qc=(location.search.match(/[?&]c=(\w+)/)||[])[1];
 if(qc&&PAL[qc]){ var rs=document.documentElement.style; rs.setProperty('--acc-rgb',PAL[qc][0]); rs.setProperty('--acc',PAL[qc][1]); rs.setProperty('--on',PAL[qc][2]); }
 
@@ -498,7 +510,7 @@ var io=new IntersectionObserver(function(es){
     if(state.phase==='done'){ reveal(el); return; }
     el._q=performance.now(); queue.push(el);
   });
-},{threshold:.12,rootMargin:'0px 0px -4% 0px'});
+},{threshold:0,rootMargin:'0px 0px 28% 0px'});
 bld.forEach(function(el){ io.observe(el); });
 setTimeout(function(){ if(state.phase==='boot') revealAll(); },9000); /* safety net: nothing stays hidden */
 
@@ -510,21 +522,45 @@ function typeOf(el){
   if(el.matches('.hero-bg')) return 'Text';
   return 'Frame';
 }
-function makeBox(){ var b=document.createElement('div'); b.className='sb'; b.innerHTML='<s></s><s></s><s></s><s></s><em></em>'; document.body.appendChild(b); return b; }
-function placeBox(b,r,el){
+function makeBox(){
+  var b=document.createElement('div'); b.className='sb';
+  b.innerHTML='<div class="code"><pre></pre></div><i class="bar"></i><s></s><s></s><s></s><s></s><em></em>';
+  b._pre=b.querySelector('pre'); b._em=b.querySelector('em'); document.body.appendChild(b); return b;
+}
+function placeBox(b,r){
   b.style.transform='translate3d('+r.left.toFixed(1)+'px,'+r.top.toFixed(1)+'px,0)';
   b.style.width=r.width.toFixed(1)+'px'; b.style.height=r.height.toFixed(1)+'px';
-  if(!b._lab){ b._lab=1; b.lastChild.innerHTML=typeOf(el)+'<u>'+Math.round(r.width)+' × '+Math.round(r.height)+'</u>'; }
 }
 function clampPt(x,y){ return [Math.max(10,Math.min(innerWidth-96,x)),Math.max(64,Math.min(innerHeight-86,y))]; }
 
-var T_FLY=520, T_NEAR=80, T_REVEAL=260, T_BOX=880, GAP=70;
-function startJob(a,el,now){ a.job={el:el,t0:now,phase:'fly',box:makeBox()}; a.wanderAt=0; }
+/* the "code" an agent seems to write for an element, built from the element itself */
+function genCode(el){
+  var tag=el.tagName.toLowerCase(), cs=getComputedStyle(el), L=[];
+  var cls=(el.className||'').toString().replace(/\b(bld|built)\b/g,'').trim().split(/\s+/)[0]||tag;
+  var txt=(el.textContent||'').replace(/\s+/g,' ').trim(); if(txt.length>58) txt=txt.slice(0,58)+'…';
+  var fam=(cs.fontFamily||'').split(',')[0].replace(/["']/g,'');
+  if(tag==='figure'||tag==='img'){
+    L.push('<figure class="'+cls+'">','  <img src="profile.png" width="800" height="800"','       loading="eager" decoding="async">','</figure>','decode() -> 800 x 800 ok');
+  }else if(/^(h[1-6]|p|li|time|a|button)$/.test(tag)){
+    L.push('<'+tag+' class="'+cls+'">','  '+txt,'</'+tag+'>','.'+cls+' {','  font: '+cs.fontWeight+' '+cs.fontSize+'/'+cs.lineHeight+' '+fam+';','  color: '+cs.color+';','  margin: 0;','}');
+  }else{
+    var r0=el.getBoundingClientRect();
+    L.push('<'+tag+' class="'+cls+'">','  <!-- '+el.children.length+' children -->','</'+tag+'>','.'+cls+' {','  display: '+cs.display+';','  width: '+Math.round(r0.width)+'px;','  gap: '+(cs.columnGap||'0')+';','}');
+  }
+  return L.join('\n');
+}
+function hl(t){
+  t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  return t.replace(/(&lt;\/?)([\w-]+)/g,'$1<i class=k>$2</i>').replace(/"([^"]*)"/g,'<i class=s>"$1"</i>').replace(/^(\s*)([a-z-]+)(:)/gm,'$1<i class=t>$2</i>$3');
+}
+
+var T_FLY=380, T_NEAR=90, T_WIPE=260, GAP=45;
+function startJob(a,el,now){ a.job={el:el,t0:now,phase:'fly',box:null,full:'',n:-1}; a.wanderAt=0; }
 function endJob(a,now,skipReveal){
   var j=a.job; if(!j) return;
-  if(!skipReveal) reveal(j.el);
-  j.box.classList.add('out'); (function(b){ setTimeout(function(){ b.remove(); },300); })(j.box);
-  a.job=null; a.wanderAt=now+150;
+  if(!skipReveal&&!j.revealed) reveal(j.el);
+  if(j.box){ j.box.classList.add('out'); (function(b){ setTimeout(function(){ b.remove(); },320); })(j.box); }
+  a.job=null; a.wanderAt=now+120;
 }
 function anyJob(){ for(var i=0;i<agents.length;i++){ if(agents[i].job) return true; } return false; }
 
@@ -605,38 +641,56 @@ var last=performance.now();
 function loop(now){
   var dt=Math.min(64,now-last); last=now;
   var building=state.phase==='build';
-  /* hand queued elements to idle agents */
+  /* queue upkeep: finish what already scrolled past, reveal what waited too long once visible */
+  for(var k=queue.length-1;k>=0;k--){
+    var qe=queue[k], qr=qe.getBoundingClientRect();
+    if(!building||state.paused||qr.bottom<-40){ reveal(qe); queue.splice(k,1); continue; }
+    if(qr.top<innerHeight*.94){ if(!qe._vis) qe._vis=now; else if(now-qe._vis>2400){ reveal(qe); queue.splice(k,1); } }
+  }
+  /* hand the highest queued element to an idle agent */
   if(building&&!state.paused&&queue.length&&now>nextAssign){
     var idle=null; for(var i=0;i<agents.length;i++){ if(!agents[i].job&&!agents[i].leaving){ idle=agents[i]; break; } }
-    if(idle){ startJob(idle,queue.shift(),now); nextAssign=now+GAP; }
+    if(idle){
+      var bi=0,bt=1e9; for(var q=0;q<queue.length;q++){ var tt=queue[q].getBoundingClientRect().top; if(tt<bt){ bt=tt; bi=q; } }
+      var el=queue.splice(bi,1)[0]; el._vis=0; startJob(idle,el,now); nextAssign=now+GAP;
+    }
   }
-  for(var k=queue.length-1;k>=0;k--){ if(now-queue[k]._q>2600||!building||state.paused){ reveal(queue[k]); queue.splice(k,1); } }
 
   for(var n=0;n<agents.length;n++){
     var a=agents[n], j=a.job;
     if(j){
       var r=j.el.getBoundingClientRect();
-      if(r.bottom<-60||r.top>innerHeight+60){ endJob(a,now); }
+      if(r.bottom<-60){ endJob(a,now); }
       else{
         var p=clampPt(r.right-4,r.bottom-4); a.tx=p[0]; a.ty=p[1];
         var d=Math.hypot(a.tx-a.x,a.ty-a.y), t=now-j.t0;
-        if(j.phase==='fly'&&(d<T_NEAR||t>T_FLY)){ j.phase='box'; j.t1=now; placeBox(j.box,r,j.el); j.box.classList.add('on'); }
-        if(j.phase==='box'){
-          placeBox(j.box,r,j.el);
-          if(!j.done1&&now-j.t1>T_REVEAL){ j.done1=true; reveal(j.el); }
-          if(now-j.t1>T_BOX){ endJob(a,now); }
+        if(j.phase==='fly'&&(d<T_NEAR||t>T_FLY)&&r.top<innerHeight*.94){
+          j.phase='code'; j.t1=now; j.box=makeBox(); j.full=genCode(j.el);
+          var area=r.width*r.height; j.dur=area<20000?340:(area<120000?460:620);
+          var tg=j.el.tagName.toLowerCase(); j.box._em.innerHTML=(/^(h[1-6]|p|li|time)$/.test(tg)?'Text':(tg==='figure'?'Image':(tg==='a'||tg==='button'?'Button':'Frame')))+'<u>'+Math.round(r.width)+' × '+Math.round(r.height)+' · writing</u>';
+          placeBox(j.box,r); j.box.classList.add('on');
+        }
+        if(j.phase==='code'){
+          placeBox(j.box,r);
+          var prog=Math.min(1,(now-j.t1)/j.dur), cnt=Math.floor(prog*j.full.length);
+          if(cnt!==j.n){ j.n=cnt; j.box._pre.innerHTML=hl(j.full.slice(0,cnt))+'<i class="cr"></i>'; }
+          j.box.style.setProperty('--p',prog.toFixed(3));
+          if(prog>=1){ j.phase='wipe'; j.t2=now; j.box.classList.add('wipe'); j.box._em.lastChild.textContent=Math.round(r.width)+' × '+Math.round(r.height)+' · built ✓'; reveal(j.el); j.revealed=true; }
+        }else if(j.phase==='wipe'){
+          placeBox(j.box,r);
+          if(now-j.t2>T_WIPE){ endJob(a,now); }
         }
       }
     }else if(!a.leaving&&now>a.wanderAt){ wander(a,now); }
     if(!state.paused){
-      var tau=a.leaving?240:(a.job?140:780), k2=1-Math.exp(-dt/tau);
+      var tau=a.leaving?240:(a.job?105:780), k2=1-Math.exp(-dt/tau);
       a.x+=(a.tx-a.x)*k2; a.y+=(a.ty-a.y)*k2;
     }
     var bob=(a.job||a.leaving)?0:Math.sin(now/620+a.seed)*3.5;
     a.el.style.transform='translate3d('+a.x.toFixed(1)+'px,'+(a.y+bob).toFixed(1)+'px,0)';
   }
   /* the build is finished when nothing is queued, nobody is working and the page scroll has ended */
-  if(building&&!state.auto&&!queue.length&&!anyJob()){ if(!state.idleSince) state.idleSince=now; else if(now-state.idleSince>650) complete(); } else state.idleSince=0;
+  if(building&&!state.auto&&!queue.length&&!anyJob()){ if(!state.idleSince) state.idleSince=now; else if(now-state.idleSince>500) complete(); } else state.idleSince=0;
   /* agent cursor follows the pointer */
   if(acur.classList.contains('on')){ cx+=(mx-cx)*.42; cy+=(my-cy)*.42; acur.style.transform='translate3d('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px,0)'; }
   requestAnimationFrame(loop);
@@ -652,29 +706,40 @@ function syncHud(){
   pauseB.innerHTML=state.paused?'<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg>':'<svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2.5" width="3.4" height="11" rx="1"/><rect x="9.6" y="2.5" width="3.4" height="11" rx="1"/></svg>';
   pauseB.setAttribute('aria-label',state.paused?'Resume agents':'Pause agents');
 }
-function complete(){ state.phase='done'; state.idleSince=0; leave(); showCursor(); syncHud(); }
+function complete(){ state.phase='done'; state.idleSince=0; revealAll(); leave(); showCursor(); syncHud(); }
 
-function autoScroll(next){
+/* the page scrolls itself once, but only as fast as the agents can build: it never moves on
+   while something in the upper half of the screen is still unbuilt */
+var BASE=520;
+function autoScroll(){
   state.auto=true; state.cancel=false;
-  var H=document.documentElement.scrollHeight-innerHeight, dur=Math.max(2500,H/760*1000), t0=performance.now(), from=scrollY;
   var stop=function(){ state.cancel=true; };
   var evs=['wheel','touchstart','keydown','mousedown'];
   evs.forEach(function(ev){ addEventListener(ev,stop,{passive:true}); });
   function cleanup(){ evs.forEach(function(ev){ removeEventListener(ev,stop); }); }
   function cancelled(){ cleanup(); revealAll(); queue.length=0; agents.forEach(function(a){ if(a.job) endJob(a,performance.now(),true); }); $$('.sb').forEach(function(b){ b.remove(); }); state.auto=false; }
+  var y=scrollY, v=0, last=performance.now(), t0=last;
+  function blocked(){
+    for(var i=0;i<bld.length;i++){ var el=bld[i]; if(el.classList.contains('built')) continue; var r=el.getBoundingClientRect(); if(r.bottom>30&&r.top<innerHeight*.45) return true; }
+    return false;
+  }
   function down(now){
     if(state.cancel){ cancelled(); return; }
-    var p=Math.min(1,(now-t0)/dur), e=p*p*(3-2*p);
-    scrollTo({top:from+(H-from)*e,behavior:'instant'});
-    if(p<1) requestAnimationFrame(down); else settle(performance.now());
+    var dt=Math.min(50,now-last); last=now;
+    var target=(blocked()&&now-t0<28000)?0:BASE;
+    v+=(target-v)*Math.min(1,dt/160);
+    y+=v*dt/1000;
+    var m=document.documentElement.scrollHeight-innerHeight;
+    if(y>=m){ scrollTo({top:m,behavior:'instant'}); settle(performance.now()); return; }
+    scrollTo({top:y,behavior:'instant'}); requestAnimationFrame(down);
   }
   function settle(t){ /* let the last agents finish the footer, then head back up */
     if(state.cancel){ cancelled(); return; }
-    if((!queue.length&&!anyJob())||performance.now()-t>2800){ setTimeout(up,250); } else setTimeout(function(){ settle(t); },90);
+    if((!queue.length&&!anyJob())||performance.now()-t>3000){ setTimeout(up,200); } else setTimeout(function(){ settle(t); },80);
   }
   function up(){
     if(state.cancel){ cancelled(); return; }
-    var t1=performance.now(), y0=scrollY, d1=Math.max(900,Math.min(1500,y0*.22));
+    var t1=performance.now(), y0=scrollY, d1=Math.max(900,Math.min(1500,y0*.2));
     (function stepUp(now){
       if(state.cancel){ cancelled(); return; }
       var p=Math.min(1,(now-t1)/d1), e=1-Math.pow(1-p,3);
@@ -684,14 +749,6 @@ function autoScroll(next){
   }
   requestAnimationFrame(down);
 }
-/* wait for the hero to finish, then scroll the whole page once while the agents build it */
-function whenHeroBuilt(cb){
-  var t=performance.now(), hero=$$('#home .bld');
-  (function chk(){
-    var done=hero.every(function(el){ return el.classList.contains('built'); });
-    if((done&&!anyJob())||performance.now()-t>5000) setTimeout(cb,300); else setTimeout(chk,100);
-  })();
-}
 function startBuild(){
   state.phase='build'; state.paused=false; state.auto=true; state.idleSince=0; queue.length=0;
   hideCursor(); scrollTo({top:0,behavior:'instant'});
@@ -699,7 +756,7 @@ function startBuild(){
   agents.forEach(function(a){ if(a.job) endJob(a,performance.now(),true); });
   enter(); syncHud();
   bld.forEach(function(el){ var r=el.getBoundingClientRect(); if(r.bottom>0&&r.top<innerHeight*.96){ el._q=performance.now(); queue.push(el); } });
-  whenHeroBuilt(function(){ autoScroll(); });
+  autoScroll();
 }
 
 /* ---------------- HUD ---------------- */
@@ -716,14 +773,15 @@ var ring=$('#ring'), bootN=$('#bootN'), bootLine=$('#bootLine'), boot=$('#boot')
 DEF.forEach(function(d,i){ var s=document.createElement('i'); s.style.setProperty('--c',d[1]); s.style.transform='rotate('+(i*360/N)+'deg) translateY(-34px)'; ring.appendChild(s); dots.push(s); });
 var n=0, bt=setInterval(function(){
   if(n<N){ dots[n].classList.add('on'); n++; bootN.textContent=(n<10?'0':'')+n+'/'+N; bootLine.style.setProperty('--p',n/N); }
-  else{ clearInterval(bt); setTimeout(release,240); }
-},95);
+  else{ clearInterval(bt); setTimeout(release,110); }
+},48);
 function release(){
   boot.classList.add('done'); setTimeout(function(){ boot.remove(); },1100);
   hud.hidden=false;
-  agents.forEach(function(a,i){ setTimeout(function(){ a.el.classList.add('on'); },i*55); });
+  agents.forEach(function(a,i){ setTimeout(function(){ a.el.classList.add('on'); },i*30); });
   state.phase='build'; state.auto=true; last=performance.now(); requestAnimationFrame(loop); syncHud();
-  whenHeroBuilt(function(){ autoScroll(); });
+  /* hero elements are queued by the observer; start the paced scroll right away */
+  autoScroll();
 }
 setTimeout(function(){ if(state.phase==='boot'){ revealAll(); } },6000);
 })();
