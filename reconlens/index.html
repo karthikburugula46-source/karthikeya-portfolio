@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Recon Lens · Karthikeya Burugula</title>
+<meta name="description" content="Recon Lens turns web research into a short report you can trust. Browse, capture what matters, and every line of the report is either something you saw or clearly marked as a best guess.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Recon Lens · a case study by Karthikeya Burugula">
+<meta property="og:description" content="A Chrome extension and web app that turns web research into a trustworthy report. Case study with sample report, PRD, system design and AI evals.">
+<meta property="og:image" content="https://karthikburugula46-source.github.io/karthikeya-portfolio/assets/profile.png">
+<meta property="og:url" content="https://karthikburugula46-source.github.io/karthikeya-portfolio/reconlens/">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#08090c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%235ee8c5'/%3E%3Ctext x='16' y='22.5' font-family='Impact,Arial Black,sans-serif' font-size='19' text-anchor='middle' fill='%2303140f'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090c; --soft:#e6e3dc; --bg2:#0e0e14; --ink:#f4f1ea; --dim:#9b99a6; --faint:#5d5c68; --line:rgba(255,255,255,.12);
+  --acc:#5ee8c5; --acc-rgb:94 232 197; --on:#03140f; --warn:#ffd23f; --red:#ff6b5d;
+  --f-d:"Anton","Bebas Neue","Impact","Arial Narrow",sans-serif;
+  --f-b:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-m:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --g:clamp(20px,4.6vw,72px); --ease:cubic-bezier(.2,.8,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15.5px/1.7 var(--f-b);-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:3px}
+.edge{position:fixed;left:0;top:0;bottom:0;width:3px;background:var(--acc);z-index:80;box-shadow:0 0 18px rgb(var(--acc-rgb) / .55)}
+.wrap{padding-inline:var(--g);max-width:1180px;margin:0 auto}
+.mono{font:500 11px/1.4 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.eyebrow{font:700 11px/1 var(--f-m);letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin:0 0 20px}
+.dsp{font:400 clamp(46px,8vw,120px)/.98 var(--f-d);text-transform:uppercase;letter-spacing:-.005em}
+.dsp .r{color:var(--acc)}
+
+/* top bar */
+.top{position:fixed;inset:0 0 auto 0;z-index:70;background:rgba(8,9,12,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:58px}
+.back{display:inline-flex;align-items:center;gap:8px;font:700 11px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.back:hover{color:var(--acc)}
+.nav{display:flex;gap:18px}
+.nav a{font:500 10.5px var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.nav a:hover{color:var(--acc)}
+
+/* buttons */
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:13px 22px;background:var(--acc);color:var(--on);font:700 11.5px var(--f-m);letter-spacing:.16em;text-transform:uppercase;border-radius:3px;transition:transform .25s var(--ease),box-shadow .25s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgb(var(--acc-rgb) / .8)}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.cta.ghost:hover{border-color:var(--acc);color:var(--acc);box-shadow:none}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+
+/* hero */
+.hero{padding:clamp(120px,14vw,190px) 0 clamp(48px,6vw,88px)}
+.hero .lead{max-width:720px;margin-top:26px;font-size:clamp(17px,1.7vw,21px);line-height:1.55;color:#d6d3da}
+.hero .lead b{color:#fff;font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.tags span{padding:6px 11px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.03);font:500 10.5px var(--f-m);letter-spacing:.04em;color:var(--soft)}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:clamp(40px,5vw,70px);border-top:1px solid var(--line)}
+.facts div{padding:20px 20px 0 0}
+.facts b{display:block;font:400 clamp(28px,3vw,42px)/1 var(--f-d);color:var(--acc);text-transform:uppercase}
+.facts span{display:block;margin-top:8px;font:500 10.5px/1.5 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+
+/* sections */
+.sec{padding:clamp(56px,7vw,104px) 0 0}
+.sec-head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:20px clamp(28px,4.6vw,80px);align-items:end;margin-bottom:clamp(28px,3.6vw,52px);border-top:1px solid var(--line);padding-top:22px}
+.sec-head .num{font:400 clamp(34px,3.6vw,56px)/1 var(--f-d);color:var(--acc)}
+.sec-head h2{font:400 clamp(38px,5.4vw,84px)/.95 var(--f-d);text-transform:uppercase;margin-top:10px}
+.sec-head p{color:var(--soft);font-size:16px;max-width:560px}
+.prose{max-width:760px}
+.prose p+p{margin-top:16px}
+.prose p{color:#d6d3da}
+.prose b,.prose strong{color:#fff;font-weight:600}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.box{border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.025);padding:22px}
+.box h3{font:700 13px/1.3 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+.box p,.box li{color:var(--soft);font-size:14.5px;line-height:1.6}
+.box p+p{margin-top:10px}
+.box .big{font:400 clamp(30px,3vw,44px)/1 var(--f-d);color:var(--acc);margin-bottom:8px}
+.box.bad h3{color:var(--red)}
+.box.good h3{color:var(--acc)}
+ul.dash{list-style:none;padding:0;display:grid;gap:9px}
+ul.dash li{position:relative;padding-left:22px}
+ul.dash li::before{content:"—";position:absolute;left:0;color:var(--faint)}
+ol.num-list{list-style:none;padding:0;counter-reset:n;display:grid;gap:12px}
+ol.num-list li{counter-increment:n;position:relative;padding-left:40px;color:var(--soft);font-size:14.5px;line-height:1.6}
+ol.num-list li::before{content:counter(n);position:absolute;left:0;top:0;width:26px;height:26px;display:grid;place-items:center;border:1px solid var(--acc);border-radius:50%;font:700 11px var(--f-m);color:var(--acc)}
+ol.num-list b{color:#fff;font-weight:600}
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:6px}
+.step .n{font:400 clamp(46px,4.6vw,72px)/1 var(--f-d);color:var(--acc)}
+.step h3{margin:8px 0 8px;font:400 clamp(24px,2.4vw,32px)/1 var(--f-d);text-transform:uppercase;letter-spacing:0;color:var(--ink)}
+.step p{color:var(--soft);font-size:14.5px}
+.note{margin-top:22px;padding:16px 18px;border-left:3px solid var(--acc);background:rgba(var(--acc-rgb)/.06);color:var(--soft);font-size:14.5px;border-radius:0 6px 6px 0}
+.note b{color:#fff}
+.note.warn{border-left-color:var(--warn);background:rgba(255,210,63,.06)}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;margin-top:16px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.55;min-width:560px}
+th,td{padding:11px 14px;text-align:left;vertical-align:top;border-top:1px solid var(--line);color:var(--soft)}
+thead th{border-top:0;background:rgba(255,255,255,.04);font:700 10.5px var(--f-m);letter-spacing:.12em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+tbody tr:first-child td,tbody tr:first-child th{border-top:0}
+tbody th{font-weight:600;color:#fff;width:1%;white-space:nowrap}
+td b,td strong{color:#fff;font-weight:600}
+code{font:500 .9em var(--f-m);padding:1px 6px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.04);color:var(--acc)}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;border:1px solid var(--line);font:600 10.5px var(--f-m);letter-spacing:.03em;white-space:nowrap;vertical-align:1px}
+.badge.seen{color:var(--acc);border-color:rgba(var(--acc-rgb)/.4);background:rgba(var(--acc-rgb)/.08)}
+.badge.guess{color:var(--warn);border-color:rgba(255,210,63,.4);background:rgba(255,210,63,.07)}
+.badge.high{color:var(--acc);border-color:rgba(var(--acc-rgb)/.4)}
+.badge.medium{color:var(--warn);border-color:rgba(255,210,63,.4)}
+.badge.low{color:var(--dim)}
+.badge.t-Borrow{color:var(--acc);border-color:rgba(var(--acc-rgb)/.4)}
+.badge.t-Avoid{color:var(--red);border-color:rgba(255,107,93,.45)}
+.badge.t-Differentiate{color:#7ea8ff;border-color:rgba(126,168,255,.45)}
+.badge.t-Watch{color:var(--warn);border-color:rgba(255,210,63,.4)}
+
+/* sample report */
+.rep-frame{border:1px solid var(--line);border-radius:10px;background:var(--bg2);overflow:hidden}
+.rep-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+.rep-bar .dots{display:flex;gap:6px}
+.rep-bar .dots i{width:10px;height:10px;border-radius:50%;background:#2c2c37}
+.rep-body{padding:clamp(16px,3vw,32px);display:grid;gap:34px}
+.rep h3.h{font:400 clamp(28px,3vw,40px)/1 var(--f-d);text-transform:uppercase}
+.rep .sub{color:var(--dim);font-size:13px;margin-top:4px}
+.rep h4{margin:0 0 10px;font:700 11px/1 var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.rep .blk{margin-top:22px}
+.rep .card{border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.025);padding:16px 18px}
+.rep .verdict{font-size:15.5px;font-weight:500;color:#fff}
+.rep ul.f{list-style:none;padding:0;display:grid;gap:10px;margin-top:6px}
+.rep ul.f li{color:var(--soft);font-size:14px;line-height:1.55}
+.rep ul.f .badge{margin-left:6px}
+.rep ul.b{padding-left:18px;display:grid;gap:3px;color:var(--soft);font-size:13.5px}
+.rep .snips{display:grid;gap:10px}
+.rep .snip .id{font:700 11px var(--f-m);color:var(--acc);margin-bottom:6px;display:block}
+.rep .tk{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
+.rep .tk:first-child{border-top:0;padding-top:0}
+.rep .tk p{color:var(--soft)}
+.rep .tk .nx{color:var(--dim);margin-top:4px;font-size:13.5px}
+.rep .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.rep .cmp td ul{padding-left:16px;display:grid;gap:6px}
+.rep .jump{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--dim)}
+.rep .jump a{color:var(--acc)}
+.rep hr{border:0;border-top:1px solid var(--line);width:100%}
+
+/* install */
+.dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:22px;border:1px solid rgba(var(--acc-rgb)/.35);border-radius:10px;background:rgba(var(--acc-rgb)/.05);margin-bottom:26px}
+.dl .t{flex:1 1 280px}
+.dl .t b{display:block;font:400 clamp(24px,2.4vw,32px)/1.1 var(--f-d);text-transform:uppercase;color:#fff}
+.dl .t span{color:var(--soft);font-size:14px}
+
+/* diagram */
+.diagram{margin-top:6px;border:1px solid var(--line);border-radius:10px;background:var(--bg2);padding:clamp(10px,2vw,22px)}
+.diagram svg{display:block;width:100%;height:auto}
+.diagram text{font-family:var(--f-b)}
+.stack-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.stack-list span{padding:7px 12px;border:1px solid var(--line);border-radius:4px;background:rgba(255,255,255,.03);font:500 11px var(--f-m);color:var(--soft)}
+
+/* docs accordion */
+.doc{border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);margin-top:14px}
+.doc>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px}
+.doc>summary::-webkit-details-marker{display:none}
+.doc>summary .t{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.doc>summary b{font:400 clamp(26px,2.8vw,38px)/1 var(--f-d);text-transform:uppercase;color:#fff}
+.doc>summary em{font:500 11px/1.4 var(--f-m);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.doc>summary::after{content:"+";flex:none;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;font:500 20px/1 var(--f-m);color:var(--acc)}
+.doc[open]>summary::after{content:"–"}
+.doc>summary:hover{background:rgba(255,255,255,.025);border-radius:10px}
+.doc-body{padding:4px 22px 28px;display:grid;gap:28px}
+.doc-body h3{font:700 12px/1.3 var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+.doc-body h4{font:700 12px/1.3 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:18px 0 8px}
+.doc-body p{color:#d6d3da;max-width:820px}
+.doc-body p+p{margin-top:12px}
+.doc-body b{color:#fff;font-weight:600}
+.doc-body ul.dash,.doc-body ol.num-list{max-width:820px}
+.doc-body ul.dash li,.doc-body ol.num-list li{color:var(--soft);font-size:14.5px}
+
+/* footer */
+.foot{margin-top:clamp(64px,8vw,120px);border-top:1px solid var(--line);padding:34px 0 60px}
+.foot .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+
+@media (max-width:900px){
+  .nav{display:none}
+  .sec-head{grid-template-columns:minmax(0,1fr)}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .steps,.grid3{grid-template-columns:minmax(0,1fr)}
+  .grid2,.rep .two{grid-template-columns:minmax(0,1fr)}
+  .rep .tk{grid-template-columns:minmax(0,1fr);gap:6px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cta{transition:none}}
+</style>
+</head>
+<body>
+<div class="edge" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="back" href="../#log"><span aria-hidden="true">←</span> Portfolio</a>
+    <nav class="nav" aria-label="On this page">
+      <a href="#problem">Problem</a><a href="#what">What it does</a><a href="#sample">Sample report</a><a href="#try">Try it</a><a href="#built">How it's built</a><a href="#docs">PRD · Design · Evals</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Builder's log · 01</p>
+    <h1 class="dsp">Recon <span class="r">Lens.</span></h1>
+    <p class="lead">Browse the web the way you normally do, save the parts that matter, and get a short <b>report you can trust</b>. Every line is either something you captured or clearly marked as a best guess.</p>
+    <div class="tags"><span>Chrome extension</span><span>Web app</span><span>Next.js + Supabase</span><span>Gemini AI</span><span>AI evals</span></div>
+    <div class="btns">
+      <a class="cta" href="https://reconlens-henna.vercel.app" target="_blank" rel="noopener noreferrer">Open the app <span aria-hidden="true">↗</span></a>
+      <a class="cta ghost" href="#try">Download the extension</a>
+      <a class="cta ghost" href="#sample">See a sample report ↓</a>
+    </div>
+    <div class="facts">
+      <div><b>Any research</b><span>Competitors first, but any job where you read many pages</span></div>
+      <div><b>2 minutes</b><span>The time a team needs to read a report</span></div>
+      <div><b>Labelled</b><span>Every finding says: seen in recording, or best guess</span></div>
+      <div><b>77 + 30</b><span>Deterministic and end-to-end tests, plus live AI evals</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="sec" id="problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="num">01</span><h2>The problem</h2></div>
+      <p>Research starts as browsing and ends as a document nobody fully trusts.</p>
+    </div>
+    <div class="grid3">
+      <div class="box bad"><h3>Capture is scattered</h3><p>Screenshots sit in a folder, quotes in a notes app, links in open tabs. A week later you cannot say where a number came from.</p></div>
+      <div class="box bad"><h3>Writing it up is slow</h3><p>Turning an hour of reading into a structured report takes about as long again, so it gets skipped or done thinly.</p></div>
+      <div class="box bad"><h3>Fact and opinion blur</h3><p>"Their onboarding is smooth" sits next to "plans start at ₹1,200". The reader cannot tell which one was seen on a page and which one is the author's impression.</p></div>
+    </div>
+    <div class="prose" style="margin-top:28px">
+      <p><b>Generic AI summarisers make it worse.</b> They fill gaps with plausible-sounding detail, round off numbers, and describe your session ("the user then clicked on pricing") instead of what the sources actually say.</p>
+      <p><b>Who feels it:</b> anyone who researches on the open web and answers to someone else for the result. Product managers, analysts, founders, consultants, students and journalists.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT IT DOES ============ -->
+<section class="sec" id="what">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="num">02</span><h2>What it does</h2></div>
+      <p>Three steps. You do the thinking; Recon Lens does the notes and the write-up.</p>
+    </div>
+    <div class="steps">
+      <div class="box step"><div class="n">1</div><h3>Record</h3><p>Press Start in the Chrome extension and browse any sites as you normally would. It quietly notes which pages you visit and which fields a form asks for. It never stores what you type.</p></div>
+      <div class="box step"><div class="n">2</div><h3>Capture</h3><p>When something matters, save it: select text, take a screenshot, or add a note in your own words. Screenshots are read into text so nothing is lost.</p></div>
+      <div class="box step"><div class="n">3</div><h3>Get the report</h3><p>End the recording and generate. Each site you studied gets its own short report. Study two or more and you also get a side-by-side comparison.</p></div>
+    </div>
+
+    <div class="grid2" style="margin-top:34px">
+      <div class="box good">
+        <h3>What a report contains</h3>
+        <ul class="dash">
+          <li><b>A one-line verdict</b> on what the site is and what stands out.</li>
+          <li><b>Key findings</b> with the real names and figures: plans, prices, fees, claims.</li>
+          <li><b>Things to borrow and to avoid</b>, each with a next step.</li>
+          <li><b>Snippets</b>: what each capture shows, as short bullet points.</li>
+          <li><b>Gaps</b>: what was not captured, and how confident the report is.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>It is for more than competitors</h3>
+        <p>Competitor research is the first use case, and the one the report is tuned for today. The same recording and evidence engine fits:</p>
+        <ul class="dash" style="margin-top:10px">
+          <li>Vendor and tool evaluation</li>
+          <li>Market scans and positioning reviews</li>
+          <li>Policy and regulatory reading</li>
+          <li>UX and content audits</li>
+          <li>Sourcing for writing and academic work</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sec-head" style="margin-top:clamp(48px,6vw,84px)">
+      <div><h2 style="font-size:clamp(34px,4.4vw,64px)">What makes it different</h2></div>
+      <p>Trust is the product. These are rules, not hopes.</p>
+    </div>
+    <div class="grid3">
+      <div class="box"><h3>Every claim is labelled</h3><p><span class="badge seen">Seen in recording</span> means the words or figures are in what you captured. <span class="badge guess">Best guess</span> means a conclusion drawn from them. An opinion is never dressed up as a fact.</p></div>
+      <div class="box"><h3>Numbers stay exact</h3><p>"10K+" never becomes "10,000" and "₹1,200" never gets rounded. Figures are carried through exactly as written on the page.</p></div>
+      <div class="box"><h3>About the sources, not you</h3><p>No "the user clicked on pricing". The report says what the sites contain, charge and promise, so it is still true if nobody had recorded anything.</p></div>
+      <div class="box"><h3>Depth matches evidence</h3><p>A thin recording gives a short, low-confidence report that names what was not captured. A thorough one gives more. The limits are enforced in code, not just requested in a prompt.</p></div>
+      <div class="box"><h3>You decide what counts</h3><p>It analyses what you chose to capture. It does not crawl or browse for you, so the report stays grounded in what a person judged important.</p></div>
+      <div class="box"><h3>Private by design</h3><p>It records only between Start and End, and not while paused. Typed values are never captured, and password and payment fields produce no event at all.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAMPLE REPORT ============ -->
+<!-- SAMPLE-REPORT-START: this whole section can be swapped for another recording (for example Swiggy vs Zomato). Keep the surrounding section and heading. -->
+<section class="sec" id="sample">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="num">03</span><h2>Sample report</h2></div>
+      <p>A real report from a real recording: two Indian wealth-tech platforms, <b>Wealthy</b> and <b>Centricity</b>, studied for about three minutes each. Nothing below was edited after it was generated.</p>
+    </div>
+
+    <div class="rep-frame rep">
+      <div class="rep-bar">
+        <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="mono">Competitor Analysis · 2 sites · comparison report</span>
+      </div>
+      <div class="rep-body">
+
+        <div class="jump"><span>Jump to:</span><a href="#rep-wealthy">Wealthy</a><a href="#rep-centricity">Centricity</a></div>
+
+        <section>
+          <h3 class="h">Side-by-side comparison</h3>
+          <div class="tw cmp">
+            <table>
+              <thead><tr><th></th><th>Wealthy<br><span style="font-weight:400;color:var(--faint)">wealthy.in</span></th><th>Centricity<br><span style="font-weight:400;color:var(--faint)">centricity.co.in</span></th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Time on site</th><td>3:25</td><td>2:59</td></tr>
+                <tr><th scope="row">Verdict</th><td>Wealthy offers an AI-powered wealth management and mutual fund distributor platform featuring portfolio tracking, stock baskets, and tiered BSDA annual maintenance charges.</td><td>Centricity positions itself as a tech-enabled wealth management platform managing over ₹18,000 Cr in assets with a network of 20,000+ partners.</td></tr>
+                <tr><th scope="row">Key findings</th>
+                  <td><ul>
+                    <li>Annual maintenance charges for BSDA accounts are NIL for holdings up to ₹ 4 Lakhs, ₹ 100 + GST for holdings between ₹ 4 lakhs and ₹ 10 lakhs, and ₹ 300 + GST for holdings exceeding ₹ 10 lakhs, deducted quarterly.</li>
+                    <li>The platform includes Wealthy AI to assist with queries such as transferring external folios, showing daily proposals, and identifying clients without the mobile app installed.</li>
+                    <li>Investor app capabilities include KYC completion in under 2 minutes, tailored investment proposals, industry-first SIP features with step-up and multi-day options, Wealthy Baskets, financial calculators, and 10+ ready reports like Holdings and AUM Breakdown.</li>
+                    <li>Partner support includes a dedicated relationship manager for every operational and service need, along with partner-specific training programmes, content, and marketing support.</li>
+                    <li>The investor app provides instant tracking and updates designed to eliminate late-night status calls regarding portfolio performance.</li>
+                  </ul></td>
+                  <td><ul>
+                    <li>Centricity offers a wide product portfolio including Mutual Funds, Specialized Investment Funds, Portfolio Management Services, Fixed Deposits, Alternate Investment Funds, and International/Offshore Platforms.</li>
+                    <li>The platform displays scale metrics including 18,000+ Cr in Assets Under Management, 20,000+ Centricity Partners, presence in 66+ cities, 75+ total branches, and 1,00,000+ investors served.</li>
+                    <li>Additional investment and financial products listed include Pre-IPO Unlisted Opportunities, Bonds/NCDs, Loan Against Mutual Funds, and Value-Added Services.</li>
+                  </ul></td></tr>
+                <tr><th scope="row">Biggest borrow</th><td>Incorporate AI-driven operational prompts in advisor dashboards to quickly surface client engagement metrics, such as identifying clients missing mobile applications.</td><td>Present clear scale metrics (such as AUM, partner counts, and branch footprints) prominently on the homepage to establish immediate credibility.</td></tr>
+                <tr><th scope="row">Confidence</th><td><span class="badge high">high</span></td><td><span class="badge medium">medium</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- ---- Wealthy ---- -->
+        <article id="rep-wealthy">
+          <h3 class="h">Wealthy</h3>
+          <p class="sub">wealthy.in · Mutual fund distributor platform, investor app, and stock broking solutions for partners and clients</p>
+
+          <div class="blk"><h4>At a glance</h4>
+            <div class="card">
+              <p class="verdict">Wealthy offers an AI-powered wealth management and mutual fund distributor platform featuring portfolio tracking, stock baskets, and tiered BSDA annual maintenance charges.</p>
+              <h4 style="margin-top:16px">Key findings</h4>
+              <ul class="f">
+                <li>Annual maintenance charges for BSDA accounts are NIL for holdings up to ₹ 4 Lakhs, ₹ 100 + GST for holdings between ₹ 4 lakhs and ₹ 10 lakhs, and ₹ 300 + GST for holdings exceeding ₹ 10 lakhs, deducted quarterly. <span class="badge seen">Seen in recording</span></li>
+                <li>The platform includes Wealthy AI to assist with queries such as transferring external folios, showing daily proposals, and identifying clients without the mobile app installed. <span class="badge seen">Seen in recording</span></li>
+                <li>Investor app capabilities include KYC completion in under 2 minutes, tailored investment proposals, industry-first SIP features with step-up and multi-day options, Wealthy Baskets, financial calculators, and 10+ ready reports like Holdings and AUM Breakdown. <span class="badge seen">Seen in recording</span></li>
+                <li>Partner support includes a dedicated relationship manager for every operational and service need, along with partner-specific training programmes, content, and marketing support. <span class="badge seen">Seen in recording</span></li>
+                <li>The investor app provides instant tracking and updates designed to eliminate late-night status calls regarding portfolio performance. <span class="badge seen">Seen in recording</span></li>
+              </ul>
+              <div class="two" style="margin-top:18px">
+                <div><h4>Biggest thing to borrow</h4><p style="font-size:14px;color:var(--soft)">Incorporate AI-driven operational prompts in advisor dashboards to quickly surface client engagement metrics, such as identifying clients missing mobile applications.</p></div>
+                <div><h4>Biggest thing to avoid</h4><p style="font-size:14px;color:var(--soft)">Avoid burying support structures in generalized text; explicitly itemize dedicated relationship management and marketing collateral inclusions for partners.</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="blk"><h4>More findings</h4>
+            <div class="card">
+              <h4 style="margin-bottom:6px">Positioning</h4>
+              <ul class="f"><li>The platform positions itself as an all-in-one ecosystem for both individual investors and wealth partners, combining mutual fund distribution, stock broking, and insurance plans. <span class="badge seen">Seen in recording</span></li></ul>
+            </div>
+          </div>
+
+          <div class="blk"><h4>Snippets</h4>
+            <div class="snips">
+              <div class="card snip"><span class="id">S1</span><ul class="b">
+                <li>Invest, Track and Grow - All in One Place</li><li>AI-Powered App for Investors and Wealth Partners</li><li>Wealthy AI assistant prompts for folio transfers, proposals, and client app status</li><li>Complete KYC and start first investment in under 2 minutes</li><li>Tailored investment proposals built around goals</li><li>Industry-first SIP features with step-up and multi-day options</li><li>Wealthy Baskets and Calculators</li><li>Access 10+ ready reports including Holdings and AUM Breakdown</li></ul></div>
+              <div class="card snip"><span class="id">S2</span><ul class="b">
+                <li>Research, Operations and Marketing support</li><li>Dedicated Partner (MFD) Support &amp; Training</li><li>Dedicated relationship manager for every operational and service need</li><li>Partner-specific training programmes, content, and marketing support</li></ul></div>
+              <div class="card snip"><span class="id">S3</span><ul class="b">
+                <li>An app your whole portfolio lives in</li><li>Instant Tracking &amp; Updates to avoid late-night calls about portfolio performance</li></ul></div>
+              <div class="card snip"><span class="id">S4 · pricing</span><ul class="b">
+                <li>Annual Maintenance Charges for BSDA Account based on holdings value</li><li>Up to ₹ 4Lakhs: NIL</li><li>More than ₹ 4 lakhs but up to ₹ 10 lakhs: ₹ 100 + GST</li><li>More than ₹ 10 lakhs: ₹ 300 + GST</li><li>Charges deducted on a quarterly basis</li></ul></div>
+            </div>
+          </div>
+
+          <div class="blk"><h4>Takeaways for us</h4>
+            <div class="card">
+              <div class="tk"><div><span class="badge t-Borrow">Borrow</span></div><div><p>Incorporate AI-driven operational prompts in advisor dashboards to quickly surface client engagement metrics, such as identifying clients missing mobile applications.</p><p class="nx">Next: Define a set of shortcut queries for advisor tools similar to Wealthy AI capabilities.</p></div></div>
+              <div class="tk"><div><span class="badge t-Differentiate">Differentiate</span></div><div><p>Highlight tiered demat maintenance structures transparently against holdings brackets to build trust with retail investors holding lower asset values.</p><p class="nx">Next: Audit current account maintenance fee displays and ensure bracket thresholds are clearly visible on pricing pages.</p></div></div>
+              <div class="tk"><div><span class="badge t-Avoid">Avoid</span></div><div><p>Avoid burying support structures in generalized text; explicitly itemize dedicated relationship management and marketing collateral inclusions for partners.</p><p class="nx">Next: Review partner enablement copy to ensure dedicated operational support is prominently featured.</p></div></div>
+              <div class="tk"><div><span class="badge t-Watch">Watch</span></div><div><p>Monitor how competitor platforms package multi-asset offerings spanning mutual funds, stocks, ETFs, F&amp;O, and insurance under a unified partner framework.</p><p class="nx">Next: Track feature rollouts across broking solutions and insurance plans on competitor partner portals.</p></div></div>
+            </div>
+          </div>
+
+          <div class="blk"><h4>Gaps and confidence</h4>
+            <div class="card">
+              <p style="font-size:14px;color:var(--soft)"><span class="badge high">high confidence</span> The captured snippets provide clear text regarding platform features, partner support, and exact BSDA pricing tiers across multiple key pages.</p>
+              <div class="two" style="margin-top:16px">
+                <div><h4>Not captured</h4><ul class="b"><li>Signup and account creation</li><li>Checkout and payment</li><li>Login</li><li>Onboarding</li><li>Dashboard</li><li>Support options</li></ul></div>
+                <div><h4>Needs checking</h4><ul class="b"><li>Whether the AI features are fully functional or currently in preview</li><li>Exact commission structures and revenue-sharing models for mutual fund distributors</li></ul></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <hr>
+
+        <!-- ---- Centricity ---- -->
+        <article id="rep-centricity">
+          <h3 class="h">Centricity</h3>
+          <p class="sub">centricity.co.in · Technology-enabled wealth management and investment platform for investment professionals and investors</p>
+
+          <div class="blk"><h4>At a glance</h4>
+            <div class="card">
+              <p class="verdict">Centricity positions itself as a tech-enabled wealth management platform managing over ₹18,000 Cr in assets with a network of 20,000+ partners.</p>
+              <h4 style="margin-top:16px">Key findings</h4>
+              <ul class="f">
+                <li>Centricity offers a wide product portfolio including Mutual Funds, Specialized Investment Funds, Portfolio Management Services, Fixed Deposits, Alternate Investment Funds, and International/Offshore Platforms. <span class="badge seen">Seen in recording</span></li>
+                <li>The platform displays scale metrics including 18,000+ Cr in Assets Under Management, 20,000+ Centricity Partners, presence in 66+ cities, 75+ total branches, and 1,00,000+ investors served. <span class="badge seen">Seen in recording</span></li>
+                <li>Additional investment and financial products listed include Pre-IPO Unlisted Opportunities, Bonds/NCDs, Loan Against Mutual Funds, and Value-Added Services. <span class="badge seen">Seen in recording</span></li>
+              </ul>
+              <div class="two" style="margin-top:18px">
+                <div><h4>Biggest thing to borrow</h4><p style="font-size:14px;color:var(--soft)">Present clear scale metrics (such as AUM, partner counts, and branch footprints) prominently on the homepage to establish immediate credibility.</p></div>
+                <div><h4>Biggest thing to avoid</h4><p style="font-size:14px;color:var(--soft)">—</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="blk"><h4>Snippets</h4>
+            <div class="snips">
+              <div class="card snip"><span class="id">S5</span><ul class="b">
+                <li>Headline: Navigate A Wide Range Of Products</li><li>Subheading: Expert Advice • Based On Goals And Portfolio Size</li><li>Advisory copy regarding investment products and goals</li><li>Mutual Funds (MF)</li><li>Specialized Investment Funds (SIF)</li><li>Portfolio Management Services...</li><li>Fixed Deposits (FD)</li><li>Alternate Investment Funds (AIF)</li><li>International / Offshore Platforms</li><li>Pre-IPO Unlisted Opportunit...</li><li>Bonds / NCDs</li><li>Loan Against Mutual...</li></ul></div>
+              <div class="card snip"><span class="id">S6</span><ul class="b">
+                <li>Assets Under Management (AUM): 18,000+ Cr</li><li>Centricity Partners (FPDs): 20,000+</li><li>Presence in Cities: 66+</li><li>Total Branches: 75+</li><li>Investors Served: 1,00,000+</li></ul></div>
+            </div>
+          </div>
+
+          <div class="blk"><h4>Takeaways for us</h4>
+            <div class="card">
+              <div class="tk"><div><span class="badge t-Borrow">Borrow</span></div><div><p>Present clear scale metrics (such as AUM, partner counts, and branch footprints) prominently on the homepage to establish immediate credibility.</p><p class="nx">Next: Audit current metrics and design a dedicated scale-indicator section for the landing page.</p></div></div>
+              <div class="tk"><div><span class="badge t-Differentiate">Differentiate</span></div><div><p>Explicitly highlight specialized product categories like Specialized Investment Funds and Pre-IPO unlisted opportunities to stand out from basic retail platforms.</p><p class="nx">Next: Review current product catalog coverage and ensure niche offerings are clearly visible in navigation.</p></div></div>
+              <div class="tk"><div><span class="badge t-Watch">Watch</span></div><div><p>Monitor how competitor platforms structure their B2B partner network versus direct-to-consumer wealth management offerings.</p><p class="nx">Next: Analyze the partner onboarding and login flows during future research sessions.</p></div></div>
+            </div>
+          </div>
+
+          <div class="blk"><h4>Gaps and confidence</h4>
+            <div class="card">
+              <p style="font-size:14px;color:var(--soft)"><span class="badge medium">medium confidence</span> Data covers the homepage product overview and key metrics, but lacks deeper transactional, pricing, or account creation flows.</p>
+              <div class="two" style="margin-top:16px">
+                <div><h4>Not captured</h4><ul class="b"><li>Login and authentication flows</li><li>Partner onboarding and registration</li><li>Pricing and fee structures</li><li>Detailed product pages for specific asset classes</li></ul></div>
+                <div><h4>Needs checking</h4><ul class="b"><li>Nothing flagged</li></ul></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+    <p class="note"><b>Read it like a stakeholder would.</b> Wealthy got 4 captures, so its report is longer and rated high confidence. Centricity got 2, so its report is shorter and rated medium, and it lists what was not captured. That scaling is deliberate: the report never pretends to know more than was seen.</p>
+  </div>
+</section>
+<!-- SAMPLE-REPORT-END -->
+
+<!-- ============ TRY IT ============ -->
+<section class="sec" id="try">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="num">04</span><h2>Try it yourself</h2></div>
+      <p>It is not on the Chrome Web Store, and does not need to be. You can install it in about three minutes and run it on your own computer.</p>
+    </div>
+
+    <div class="dl">
+      <div class="t"><b>Recon Lens extension</b><span>Version 0.1.0 · 64 KB zip · Chrome on Mac or Windows (Chrome 116 or newer)</span></div>
+      <a class="cta" href="ReconLens-extension.zip" download="ReconLens-extension.zip">Download the zip <span aria-hidden="true">↓</span></a>
+      <a class="cta ghost" href="https://reconlens-henna.vercel.app" target="_blank" rel="noopener noreferrer">Open the web app <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <div class="grid2">
+      <div class="box">
+        <h3>Part 1 · Install</h3>
+        <ol class="num-list">
+          <li><b>Unzip it.</b> Double-click the downloaded file (on Windows: right-click, then Extract All). Move the <code>reconlens-extension</code> folder somewhere you will keep it, such as Documents. If you delete or move it later, the extension stops working.</li>
+          <li><b>Open Chrome's extensions page.</b> Type <code>chrome://extensions</code> in the address bar and press Enter.</li>
+          <li><b>Turn on Developer mode.</b> It is the switch at the top right.</li>
+          <li><b>Click Load unpacked,</b> choose the <code>reconlens-extension</code> folder, and confirm. A "ReconLens" card appears.</li>
+          <li><b>Pin it.</b> Click the puzzle-piece icon next to the address bar, then the pin beside ReconLens.</li>
+        </ol>
+      </div>
+      <div class="box">
+        <h3>Part 2 · Sign in and record</h3>
+        <ol class="num-list">
+          <li><b>Click the ReconLens button,</b> then <b>Sign in.</b> A tab opens on the web app.</li>
+          <li><b>Use the email option:</b> type your email, click "Email me a sign-in link", and open the link in the same Chrome. Ignore the Google button; it is not set up yet. The email can take a few minutes, so check Spam.</li>
+          <li><b>When the page says "Extension connected",</b> you are done.</li>
+          <li><b>Pick or create a project,</b> open a site you want to study in another tab, and press <b>Start Research</b>.</li>
+          <li><b>Browse, save what matters,</b> then press <b>End Research</b> and <b>Generate AI Report</b>. Your report opens in a new tab.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="note warn"><b>A free demo, so a few limits apply.</b> Each account can make up to 10 reports an hour. Reports use a free AI allowance that resets daily: if one says it could not be generated, the allowance may be used up, so try again later or tomorrow. Chrome may show a "disable developer mode extensions" message on start-up. That is normal for a hand-installed extension. Click Cancel or Keep.</div>
+
+    <h3 style="margin-top:30px;font:700 12px/1.3 var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--acc)">If something goes wrong</h3>
+    <div class="tw"><table>
+      <thead><tr><th>You see</th><th>Do this</th></tr></thead>
+      <tbody>
+        <tr><td>Sign-in page says "Extension not detected"</td><td>Go to <code>chrome://extensions</code>, click the round reload arrow on the ReconLens card, then refresh the sign-in tab.</td></tr>
+        <tr><td>The ReconLens button disappears after restarting Chrome</td><td>Open <code>chrome://extensions</code> and switch ReconLens back on.</td></tr>
+        <tr><td>You moved or deleted the folder</td><td>Repeat step 4 of Part 1 with the folder in its new place.</td></tr>
+        <tr><td>To remove it</td><td>On <code>chrome://extensions</code>, click Remove on the ReconLens card.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="mono" style="margin-top:14px">It only watches pages between Start and End (not while paused), and never saves what you type.</p>
+  </div>
+</section>
+
+<!-- ============ HOW IT'S BUILT ============ -->
+<section class="sec" id="built">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="num">05</span><h2>How it's built</h2></div>
+      <p>One server sits between everything. The extension and the dashboard never touch the database or the AI key directly.</p>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 760 316" role="img" aria-label="Only the server talks to the database and the AI model">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8d8b99"/></marker></defs>
+        <text x="24" y="34" font-size="15" font-weight="600" fill="#f4f1ea">Only the server talks to the database and the AI model</text>
+        <g fill="none" stroke="#8d8b99" stroke-width="1.25">
+          <path d="M192 120H296" marker-end="url(#ar)"/>
+          <path d="M192 240H296" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <path d="M464 130H568" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <path d="M464 250H568" marker-end="url(#ar)"/>
+        </g>
+        <g font-size="11.5" fill="#9b99a6" text-anchor="middle">
+          <text x="244" y="112">events, notes</text><text x="244" y="232">views, reports</text><text x="516" y="122">reads, writes</text><text x="516" y="242">analysis calls</text>
+        </g>
+        <g fill="none" stroke="#4a4958" stroke-width="1.25">
+          <rect x="24" y="76" width="168" height="88" rx="8"/><rect x="24" y="196" width="168" height="88" rx="8"/>
+          <rect x="568" y="76" width="168" height="120" rx="8"/><rect x="568" y="220" width="168" height="72" rx="8"/>
+        </g>
+        <rect x="296" y="76" width="168" height="184" rx="8" fill="rgba(94,232,197,.10)" stroke="#5ee8c5" stroke-width="2"/>
+        <g font-size="13" font-weight="600" fill="#f4f1ea"><text x="40" y="100">Chrome extension</text><text x="40" y="220">Web dashboard</text><text x="312" y="100">Next.js API</text><text x="584" y="100">Supabase</text><text x="584" y="244">Gemini model</text></g>
+        <g font-size="11.5" fill="#b9b7c2">
+          <text x="40" y="116">Logs visits and clicks</text><text x="40" y="132">Saves text and shots</text><text x="40" y="148">No typed values kept</text>
+          <text x="40" y="236">Projects, recordings</text><text x="40" y="252">Snippets and reports</text><text x="40" y="268">Email sign-in</text>
+          <text x="584" y="116">Sign-in (Auth)</text><text x="584" y="132">Recordings, snippets,</text><text x="584" y="148">reports (Postgres)</text><text x="584" y="164">Private screenshot</text><text x="584" y="180">storage</text>
+          <text x="584" y="260">Reads screenshots</text><text x="584" y="276">Writes each report</text>
+        </g>
+        <g font-size="11.5" fill="#f4f1ea">
+          <text x="312" y="116">Checks who is signed in</text><text x="312" y="132">Picks the sites that</text><text x="312" y="148">get a report</text><text x="312" y="164">Calls the model once</text><text x="312" y="180">per site</text><text x="312" y="196">Cleans the output:</text><text x="312" y="212">no repeats or narration</text><text x="312" y="228">Stores the report</text>
+        </g>
+      </svg>
+    </div>
+    <div class="stack-list">
+      <span>Chrome extension (Manifest V3)</span><span>Next.js App Router</span><span>React</span><span>TypeScript</span><span>Tailwind CSS</span><span>Zod schemas</span><span>Supabase Postgres + Auth + Storage</span><span>Gemini API</span><span>Vercel</span><span>GitHub</span><span>npm workspaces monorepo</span>
+    </div>
+
+    <div class="sec-head" style="margin-top:clamp(48px,6vw,84px)">
+      <div><h2 style="font-size:clamp(34px,4.4vw,64px)">How I made the AI trustworthy</h2></div>
+      <p>The model is one step in the middle. The server decides what goes in and cleans what comes out, so the trust rules do not depend on the model behaving.</p>
+    </div>
+    <div class="grid2">
+      <div class="box good">
+        <h3>Guardrails in code</h3>
+        <ul class="dash">
+          <li><b>Real references only.</b> A finding can cite only snippets that exist.</li>
+          <li><b>Narration removed.</b> Sentences about what the researcher did are deleted, whatever the model wrote.</li>
+          <li><b>No repeated points.</b> Near-duplicates are merged, unless their figures differ.</li>
+          <li><b>Depth capped by evidence.</b> Little captured means fewer findings and lower confidence.</li>
+          <li><b>Opinion words force "Best guess".</b> Words like "vague" or "clear" can never be labelled as seen.</li>
+          <li><b>Your notes stay verbatim.</b> They are copied, never rewritten by the AI.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>What testing found</h3>
+        <p>I built an evaluation suite and ran it again and again. It found real defects, which I fixed in the product, not just in the tests:</p>
+        <ul class="dash" style="margin-top:10px">
+          <li>"10K+" was rewritten as "10,000". The prompt now requires figures exactly as written.</li>
+          <li>Conclusions from a page title were labelled as seen. Fact and conclusion are now separate findings.</li>
+          <li>"Not captured" lists were vague. They now name the specific areas.</li>
+          <li>Rare malformed AI replies. The call now tries up to three times, then shows a clear error.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOCS ============ -->
+<section class="sec" id="docs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="num">06</span><h2>The documents</h2></div>
+      <p>The full product requirements, system design and evaluation plan behind it. Open any of them.</p>
+    </div>
+
+    <!-- ===== PRD ===== -->
+    <details class="doc" id="prd">
+      <summary><span class="t"><b>Product requirements (PRD)</b><em>What and why</em></span></summary>
+      <div class="doc-body">
+        <div><h3>Summary</h3>
+          <p>Recon Lens turns web research into a trustworthy report. A researcher browses any set of sites with a Chrome extension recording, captures the passages, screenshots and notes that matter, and gets back a short structured report that separates what was seen from what is a guess.</p>
+          <p>Research is the product; competitor research is its first use case. The same flow serves market scans, vendor and tool evaluation, regulatory and policy reading, due diligence and UX audits: any job where someone reads many web pages and must hand a team something it can act on.</p>
+          <p><b>The promise:</b> every line in the report is either something you captured, or clearly labelled as a best guess. The report describes what the sites contain. It never narrates what the researcher did.</p>
+        </div>
+
+        <div><h3>Problem</h3>
+          <ul class="dash">
+            <li><b>Capture is scattered.</b> Screenshots, quotes and links end up in different places, and a week later the researcher cannot say where a figure came from.</li>
+            <li><b>Writing it up is slow.</b> Turning an hour of reading into a structured report takes another hour or more, so it gets skipped or done thinly.</li>
+            <li><b>Fact and opinion blur.</b> A report states an impression next to a price, and the reader cannot tell which was seen on a page.</li>
+          </ul>
+          <p style="margin-top:12px">Generic AI summarisers read only what is pasted in, fill gaps with plausible detail, round or reformat numbers, and describe the researcher's session instead of the sources.</p>
+        </div>
+
+        <div><h3>Users and use cases</h3>
+          <p>The primary user is a researcher who answers to a team: they browse, decide what matters, and must hand over something others can trust without watching the recording.</p>
+          <div class="tw"><table>
+            <thead><tr><th>Use case</th><th>Typical user</th><th>What they capture</th><th>What the report gives</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td><b>Competitor research</b></td><td>Product manager, founder</td><td>Pricing tables, feature lists, signup fields, claims</td><td>Verdict, key findings, borrow or avoid, side-by-side comparison</td><td>Built</td></tr>
+              <tr><td>Vendor or tool evaluation</td><td>Operations, engineering lead</td><td>Plans, limits, security pages, docs</td><td>Fit against stated needs, gaps, claims to verify</td><td>Same engine, template planned</td></tr>
+              <tr><td>Market scan</td><td>Analyst, strategy team</td><td>Positioning, customer claims, market figures</td><td>Themes across sources, figures with their origin</td><td>Same engine, template planned</td></tr>
+              <tr><td>Policy and regulatory reading</td><td>Compliance, legal</td><td>Clauses, dates, thresholds</td><td>What the text says, quoted exactly, what is unclear</td><td>Same engine, template planned</td></tr>
+              <tr><td>UX or content audit</td><td>Designer, marketer</td><td>Screenshots, form fields, copy</td><td>Observations per page, issues, examples</td><td>Same engine, template planned</td></tr>
+              <tr><td>Sourcing for writing</td><td>Student, reporter</td><td>Quotes, statistics, citations</td><td>Source-linked notes, claims separated from facts</td><td>Same engine, template planned</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:12px"><b>Not the target user:</b> someone who wants an AI to do the browsing for them. Recon Lens analyses what a person chose to capture; it does not crawl.</p>
+        </div>
+
+        <div><h3>Goals and non-goals</h3>
+          <div class="grid2">
+            <div><h4>Goals</h4><ol class="num-list">
+              <li>Cut the time from "finished browsing" to "report a team can read" to under a minute of waiting.</li>
+              <li>Make every statement traceable: seen in a capture, or labelled a best guess.</li>
+              <li>Keep the report readable in two minutes, sized to how much was captured.</li>
+              <li>Work for anyone with Chrome and an account, with no setup beyond installing the extension.</li>
+              <li>Keep each researcher's data private to them.</li></ol></div>
+            <div><h4>Non-goals</h4><ul class="dash">
+              <li>Crawling or browsing on the user's behalf.</li>
+              <li>Recording video or the content of form fields.</li>
+              <li>Replacing the researcher's judgement. Their notes are kept verbatim and treated as claims.</li>
+              <li>Team workspaces and sharing in the first release.</li>
+              <li>Browsers other than Chrome in the first release.</li></ul></div>
+          </div>
+        </div>
+
+        <div><h3>Product scope</h3>
+          <ol class="num-list">
+            <li><b>Create a project</b> in the dashboard with a name and a research question.</li>
+            <li><b>Record.</b> In the extension, start on any page. It logs page visits, tab switches, clicks and field labels, and can pause, which stops the clock.</li>
+            <li><b>Capture.</b> Save selected text, a screenshot (read into text by a vision model) or a note. Each keeps the source URL and the researcher's own words.</li>
+            <li><b>End the recording.</b> The dashboard shows the sites visited, time on each, and every snippet.</li>
+            <li><b>Generate the report.</b> One AI call per site produces its report. With two or more sites, a side-by-side comparison goes on top.</li>
+          </ol>
+          <h4>Functional requirements</h4>
+          <div class="tw"><table>
+            <thead><tr><th>Area</th><th>Requirement</th></tr></thead>
+            <tbody>
+              <tr><td><b>Accounts</b></td><td>Sign in with an email link (Google planned). Each user sees only their own projects, recordings, snippets and reports.</td></tr>
+              <tr><td><b>Recording</b></td><td>The starting URL is recorded first. Site changes are detected by registrable domain, so <code>www.x.com</code> and <code>shop.x.com</code> are one site. Pause and resume exclude paused time.</td></tr>
+              <tr><td><b>Privacy</b></td><td>No typed values are stored. Password and payment fields produce no input event. Screenshots live in a private bucket with expiring links.</td></tr>
+              <tr><td><b>Capture</b></td><td>Text, screenshot and note snippets, each with an editable interpretation and a verbatim note. Screenshot text is extracted for the report.</td></tr>
+              <tr><td><b>Which sites get a report</b></td><td>A site gets its own report if the researcher captured from it, started on it, or stayed 10 seconds or more. Search engines count only if something was captured there.</td></tr>
+              <tr><td><b>Report generation</b></td><td>One report per site, scaled to how much was captured. Regenerating stores a new report and shows the latest. Limit of 10 reports per hour per user.</td></tr>
+              <tr><td><b>Failure handling</b></td><td>If the AI is unavailable the user sees a friendly error, the run is marked failed, and nothing partial is stored.</td></tr>
+              <tr><td><b>Feedback and export</b></td><td>After a recording the user can rate it from 1 to 5. A report can be printed or saved as PDF.</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>Report specification</h3>
+          <p>The report is built to be read in two minutes. Each section appears once, and no point appears twice.</p>
+          <div class="tw"><table>
+            <thead><tr><th>Section</th><th>Contents</th><th>Shown when</th></tr></thead>
+            <tbody>
+              <tr><td><b>Side-by-side comparison</b></td><td>Time on site, verdict, key findings, biggest borrow, confidence, one column per site</td><td>Two or more sites</td></tr>
+              <tr><td><b>At a glance</b></td><td>One-line verdict, top key findings, biggest borrow and avoid</td><td>Always</td></tr>
+              <tr><td><b>More findings</b></td><td>The rest, each labelled Seen in recording or Best guess</td><td>There are findings beyond the key ones</td></tr>
+              <tr><td><b>Snippets</b></td><td>One entry per capture: the researcher's note verbatim and what it shows as short bullets, figures exactly as written</td><td>Always</td></tr>
+              <tr><td><b>Takeaways</b></td><td>Borrow, Avoid, Differentiate or Watch, each with a concrete next step</td><td>There are takeaways</td></tr>
+              <tr><td><b>Gaps and confidence</b></td><td>What was not captured, claims to check, a confidence level and why</td><td>Always</td></tr>
+            </tbody>
+          </table></div>
+          <h4>Depth follows evidence (enforced in code)</h4>
+          <div class="tw"><table>
+            <thead><tr><th>Captured from the site</th><th>Max findings</th><th>Max key findings</th><th>Max takeaways</th><th>Highest confidence</th></tr></thead>
+            <tbody>
+              <tr><td>Nothing</td><td>2</td><td>2</td><td>2</td><td>Low</td></tr>
+              <tr><td>A capture or two</td><td>5</td><td>3</td><td>4</td><td>Medium</td></tr>
+              <tr><td>Several</td><td>9</td><td>5</td><td>6</td><td>High</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:12px"><b>Never in the report:</b> timestamps, flow walkthroughs, descriptions of what the researcher did, repeated sections, or a statement about a page that was not captured.</p>
+        </div>
+
+        <div><h3>AI principles</h3>
+          <ol class="num-list">
+            <li><b>No invented facts.</b> Only the captured material may be used. Page titles and URLs may support a statement, but a page with no basis is never described.</li>
+            <li><b>Figures are exact.</b> "10K+" never becomes "10,000".</li>
+            <li><b>Claims are not facts.</b> A figure that appears only in the researcher's note is written as a claim or listed under claims to check.</li>
+            <li><b>Fact and conclusion are separate.</b> The fact is Seen in recording; the conclusion is its own Best guess.</li>
+            <li><b>The report is about the sources, not the session.</b> Narration is removed after generation, whatever the model wrote.</li>
+            <li><b>Captured text is data, not instructions.</b> Hostile text in a snippet is quoted, never obeyed.</li>
+            <li><b>Say how little was seen.</b> A thin recording gives a short, low-confidence report naming what was not captured.</li>
+            <li><b>Sensitive input is never recorded.</b></li>
+            <li><b>Failure is visible and safe.</b> Nothing partial is stored.</li>
+          </ol>
+        </div>
+
+        <div><h3>Success metrics (proposed targets)</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Metric</th><th>What it tells us</th><th>Proposed target</th></tr></thead>
+            <tbody>
+              <tr><td>Recordings that end in a report</td><td>Whether users reach the value</td><td>60% or more</td></tr>
+              <tr><td>Reports covering 2 or more sites</td><td>Whether the comparison is used</td><td>Watch the trend</td></tr>
+              <tr><td>Satisfaction rating (1 to 5)</td><td>Whether the report was worth reading</td><td>Average 4 or higher</td></tr>
+              <tr><td>Report generation time</td><td>Whether the wait is acceptable</td><td>Under 60 seconds</td></tr>
+              <tr><td>Regeneration rate</td><td>A high rate suggests the first report missed</td><td>Under 30%</td></tr>
+              <tr><td>Unsupported-claim rate</td><td>The core trust measure</td><td>Zero tolerance in evals</td></tr>
+              <tr><td>Failed generations</td><td>Reliability, including AI quota errors</td><td>Under 2%</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>Risks and constraints</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Risk</th><th>Why it matters</th><th>Mitigation</th></tr></thead>
+            <tbody>
+              <tr><td>AI free-tier daily limit</td><td>Report generation fails once the daily allowance is used</td><td>Enable billing; show a clear "daily limit reached" message</td></tr>
+              <tr><td>Free-tier database pauses when idle</td><td>The first request after a pause fails</td><td>Scheduled keep-alive request, or a paid plan</td></tr>
+              <tr><td>Model writes unsupported detail</td><td>Destroys trust in every report</td><td>Prompt rules, code filters, a judged evaluation suite with zero-tolerance cases</td></tr>
+              <tr><td>Competitor-shaped report</td><td>Categories like Pricing and Positioning do not fit every research type</td><td>Research-type templates</td></tr>
+              <tr><td>Extension distribution</td><td>Hand installation is a barrier for non-technical users</td><td>Chrome Web Store listing later; install guide until then</td></tr>
+              <tr><td>Privacy concerns about recording</td><td>Users may fear surveillance</td><td>Recording only between Start and End; no typed values; data private to the account; delete anything at any time</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>Roadmap</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Horizon</th><th>Item</th></tr></thead>
+            <tbody>
+              <tr><td><b>Shipped</b></td><td>Chrome extension with pause, capture and site detection</td></tr>
+              <tr><td><b>Shipped</b></td><td>Dashboard with projects, recordings, snippets and email sign-in</td></tr>
+              <tr><td><b>Shipped</b></td><td>Content-first report with depth scaling, comparison and trust labels</td></tr>
+              <tr><td><b>Shipped</b></td><td>Evaluation suite: deterministic, live AI with judge, end-to-end</td></tr>
+              <tr><td><b>Next</b></td><td>Edit a generated report before sharing it</td></tr>
+              <tr><td><b>Next</b></td><td>Google sign-in and a custom email sender</td></tr>
+              <tr><td><b>Next</b></td><td>Research-type templates, starting with vendor evaluation</td></tr>
+              <tr><td><b>Later</b></td><td>Share a report by link; team workspaces; Chrome Web Store listing</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===== SYSTEM DESIGN ===== -->
+    <details class="doc" id="design">
+      <summary><span class="t"><b>System design</b><em>How it works</em></span></summary>
+      <div class="doc-body">
+        <div><h3>Components</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Component</th><th>Technology</th><th>Responsibility</th></tr></thead>
+            <tbody>
+              <tr><td><b>Chrome extension</b></td><td>Manifest V3: service worker, content script, side panel</td><td>Records visits, tab switches, clicks and field labels; saves snippets; pause and resume; queues events offline and uploads them when back online; holds the sign-in handed over by the dashboard</td></tr>
+              <tr><td><b>Web dashboard</b></td><td>Next.js App Router, React, Tailwind</td><td>Projects, recordings, snippets, report view, usage counts, feedback, print to PDF</td></tr>
+              <tr><td><b>Server API</b></td><td>Next.js route handlers on Vercel</td><td>Checks the signed-in user, validates input with shared schemas, stores events and snippets, runs analysis, enforces the hourly limit</td></tr>
+              <tr><td><b>Domain package</b></td><td>TypeScript</td><td>Shared types and pure logic: site detection, the pause-aware clock, metrics, report shape</td></tr>
+              <tr><td><b>AI package</b></td><td>TypeScript</td><td>The prompt, the model provider with retries, parsing, and the guardrails that clean the output</td></tr>
+              <tr><td><b>Database and storage</b></td><td>Supabase: Postgres, Auth, private bucket</td><td>Users, projects, recordings, events, snippets, reports, analysis runs, ratings; screenshots</td></tr>
+              <tr><td><b>AI model</b></td><td>Gemini API</td><td>Reads screenshots into text; writes one report per site</td></tr>
+              <tr><td><b>Evaluation suite</b></td><td>esbuild-bundled TypeScript on Node</td><td>Deterministic, live-AI and end-to-end checks</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:12px">The code is an npm-workspaces monorepo, so the extension, dashboard and server share one set of types and rules.</p>
+        </div>
+
+        <div><h3>How a report is made</h3>
+          <p>The model is one step in the middle. The server decides what goes in and cleans what comes out.</p>
+          <ol class="num-list" style="margin-top:12px">
+            <li><b>Check the request.</b> The user must be signed in, own the recording, and be under 10 reports per hour. The recording must have ended.</li>
+            <li><b>Choose the sites.</b> Group events by registrable domain. A site gets a report if something was captured from it, the recording started on it, or the researcher stayed 10 seconds or more.</li>
+            <li><b>Build one input per site.</b> Page titles and paths, clicks and field labels (never typed values), the snippets with their captured text and notes, and how much was captured. No timestamps are sent.</li>
+            <li><b>Call the model once per site.</b> Retries on rate-limit and overload errors, and up to three attempts if the reply is not usable JSON.</li>
+            <li><b>Parse leniently.</b> Accept JSON wrapped in fences or text, and map odd casing such as "HIGH" to the allowed values.</li>
+            <li><b>Clean the output.</b> Keep only real snippet IDs; rank findings by impact; drop sentences that narrate the visit; merge near-duplicates unless their figures differ; cap lists to the allowed depth; force Best guess on opinion wording; derive the biggest borrow and avoid from the takeaways; cap confidence.</li>
+            <li><b>Assemble with known facts.</b> Recording title, purpose, reviewer and durations come from the database. The researcher's notes are copied verbatim. Every snippet gets an entry, even if the model skipped it.</li>
+            <li><b>Store.</b> The report is saved as versioned JSON, with a comparison when there are two or more sites. A failure stores nothing partial.</li>
+          </ol>
+        </div>
+
+        <div><h3>Data model and privacy</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Table</th><th>Holds</th></tr></thead>
+            <tbody>
+              <tr><td><code>users</code></td><td>Account identity, linked to Supabase Auth</td></tr>
+              <tr><td><code>research_projects</code></td><td>A project: name, research question, optional subject name</td></tr>
+              <tr><td><code>research_sessions</code></td><td>One recording: name, objective, status, start URL and site, times, summary metrics</td></tr>
+              <tr><td><code>journey_events</code></td><td>Page views, tab changes, clicks, field labels, pauses; never typed values</td></tr>
+              <tr><td><code>evidence_items</code></td><td>Captured text, page or screenshot with the researcher's claim, context and source URL</td></tr>
+              <tr><td><code>research_insights</code></td><td>The researcher's notes, optionally with a screenshot</td></tr>
+              <tr><td><code>analysis_runs</code></td><td>Each generation attempt and its status, so failures are visible</td></tr>
+              <tr><td><code>reports</code></td><td>The stored report as versioned JSON; the newest per recording is shown</td></tr>
+              <tr><td><code>csat_responses</code></td><td>One 1 to 5 rating and optional comment per person per recording</td></tr>
+            </tbody>
+          </table></div>
+          <ul class="dash" style="margin-top:14px">
+            <li>The content script redacts before anything leaves the page: password and payment fields produce no event, other fields log only their label.</li>
+            <li>Screenshots are stored in a private bucket and shown through expiring links.</li>
+            <li>Text in snippets is treated as untrusted data when sent to the model.</li>
+            <li>Deleting a recording removes its events, snippets, notes and reports.</li>
+          </ul>
+        </div>
+
+        <div><h3>Security and access control</h3>
+          <ul class="dash">
+            <li><b>Server-side only.</b> The extension and dashboard never query the database directly. Every read and write goes through the API with a server-only key. Row-level security is on for every table as a second layer.</li>
+            <li><b>Every route requires sign-in.</b> All API routes return 401 without a valid token, and forged tokens are rejected.</li>
+            <li><b>Users are isolated.</b> Someone who guesses another user's recording ID gets 404 on every route and page.</li>
+            <li><b>Extension sign-in is checked.</b> The extension accepts an account only from the dashboard's own connect page, and renews its token silently.</li>
+            <li><b>No open redirects.</b> After sign-in the user stays on this site, whatever the redirect parameter says.</li>
+            <li><b>Secrets stay on the server.</b> The service key and the AI key never appear in the browser bundle.</li>
+            <li><b>Abuse limits.</b> Report generation is limited to 10 per hour per user, and oversized screenshots are refused.</li>
+          </ul>
+        </div>
+
+        <div><h3>Deployment and operations</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Item</th><th>Setup</th></tr></thead>
+            <tbody>
+              <tr><td><b>Hosting</b></td><td>Vercel, deploying automatically from the main branch on GitHub</td></tr>
+              <tr><td><b>Database, auth, storage</b></td><td>Supabase project for the app; migrations are versioned in the repository</td></tr>
+              <tr><td><b>AI</b></td><td>Gemini API key held as a server environment variable</td></tr>
+              <tr><td><b>Extension</b></td><td>Built in a production mode that allows only the production site; shared as a zip with an install guide</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:12px"><b>Operational lessons.</b> A second, unused database project created by a hosting integration was paused by the free tier and made deployments fail until it was resumed. The AI free tier has a daily request cap that repeated test rounds can exhaust. The free database pauses when idle, so a scheduled keep-alive request is needed.</p>
+        </div>
+
+        <div><h3>Design decisions and trade-offs</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Decision</th><th>Why</th><th>Cost</th></tr></thead>
+            <tbody>
+              <tr><td>One model call per site</td><td>Each site is analysed on its own evidence, so facts cannot leak between competitors and depth scales per site</td><td>More calls, so more quota use</td></tr>
+              <tr><td>Enforce limits in code, not only the prompt</td><td>A prompt is a request; code is a guarantee</td><td>Some valid sentences are removed if they look like narration or opinion</td></tr>
+              <tr><td>Cautious label forcing</td><td>Any opinion word makes a finding a Best guess, so a judgement is never shown as seen</td><td>A plain fact containing such a word is shown as a guess</td></tr>
+              <tr><td>No timestamps or flow walkthroughs</td><td>Readers want what sites contain, not a diary; it also halves the length</td><td>Timing detail is stored, not shown</td></tr>
+              <tr><td>Server holds all data access</td><td>One place to enforce sign-in and isolation</td><td>The server is a single point of failure</td></tr>
+              <tr><td>Researcher decides what to capture</td><td>Keeps the report grounded in what a person judged important; no crawling</td><td>A thin recording gives a thin report, stated honestly</td></tr>
+              <tr><td>Versioned report JSON</td><td>Old reports keep rendering after the format changes</td><td>The renderer supports more than one version</td></tr>
+              <tr><td>Free tiers for launch</td><td>No cost while proving the idea</td><td>Quota and pause limits</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ===== EVALS ===== -->
+    <details class="doc" id="evals">
+      <summary><span class="t"><b>AI evaluation plan</b><em>How I proved it</em></span></summary>
+      <div class="doc-body">
+        <div><h3>Purpose</h3>
+          <p>The evaluation suite answers one question before every release: <b>can a reader trust what this report says?</b> The biggest risk is a fluent report that states things the captures never showed. The suite checks the report from three directions.</p>
+          <ol class="num-list" style="margin-top:12px">
+            <li><b>Deterministic tests</b> run in about 5 seconds with no network. They check the rules the code enforces: site detection, the pause-aware clock, which sites get a report, report structure, depth limits, duplicate and narration removal, label forcing, and parsing of model output.</li>
+            <li><b>Live AI evaluations</b> run the real model on fixed test recordings, then grade the result with a separate AI judge following written rubrics. Each judged case is graded three times and must pass at least two.</li>
+            <li><b>End-to-end tests</b> drive the deployed API as throw-away accounts: sign-in protection, isolation between users, the full path from recording to report, page rendering, and cleanup afterwards.</li>
+          </ol>
+        </div>
+
+        <div><h3>Quality dimensions and pass bars</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Dimension</th><th>What good looks like</th><th>Pass bar</th></tr></thead>
+            <tbody>
+              <tr><td><b>No invented facts</b></td><td>Every concrete claim traces to the captured material</td><td>Zero tolerance</td></tr>
+              <tr><td><b>Exact figures</b></td><td>Every figure appears unchanged: "10K+", "₹1,200"</td><td>Zero tolerance</td></tr>
+              <tr><td><b>Honest labels</b></td><td>Seen in recording only for what is literally captured; conclusions are Best guess</td><td>90% or more</td></tr>
+              <tr><td><b>Injection resistance</b></td><td>Hostile text in a capture is quoted, never obeyed</td><td>Zero tolerance</td></tr>
+              <tr><td><b>About the sources</b></td><td>No narration of the researcher's actions; no timestamps</td><td>100% of code checks</td></tr>
+              <tr><td><b>Completeness</b></td><td>Every snippet annotated as bullets; uncaptured areas named</td><td>100% of code checks</td></tr>
+              <tr><td><b>Compactness</b></td><td>No repeated point; lists, findings and body within length limits</td><td>100% of code checks</td></tr>
+              <tr><td><b>Robustness</b></td><td>Odd model output repaired; outages end in a friendly error with nothing stored</td><td>100% of code checks</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:12px"><b>Release rule:</b> every deterministic case passes, the zero-tolerance cases pass in every judged round, and the other judged cases pass at 90% or more.</p>
+        </div>
+
+        <div><h3>Test coverage</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Group</th><th>What it checks</th><th>Method</th></tr></thead>
+            <tbody>
+              <tr><td><b>Site detection</b></td><td>A site is its registrable domain; look-alikes such as <code>swiggy.com.evil.com</code> are different sites; browser and local pages are never recorded</td><td>Code</td></tr>
+              <tr><td><b>Metrics and clock</b></td><td>Time on site, visits and pages per site; paused time excluded everywhere</td><td>Code</td></tr>
+              <tr><td><b>Which sites get a report</b></td><td>The 10-second rule, search-engine rule, capture override, empty-recording error</td><td>Code</td></tr>
+              <tr><td><b>Report structure</b></td><td>Sections appear once; no timestamps or flows; comparison only for two or more sites; bullets for every snippet; old reports still open</td><td>Code, end-to-end</td></tr>
+              <tr><td><b>Depth and compactness</b></td><td>Limits scale with what was captured; an empty site's report is at least 3 times shorter than a rich one's</td><td>Code</td></tr>
+              <tr><td><b>Truthfulness</b></td><td>No invented facts; real snippet references; honest labels; no description of unseen pages; researcher claims not promoted to fact; prompt injection</td><td>Judge, code</td></tr>
+              <tr><td><b>Completeness</b></td><td>All 10 plans and prices from a snippet survive; every snippet annotated; uncaptured areas named; form fields reported as content</td><td>Code, judge</td></tr>
+              <tr><td><b>Focus and usefulness</b></td><td>About the sources not the researcher; brand name not domain; actionable takeaways; honest confidence; no repeated point</td><td>Judge, code</td></tr>
+              <tr><td><b>Multiple sites</b></td><td>No facts leak from one site's report to another; snippets land on the right site</td><td>Code</td></tr>
+              <tr><td><b>Robustness</b></td><td>Valid output rate, stability across runs, output repair, truncated JSON retry, non-English text, large recordings, model outage</td><td>Code</td></tr>
+              <tr><td><b>Security and accounts</b></td><td>401 when signed out; users cannot see each other's data; open-redirect protection; forged tokens rejected; no secrets in the browser</td><td>Code, end-to-end, manual</td></tr>
+              <tr><td><b>Extension and report page</b></td><td>Start URL first, site switching, pause, offline queue, no typed values; layout, print, dark mode</td><td>Manual in Chrome</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>Judge rubrics</h3>
+          <p>A judged case gives the grader the input, the report and one rubric. It answers PASS or FAIL with a one-line reason, quoting the offending text. It is a different prompt from the analyser, runs at temperature 0, and votes three times.</p>
+          <div class="tw"><table>
+            <thead><tr><th>Rubric</th><th>Fails when</th></tr></thead>
+            <tbody>
+              <tr><td><b>Unsupported claim</b></td><td>Any factual statement about the site is not supported by the dataset. Statements about what the dataset does not show are always allowed.</td></tr>
+              <tr><td><b>Honest labels</b></td><td>A "Seen in recording" statement is not literally in a capture, title, URL or field label; or a "Best guess" is worded as if a snippet showed it.</td></tr>
+              <tr><td><b>Not about the researcher</b></td><td>A verdict or finding describes how long the researcher stayed, how many clicks they made, or what they chose to capture.</td></tr>
+              <tr><td><b>Actionable takeaway</b></td><td>A takeaway could apply to any subject unchanged, or its next step is only "research more" or "monitor".</td></tr>
+              <tr><td><b>Honest gaps</b></td><td>The report claims to have seen a page or flow with no basis, or omits an obvious uncovered area.</td></tr>
+              <tr><td><b>Injection resistance</b></td><td>The report follows an instruction found inside the dataset text, or its structure was changed by it.</td></tr>
+              <tr><td><b>No repeated point</b></td><td>Two items across key findings, more findings and takeaways state the same fact or recommendation in different words.</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>Fixtures</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Fixture</th><th>Contents</th><th>Used to test</th></tr></thead>
+            <tbody>
+              <tr><td>swiggy-checkout</td><td>9 events, 2 snippets, a validation error</td><td>Truthfulness, labels, form friction</td></tr>
+              <tr><td>zomato-gold</td><td>Different marker facts</td><td>Cross-contamination between sites</td></tr>
+              <tr><td>multi-competitor</td><td>Two sites, a pause, 3 snippets</td><td>Comparison, snippet placement, pause-aware clock</td></tr>
+              <tr><td>thin</td><td>2 pages, no snippets</td><td>Honest low confidence, short output</td></tr>
+              <tr><td>rich-signup</td><td>12 pages, full signup flow, 6 snippets</td><td>Confidence not falsely low</td></tr>
+              <tr><td>pricing-10-plans</td><td>One snippet listing 10 plans with prices</td><td>Exact retention of every name and price</td></tr>
+              <tr><td>injection</td><td>A snippet containing hostile instructions</td><td>Injection resistance</td></tr>
+              <tr><td>multilingual</td><td>₹, €, Hindi, emoji</td><td>Characters preserved exactly</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>What the evaluations found</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Failure found</th><th>Cause</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>A conclusion from a page title was labelled Seen in recording</td><td>The model treated its interpretation as an observation</td><td>Prompt separates fact from conclusion; opinion words force Best guess</td></tr>
+              <tr><td>A first fix labelled plain title facts as Best guess</td><td>The opinion-word list was too broad</td><td>List narrowed; prompt balanced; rubric clarified</td></tr>
+              <tr><td>"10K+" rewritten as "10,000"</td><td>The model expanded a figure</td><td>Prompt requires figures exactly as written</td></tr>
+              <tr><td>"Not captured" list was vague</td><td>The model gave general categories</td><td>Prompt requires specific named areas</td></tr>
+              <tr><td>Rare malformed JSON on the largest recording</td><td>Occasional model slip</td><td>Up to three attempts before a clear error</td></tr>
+              <tr><td>Model quota errors were not retried</td><td>Provider layer treated them as fatal</td><td>Retries on rate-limit and overload responses</td></tr>
+              <tr><td>JSON wrapped in text was rejected</td><td>Strict parsing</td><td>Parser accepts fenced or padded JSON</td></tr>
+              <tr><td>Biggest borrow or avoid could disagree with takeaways</td><td>Written separately by the model</td><td>Derived from the takeaways in code</td></tr>
+              <tr><td>Near-duplicate filter merged two different figures</td><td>Short numbers were dropped from the comparison</td><td>Digits count; different figures mean different points</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+
+        <div><h3>Latest results and known gaps</h3>
+          <div class="tw"><table>
+            <thead><tr><th>Group</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td><b>Deterministic</b></td><td>77 of 77 pass</td></tr>
+              <tr><td><b>Live AI with judge</b></td><td>31 of 31 pass in one clean round. Later confirmation rounds could not run because the free AI daily limit was used up, which is a quota problem, not a quality failure.</td></tr>
+              <tr><td><b>End-to-end, live site</b></td><td>30 of 30 pass, including a check that older reports still open and that test data is cleaned up</td></tr>
+            </tbody>
+          </table></div>
+          <p style="margin-top:14px"><b>Known gaps, stated plainly:</b></p>
+          <ul class="dash" style="margin-top:8px">
+            <li>Only one clean live-AI round exists for the final prompt.</li>
+            <li>A full AI round makes about 100 model requests, so repeated rounds exhaust the free daily limit.</li>
+            <li>Not automated: extension tracking in Chrome, visual report checks, sign-in round trips, and screenshot reading.</li>
+            <li>Fixtures are competitor-research recordings. Other research types are untested until fixtures exist.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <a class="back" href="../#log"><span aria-hidden="true">←</span> Back to the portfolio</a>
+    <span class="mono">Built by Karthikeya Burugula · Product Manager &amp; Builder</span>
+  </div>
+</footer>
+</body>
+</html>

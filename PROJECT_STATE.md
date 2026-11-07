@@ -6,6 +6,13 @@ Last updated: 2026-10-07 · HEAD `c74191e` (live on GitHub Pages)
 
 **Read "Latest session" (below) first — it supersedes older sections wherever they disagree.**
 
+## Builder's log · Project 1 = Recon Lens (2026-11-07)
+- Only the Project 1 `<article>` in `index.html` changed (title, one-liner, tags, `Open project →` CTA using the existing `.cta bld` classes). **No CSS or JS on the home page was touched**; Project 2 is still the placeholder.
+- New self-contained case-study page at `reconlens/index.html` (own `<style>`, **no JavaScript**, no animations). Sections: problem, what it does, sample report, try it (extension download + install steps), how it's built, AI trust, and the PRD / system design / AI evals as `<details>` accordions.
+- `reconlens/ReconLens-extension.zip` is the Chrome extension (unpacked install). Its README.txt was edited: Google sign-in removed (not set up), Chrome 116+.
+- The sample report is the real Wealthy vs Centricity comparison, copied verbatim from the app. To swap it (for example Swiggy vs Zomato), replace everything between the `SAMPLE-REPORT-START` and `SAMPLE-REPORT-END` comments.
+- Live app: https://reconlens-henna.vercel.app (free tiers: AI daily limit, database pauses when idle).
+
 ## Latest session (2026-10-05 → 2026-10-07) — commits `7fa34fc` … `c74191e`
 Many small, tightly scoped rounds. Mid-session user verdict: *"the animations and everything look perfect now."* Everything below is **live** and user-approved unless marked.
 
