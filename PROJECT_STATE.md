@@ -424,3 +424,9 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 
 ## Round 22 — contour readability
 - User: contour map made content hard to read. Contour now lives on `#sun::after` (washes stay on `#sun`), layer opacity .4 on mobile; on >=1061px opacity .85 with a horizontal mask (full strength in the left/right 20% gutters, 20% behind the content column). `--dim` darkened to #3f485c, `--faint` #7d869a.
+
+## Round 23 — "Agentic" portfolio (new, at /agentic/)
+- Built from the user's reference video `~/Downloads/AgenticPortfolio.mp4` (a phone recording of a laptop; someone else's portfolio used only as a structural reference, no content copied). Concept: 12 small coloured "agent" robots (Layout, Palette, Typeset, Motion, Copy, Assets, Review, Index, QA, A11y, Perf, Deploy) build the page live: boot loader ring "BOOTING AGENTS n/12" -> agents spawn -> each takes the next `.bld` element in view, draws a Figma-style blue selection box with a "Text · W×H" tag, reveals the element, moves on. Idle agents wander (avoiding text) and cluster at "SHIP IT FOR REAL." in Contact. Bottom HUD: "12 AGENTS LIVE | pause | AGENTS ON/OFF | REBUILD".
+- Look: near-black, Anton display caps, orange-red #ff4a1c, giant "PORTFOLIO" backdrop, red duotone masked portrait, left red edge line, pill nav (Home/Work/About/Contact). Sections: hero, Work (4 cards + stack marquee + track record), About (education/skills, how I work, orange note), Contact.
+- Single static file `agentic/index.html` (assets via `../assets/`), so GitHub Pages hosts it as-is; no Vercel needed. Live at `/agentic/`; root site untouched. Respects prefers-reduced-motion (no boot, no agents, all content visible); 9s safety net reveals everything.
+- Tested headless Chrome at 1470x800, 1280x720, 768, 390: 82/82 elements built, no JS errors, no horizontal overflow. Test driver `shot2.mjs` (scratchpad).
