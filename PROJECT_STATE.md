@@ -470,3 +470,6 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - User supplied a 1254x1254 version of the same professional photo (verified identical to profile.png, mean diff 0.4, just higher resolution). `assets/profile-blend.webp` rebuilt from it (150KB, alpha): same dimmed-backdrop treatment, mask upscaled from the 800px GrabCut mask, eroded 1px and a slightly extra-dimmed ring next to the person so no light rim. The 1.8MB original was not committed; og:image still uses the 800px profile.png. Image URL carries `?v=2` to bust caches.
 - Contact: "Ship it for real." and the sticky note removed; title+text left, contact list right.
 - `.dsp` line-height .86 -> .98 and `.dsp .r{margin-top:.03em}` so two-line headings (Work that I shipped, Built fast/Shipped real, Let's work together) no longer touch.
+
+## Round 30 — Contact CTAs
+- Added "Call me" (tel:) and "Open LinkedIn" (new tab) CTAs; all four contact CTAs (Email me, Call me, Open LinkedIn, Download CV) share one smaller size (padding 8x13, 10px mono, min-width 138px) and sit in one right-aligned column; on phones they drop under each value.
