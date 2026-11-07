@@ -445,3 +445,11 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Build: starts right after a ~0.8s boot (scroll restoration forced to top). Each job: fly -> blue box draws -> generated code (from the element's own tag/class/text/computed font) types inside the box with syntax colours + progress bar -> code layer wipes away revealing the real element. IO lookahead 28% so agents are ready before elements scroll in; assignment picks the highest unbuilt element first.
 - Auto-scroll is now paced by the build: 520px/s but holds while anything in the upper 45% of the screen is unbuilt (28s cap). Whole flow measured ~12s at 1470x800.
 - Tested 1470x800 (aqua + cyan) and 390x844: 82/82 built, 0 errors.
+
+## Round 26 — agentic: cutout photo, Rebuild fix, 20 agents, spacing/alignment
+- Aqua accent is now permanent (palette switcher removed).
+- Photo: `assets/profile-cutout.png` made with OpenCV GrabCut (background removed, 1.6px feather, bottom 14% fades to transparent). No frame/overlay/gradient boxes, so it blends into the page with no edge. Soft aqua glow behind it. Original `profile.png` kept (used by the old/main site).
+- Hero pushed down (padding 130px; PORTFOLIO top 94px) so it clears the nav pill; removed the 100svh min-height and shrank section paddings to cut white space before "Work that ships". "Impact created" heading above the right-hand stats.
+- Rebuild bug: IntersectionObserver only fires on changes, so elements already in the lookahead zone were never re-queued after Rebuild -> auto-scroll blocked up to 28s and elements popped in unanimated. Added `scan()` (every 90ms, queues any unbuilt element within 1.28 viewports). Verified by CDP: after Rebuild 20 agents enter, boxes keep appearing, scroll never stalls, finishes ~15s, agents leave.
+- 20 agents (added Grid, Lint, Cache, Docs, Build). Shared `--colgap` so section heads, cards, track, about, contact grids align; contact title resized; About "How I work" + note share one column.
+- Tested 1470x800, 1280x720, 390x844: 0 errors, no horizontal overflow.
