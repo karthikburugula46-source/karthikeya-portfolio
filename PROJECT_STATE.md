@@ -473,3 +473,6 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 
 ## Round 30 — Contact CTAs
 - Added "Call me" (tel:) and "Open LinkedIn" (new tab) CTAs; all four contact CTAs (Email me, Call me, Open LinkedIn, Download CV) share one smaller size (padding 8x13, 10px mono, min-width 138px) and sit in one right-aligned column; on phones they drop under each value.
+
+## Round 31
+- Removed the 4th card ("More Wins"); Work now shows the top 3 only (PMS Portfolio Tracker, SIF Growth Engine, Activation Overhaul). Projects the user is building now will be added later.
