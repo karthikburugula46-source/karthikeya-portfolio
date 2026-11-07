@@ -453,3 +453,10 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Rebuild bug: IntersectionObserver only fires on changes, so elements already in the lookahead zone were never re-queued after Rebuild -> auto-scroll blocked up to 28s and elements popped in unanimated. Added `scan()` (every 90ms, queues any unbuilt element within 1.28 viewports). Verified by CDP: after Rebuild 20 agents enter, boxes keep appearing, scroll never stalls, finishes ~15s, agents leave.
 - 20 agents (added Grid, Lint, Cache, Docs, Build). Shared `--colgap` so section heads, cards, track, about, contact grids align; contact title resized; About "How I work" + note share one column.
 - Tested 1470x800, 1280x720, 390x844: 0 errors, no horizontal overflow.
+
+## Round 27 — Agentic page is now the MAIN site
+- Root `index.html` = the agentic portfolio (assets via `assets/`). Old day/night "market terminal" site is in git history: last version at commit cf774d0 (`git show cf774d0:index.html`). `/agentic/` is now a redirect page to the root.
+- Photo: `assets/profile-blend.webp` (75KB, alpha) = original photo with the backdrop dimmed (50%, pulled toward the page colour) and dissolved into the dark page via baked alpha; person mask = GrabCut + colour-difference ear fix so both ears are intact. Removed `profile-cutout.png`. `profile.png` kept for og:image.
+- Bottom HUD (agents live / pause / power / Rebuild) removed along with startBuild/enter code. A reload replays the build.
+- Lenis 1.3.27 self-hosted (`assets/lenis.min.js`, licence in `assets/LICENSE-lenis.txt`). `lerp:.1`, wheel/trackpad only (touch native). Build auto-scroll and return-to-top use `jump()` (Lenis immediate scrollTo); nav anchors glide via `lenis.scrollTo`. Verified by CDP: wheel step eases (~1s), wheel during the build cancels it and reveals everything, nav click glides. Reduced motion: no Lenis, no agents.
+- Added og:title/description/image/url tags. Tested 1470x800 at root: 83/83 built, 0 errors.
