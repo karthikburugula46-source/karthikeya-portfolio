@@ -38,8 +38,8 @@ img{display:block;max-width:100%}
 .wrap{padding-inline:var(--g);max-width:1560px;margin:0 auto}
 .mono{font:500 11px/1.4 var(--f-m);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .eyebrow{font:700 11px/1 var(--f-m);letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin:0 0 22px}
-.dsp{font:400 clamp(54px,10.4vw,170px)/.86 var(--f-d);text-transform:uppercase;letter-spacing:-.005em;margin:0}
-.dsp .r{color:var(--acc);display:block}
+.dsp{font:400 clamp(54px,10.4vw,170px)/.98 var(--f-d);text-transform:uppercase;letter-spacing:-.005em;margin:0}
+.dsp .r{color:var(--acc);display:block;margin-top:.03em}
 .dsp .w{display:block}
 
 /* build state: elements start hidden and are revealed when an agent finishes them */
@@ -159,15 +159,13 @@ img{display:block;max-width:100%}
 .tl time{font:400 26px/1 var(--f-d);color:var(--acc);text-align:right;white-space:nowrap}
 .tl .now{color:#fff}
 
-.note{position:relative;align-self:flex-end;width:min(100%,206px);margin-top:34px;aspect-ratio:1;padding:16px 15px 13px;background:var(--acc);color:var(--on);rotate:2.2deg;box-shadow:0 22px 40px -24px rgb(var(--acc-rgb) / .55);display:flex;flex-direction:column;justify-content:space-between}
-.note p{margin:0;font:400 clamp(20px,1.7vw,25px)/1 var(--f-d);text-transform:uppercase;max-width:none;color:var(--on)}
-.note span{align-self:flex-end;text-align:right;font:500 10px var(--f-m);letter-spacing:.1em;text-transform:uppercase}
 
 /* contact */
 .contact{padding-bottom:clamp(110px,12vw,180px)}
 .ct-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px var(--colgap);align-items:end}
+.ct-list{align-self:end}
 .ct-l p{margin:24px 0 0;max-width:340px;color:#d6d3da;font-size:14.5px}
-.ct-list{list-style:none;margin:26px 0 0;padding:0;max-width:560px;border-top:1px solid var(--line)}
+.ct-list{list-style:none;margin:0;padding:0;max-width:none;border-top:1px solid var(--line)}
 .ct-list li{display:grid;grid-template-columns:80px minmax(0,1fr) auto;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:center}
 .ct-list .mono{font-size:9.5px}
 .ct-list a{font:600 14px var(--f-b);overflow-wrap:anywhere}
@@ -176,7 +174,6 @@ img{display:block;max-width:100%}
 .ct-list a.cta{grid-column:3;margin:0;justify-self:end;min-width:136px;padding:11px 18px;color:var(--on);font:700 11.5px var(--f-m)}
 .ct-list a.cta:hover{color:var(--on)}
 .ct-l .dsp{font-size:clamp(48px,7.2vw,118px)}
-.shipit{justify-self:stretch;display:flex;flex-direction:column;align-items:flex-start;text-align:left}
 .shipit .dsp{font-size:clamp(48px,7.2vw,120px)}
 .ft{border-top:1px solid var(--line);padding:22px 0 90px;font:500 10px var(--f-m);letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
 .ft .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -238,8 +235,6 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
   .side span{margin-left:0}
   .sec-head,.track,.ct-grid{grid-template-columns:minmax(0,1fr)}
   .cards{grid-template-columns:minmax(0,1fr)}
-  .note{width:min(100%,190px)}
-  .shipit{margin-top:30px}
   .intro{max-width:none}
 }
 @media (max-width:560px){
@@ -287,7 +282,7 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
           <p class="open bld"><span class="pd"></span><span>Open to <b>product roles</b></span></p>
         </div>
         <div class="portrait-wrap">
-          <figure class="portrait bld"><img src="assets/profile-blend.webp" width="800" height="800" alt="Portrait of Karthikeya Burugula" fetchpriority="high"></figure>
+          <figure class="portrait bld"><img src="assets/profile-blend.webp?v=2" width="800" height="800" alt="Portrait of Karthikeya Burugula" fetchpriority="high"></figure>
         </div>
         <div class="side"><p class="side-h bld">Impact created</p><ul>
           <li class="bld"><b>200K+</b><span>users on the platform I own</span></li>
@@ -388,18 +383,16 @@ html.agent-cur,html.agent-cur *{cursor:none!important}
     <div class="wrap">
       <p class="eyebrow bld">Contact</p>
       <div class="ct-grid">
-        <div class="ct-l">
+        <div class="ct-l" id="shipit">
           <h2 class="dsp bld" id="t-ct"><span class="w">Let’s work</span><span class="r">together.</span></h2>
           <p class="bld">Open to product roles in fintech and B2B platforms. If you have a hard problem about money, onboarding or growth, I’d like to hear it.</p>
-          <ul class="ct-list">
-            <li class="bld"><span class="mono">Email</span><a href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a><a class="cta sm" href="mailto:karthikburugula46@gmail.com">Email me <span aria-hidden="true">↗</span></a></li>
-            <li class="bld"><span class="mono">Phone</span><a href="tel:+918296114865">+91 82961 14865</a></li>
-            <li class="bld"><span class="mono">LinkedIn</span><a href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">/in/karthikeyaburugula</a></li>
-            <li class="bld"><span class="mono">Resume</span><span class="v">Resume (PDF)</span><a class="cta sm" href="assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download CV <span aria-hidden="true">↓</span></a></li>
-          </ul>
         </div>
-        <div class="shipit" id="shipit"><h2 class="dsp bld"><span class="w">Ship it</span><span class="r">for real.</span></h2>
-          <div class="note bld"><p>Read the board. Take the shot.</p><span>— Karthikeya</span></div></div>
+        <ul class="ct-list">
+          <li class="bld"><span class="mono">Email</span><a href="mailto:karthikburugula46@gmail.com">karthikburugula46@gmail.com</a><a class="cta sm" href="mailto:karthikburugula46@gmail.com">Email me <span aria-hidden="true">↗</span></a></li>
+          <li class="bld"><span class="mono">Phone</span><a href="tel:+918296114865">+91 82961 14865</a></li>
+          <li class="bld"><span class="mono">LinkedIn</span><a href="https://www.linkedin.com/in/karthikeyaburugula/" target="_blank" rel="noopener noreferrer">/in/karthikeyaburugula</a></li>
+          <li class="bld"><span class="mono">Resume</span><span class="v">Resume (PDF)</span><a class="cta sm" href="assets/Karthikeya_Burugula_CV.pdf" download="Karthikeya_Burugula_CV.pdf">Download CV <span aria-hidden="true">↓</span></a></li>
+        </ul>
       </div>
     </div>
   </section>

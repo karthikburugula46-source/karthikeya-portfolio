@@ -465,3 +465,8 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Hero: copy block and photo nudged down (`top:clamp(16px,3.6vh,36px)` at >=1001px, no layout change); "Impact created" untouched.
 - Work: eyebrow and right-hand intro/stats removed; title "Work that I shipped." (3 stacked lines) sticky on the left, the 4 cards stacked vertically on the right (`.work-grid`). Card text uses `--soft:#e6e3dc`. Dropped bullets duplicated by the metric (cards 01-03); metric = number | divider | label, vertically centred. Track record AssetPlus row no longer lists the team.
 - About section removed (and nav link). Sticky note kept but smaller (206px), moved into Contact under "Ship it for real.", signature at its right. Separate "Email me" CTA removed; it now sits in the Email row; Resume row has Download CV in the same column.
+
+## Round 29 — photo at full resolution, Contact cleanup, heading spacing
+- User supplied a 1254x1254 version of the same professional photo (verified identical to profile.png, mean diff 0.4, just higher resolution). `assets/profile-blend.webp` rebuilt from it (150KB, alpha): same dimmed-backdrop treatment, mask upscaled from the 800px GrabCut mask, eroded 1px and a slightly extra-dimmed ring next to the person so no light rim. The 1.8MB original was not committed; og:image still uses the 800px profile.png. Image URL carries `?v=2` to bust caches.
+- Contact: "Ship it for real." and the sticky note removed; title+text left, contact list right.
+- `.dsp` line-height .86 -> .98 and `.dsp .r{margin-top:.03em}` so two-line headings (Work that I shipped, Built fast/Shipped real, Let's work together) no longer touch.
