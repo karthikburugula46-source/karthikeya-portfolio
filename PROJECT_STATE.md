@@ -430,3 +430,11 @@ Verified: zero JS errors across repeated PM↔gamer↔PM toggling with Ship It/S
 - Look: near-black, Anton display caps, orange-red #ff4a1c, giant "PORTFOLIO" backdrop, red duotone masked portrait, left red edge line, pill nav (Home/Work/About/Contact). Sections: hero, Work (4 cards + stack marquee + track record), About (education/skills, how I work, orange note), Contact.
 - Single static file `agentic/index.html` (assets via `../assets/`), so GitHub Pages hosts it as-is; no Vercel needed. Live at `/agentic/`; root site untouched. Respects prefers-reduced-motion (no boot, no agents, all content visible); 9s safety net reveals everything.
 - Tested headless Chrome at 1470x800, 1280x720, 768, 390: 82/82 elements built, no JS errors, no horizontal overflow. Test driver `shot2.mjs` (scratchpad).
+
+## Round 24 — Agentic portfolio revisions
+- Palette: orange-red replaced by acid lime `--acc:#d4ff3a` (`--acc-rgb`, `--on` for text on accent). `?c=violet|gold|pink` in the URL swaps the accent for quick comparison (JS PAL table).
+- Hero: natural photo (no red tint/mask; rounded card, soft glow, no hard line), top aligned with "Hello, I'm"; name in camel case ("Karthikeya Burugula."), role "Product Manager & Builder", "Based in Chennai" removed, new line "Open to broader roles" (Inter, gray + accent highlight + pulsing dot).
+- 15 agents (added Tokens, SEO, Test). Faster build (box 880ms, assign gap 70ms, fly 520ms).
+- Flow: boot -> hero built -> auto-scroll the whole page once (760px/s) while agents build -> scroll back to top -> agents fly off -> HUD "Build complete" -> cursor becomes an agent chip (fine pointers). Any wheel/touch/key/click cancels the auto-scroll and reveals everything. Click/tap = ring + particle burst + floating label ("Shipped", "LGTM"...), and the cursor switches to the next agent. HUD: power toggle brings agents back to wander; REBUILD replays everything.
+- Contact: Resume row now has a "Download CV" CTA button.
+- Tested headless Chrome 1470x800, 1280x720, 390x844: 82/82 built, 0 errors, phase sequence verified by sampling scrollY/HUD every 1.5s.
