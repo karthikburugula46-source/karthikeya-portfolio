@@ -149,6 +149,12 @@ code{font:500 .9em var(--f-m);padding:1px 6px;border:1px solid var(--line);borde
 .rep .jump{display:flex;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--dim)}
 .rep .jump a{color:var(--acc)}
 .rep hr{border:0;border-top:1px solid var(--line);width:100%}
+.rep-toggle>summary{list-style:none;cursor:pointer;width:max-content;max-width:100%;margin:0 auto}
+.rep-toggle>summary::-webkit-details-marker{display:none}
+.rep-toggle .lab-close,.rep-toggle[open] .lab-open{display:none}
+.rep-toggle[open] .lab-close{display:inline}
+.rep-more{display:grid;gap:34px;margin-top:34px}
+.rep-end{display:flex;justify-content:center}
 
 /* install */
 .dl{display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:22px;border:1px solid rgba(var(--acc-rgb)/.35);border-radius:10px;background:rgba(var(--acc-rgb)/.05);margin-bottom:26px}
@@ -348,6 +354,11 @@ code{font:500 .9em var(--f-m);padding:1px 6px;border:1px solid var(--line);borde
           </div>
         </section>
 
+        <!-- Per-site reports stay collapsed until the reader asks for them -->
+        <details class="rep-toggle" id="rep-full">
+          <summary class="cta ghost"><span class="lab-open">Expand full report ↓</span><span class="lab-close">Collapse ↑</span></summary>
+          <div class="rep-more">
+
         <hr>
 
         <!-- ---- Wealthy ---- -->
@@ -463,6 +474,10 @@ code{font:500 .9em var(--f-m);padding:1px 6px;border:1px solid var(--line);borde
             </div>
           </div>
         </article>
+
+            <div class="rep-end"><button type="button" class="cta ghost" id="rep-collapse">Collapse ↑</button></div>
+          </div>
+        </details>
 
       </div>
     </div>
@@ -995,5 +1010,16 @@ code{font:500 .9em var(--f-m);padding:1px 6px;border:1px solid var(--line);borde
     <span class="mono">Built by Karthikeya Burugula · Product Manager &amp; Builder</span>
   </div>
 </footer>
+<script>
+(function(){
+  var d=document.getElementById('rep-full'),b=document.getElementById('rep-collapse');
+  if(!d)return;
+  function openFor(h){if(h&&d.contains(document.getElementById(h.slice(1)))&&!d.open){d.open=true;}}
+  if(b)b.addEventListener('click',function(){d.open=false;d.scrollIntoView({block:'center'});});
+  document.querySelectorAll('.rep .jump a').forEach(function(a){a.addEventListener('click',function(){openFor(a.getAttribute('href'));});});
+  window.addEventListener('hashchange',function(){openFor(location.hash);});
+  openFor(location.hash);
+})();
+</script>
 </body>
 </html>
